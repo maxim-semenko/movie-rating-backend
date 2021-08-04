@@ -1,9 +1,11 @@
 package com.max.movierating.controller;
 
 import com.max.movierating.entity.Film;
-import com.max.movierating.service.impl.FilmService;
+import com.max.movierating.service.impl.FilmServiceImpl;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,25 +18,18 @@ import java.util.List;
 /**
  * The type Film controller.
  */
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("api/v1/films")
+@RequiredArgsConstructor
 public class FilmController {
 
-    private final FilmService filmService;
-
-    /**
-     * Instantiates a new Film controller.
-     *
-     * @param filmService the film service
-     */
-    public FilmController(FilmService filmService) {
-        this.filmService = filmService;
-    }
+    private final FilmServiceImpl filmService;
 
     /**
      * Gets all.
      *
-     * @return the all
+     * @return all films
      */
     @GetMapping("")
     public ResponseEntity<List<Film>> getAll() {

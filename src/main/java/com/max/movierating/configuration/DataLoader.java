@@ -3,20 +3,16 @@ package com.max.movierating.configuration;
 import com.max.movierating.entity.EnumRole;
 import com.max.movierating.entity.Role;
 import com.max.movierating.repository.RoleRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class DataLoader implements ApplicationRunner {
 
     private final RoleRepository roleRepository;
-
-    @Autowired
-    public DataLoader(RoleRepository roleRepository) {
-        this.roleRepository = roleRepository;
-    }
 
     @Override
     public void run(ApplicationArguments args) {

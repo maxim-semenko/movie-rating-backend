@@ -2,7 +2,7 @@ package com.max.movierating.configuration;
 
 import com.max.movierating.security.JwtConfigurer;
 import com.max.movierating.security.JwtTokenProvider;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -13,24 +13,20 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 /**
  * Security configuration class for JWT based Spring Security application.
  *
- * @author Eugene Suleimanov
+ * @author Maxim Semenko
  * @version 1.0
  */
 
 @Configuration
+@RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final JwtTokenProvider jwtTokenProvider;
 
     private static final String ADMIN_ENDPOINT = "/api/v1/admin/**";
-    private static final String LOGIN_ENDPOINT = "/api/v1/auth/login";
-    private static final String REGISTER_ENDPOINT = "/api/v1/auth/register";
-
-
-    @Autowired
-    public SecurityConfig(JwtTokenProvider jwtTokenProvider) {
-        this.jwtTokenProvider = jwtTokenProvider;
-    }
+    private static final String AUTHENTICATION_API = "/api/v1/auth/**";
+    private static final String USERS_API = "/api/v1/users/**";
+    private static final String FILMS_API = "/api/v1/films/**";
 
     @Bean
     @Override
@@ -46,8 +42,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers(LOGIN_ENDPOINT).permitAll()
-                .antMatchers(REGISTER_ENDPOINT).permitAll()
+                .antMatchers(AUTHENTICATION_API).permitAll()
+                .antMatchers(USERS_API).permitAll()
+                .antMatchers(FILMS_API).permitAll()
                 .antMatchers(ADMIN_ENDPOINT).hasRole("ADMIN")
                 .anyRequest().authenticated()
                 .and()

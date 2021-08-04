@@ -18,8 +18,10 @@ public class Film extends BaseEntity {
 
     private String name;
     private String decryption;
-    private Integer price;
+    private String imageURL;
+    private Float price;
     private Integer timeInMinutes;
+    private Integer rating;
 
     @ManyToOne
     @JoinColumn(name = "genre_id", referencedColumnName = "id")

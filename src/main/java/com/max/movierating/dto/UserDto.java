@@ -8,7 +8,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Data
-//@JsonIgnoreProperties(ignoreUnknown = true)
 public class UserDto {
     private Long id;
     private String username;
@@ -18,7 +17,7 @@ public class UserDto {
     private Integer balance;
     private Set<Role> roles = new HashSet<>();
 
-    public User toUser(){
+    public User toUser() {
         User user = new User();
         user.setId(id);
         user.setUsername(username);

@@ -1,7 +1,9 @@
 package com.max.movierating.service.impl;
 
+import com.max.movierating.entity.EnumGenre;
 import com.max.movierating.entity.Film;
 import com.max.movierating.repository.FilmRepository;
+import com.max.movierating.repository.GenreRepository;
 import com.max.movierating.service.DefaultService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -10,9 +12,10 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class FilmService implements DefaultService<Film> {
+public class FilmServiceImpl implements DefaultService<Film> {
 
     private final FilmRepository filmRepository;
+    private final GenreRepository genreRepository;
 
     @Override
     public List<Film> findAll() {
@@ -26,6 +29,8 @@ public class FilmService implements DefaultService<Film> {
 
     @Override
     public Film save(Film film) {
+        film.setGenre(genreRepository.findByName(EnumGenre.ACTION));
+
         return filmRepository.save(film);
     }
 

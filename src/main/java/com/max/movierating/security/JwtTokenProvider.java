@@ -99,12 +99,12 @@ public class JwtTokenProvider {
     }
 
     private Set<String> getRoleNames(Set<Role> userRoles) {
-        Set<String> result = new HashSet<>();
+        Set<String> roles = new HashSet<>();
 
         userRoles.forEach(role -> {
-            result.add(role.getName().toString());
+            roles.add(role.getName().toString());
         });
 
-        return result;
+        return roles;
     }
 }

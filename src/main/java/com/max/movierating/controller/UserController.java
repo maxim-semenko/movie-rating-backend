@@ -2,7 +2,7 @@ package com.max.movierating.controller;
 
 import com.max.movierating.entity.User;
 import com.max.movierating.service.impl.UserServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -20,14 +20,10 @@ import java.util.List;
 @RestController
 @RequestMapping("api/v1/users")
 @CrossOrigin(origins = "http://localhost:3000")
+@RequiredArgsConstructor
 public class UserController {
 
     private final UserServiceImpl userService;
-
-    @Autowired
-    public UserController(UserServiceImpl userService) {
-        this.userService = userService;
-    }
 
     @GetMapping("")
     public ResponseEntity<List<User>> getAll() {
@@ -53,4 +49,11 @@ public class UserController {
     public ResponseEntity<Long> delete(@PathVariable Long id) {
         return new ResponseEntity<>(userService.deleteById(id), HttpStatus.OK);
     }
+
+    @GetMapping("/find/{username}")
+    public ResponseEntity<User> findByUsername(@PathVariable String username) {
+        return new ResponseEntity<>(userService.findByUsername(username), HttpStatus.OK);
+
+    }
+
 }

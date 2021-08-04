@@ -7,7 +7,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.Date;
 
-//@AllArgsConstructor
 public class JwtUser implements UserDetails {
 
     private final Long id;
@@ -63,18 +62,6 @@ public class JwtUser implements UserDetails {
         return true;
     }
 
-    public String getFirstname() {
-        return firstName;
-    }
-
-    public String getLastname() {
-        return lastName;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
     @JsonIgnore
     @Override
     public String getPassword() {
@@ -91,8 +78,4 @@ public class JwtUser implements UserDetails {
         return true;
     }
 
-    @JsonIgnore
-    public Date getLastPasswordResetDate() {
-        return new Date();
-    }
 }

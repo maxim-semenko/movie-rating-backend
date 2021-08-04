@@ -12,6 +12,7 @@ import com.max.movierating.security.JwtTokenProvider;
 import com.max.movierating.service.DefaultService;
 import com.max.movierating.service.UserService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -26,6 +27,7 @@ import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class UserServiceImpl implements DefaultService<User>, UserService {
 
     private final UserRepository userRepository;
@@ -67,7 +69,6 @@ public class UserServiceImpl implements DefaultService<User>, UserService {
         return id;
     }
 
-
     /**
      * Method that checks login and email of user.
      *
@@ -82,14 +83,11 @@ public class UserServiceImpl implements DefaultService<User>, UserService {
         }
     }
 
-
     @Override
     public Map<String, Object> login(AuthenticationRequestDto requestDto) {
         String username = requestDto.getUsername();
         User user = findByUsername(username);
-        if (user == null) {
-            throw new UserNotFoundException("User not found");
-        }
+
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, requestDto.getPassword()));
             Map<String, Object> response = new HashMap<>();
@@ -105,7 +103,12 @@ public class UserServiceImpl implements DefaultService<User>, UserService {
 
     @Override
     public User findByUsername(String username) {
-        return userRepository.findByUsername(username);
+        User user = userRepository.findByUsername(username);
+        if (user == null) {
+            log.warn("User not found with username: " + username);
+            throw new UserNotFoundException("User not found with username = " + username);
+        }
+        return user;
     }
 
 }

@@ -1,5 +1,6 @@
 package com.max.movierating.security;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.GenericFilterBean;
@@ -14,17 +15,14 @@ import java.io.IOException;
 /**
  * JWT token filter that handles all HTTP requests to application.
  *
- * @author Eugene Suliemanov
+ * @author Maxim Semenko
  * @version 1.0
  */
 
+@RequiredArgsConstructor
 public class JwtTokenFilter extends GenericFilterBean {
 
     private final JwtTokenProvider jwtTokenProvider;
-
-    public JwtTokenFilter(JwtTokenProvider jwtTokenProvider) {
-        this.jwtTokenProvider = jwtTokenProvider;
-    }
 
     @Override
     public void doFilter(ServletRequest req, ServletResponse res, FilterChain filterChain)

@@ -2,13 +2,13 @@ package com.max.movierating.entity;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToOne;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -17,17 +17,15 @@ import java.util.Set;
 @EqualsAndHashCode(callSuper = true)
 public class Basket extends BaseEntity {
 
-    @OneToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private User user;
-
-    private Integer summa;
+    @ColumnDefault(value = "0")
+    private Float summa = 0.0f;
 
     @ManyToMany(cascade = {CascadeType.ALL})
     @JoinTable(
             name = "basket_film",
-            joinColumns = {@JoinColumn(name = "film_id")},
-            inverseJoinColumns = {@JoinColumn(name = "basket_id")}
+            joinColumns = {@JoinColumn(name = "basket_id")},
+            inverseJoinColumns = {@JoinColumn(name = "film_id")}
     )
     private Set<Film> filmList = new HashSet<>();
+
 }

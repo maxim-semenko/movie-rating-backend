@@ -1,6 +1,6 @@
 package com.max.movierating.controller;
 
-import com.max.movierating.dto.AuthenticationRequestDto;
+import com.max.movierating.dto.AuthenticationRequestDTO;
 import com.max.movierating.entity.User;
 import com.max.movierating.service.impl.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
@@ -33,10 +33,10 @@ public class AuthenticationController {
      * Method that is responsible for login of user.
      *
      * @param requestDto contain username and password
-     * @return user or error 403, 404
+     * @return user
      */
     @PostMapping("login")
-    public ResponseEntity<?> login(@RequestBody AuthenticationRequestDto requestDto) {
+    public ResponseEntity<?> login(@RequestBody AuthenticationRequestDTO requestDto) {
         return new ResponseEntity<>(userService.login(requestDto), HttpStatus.OK);
     }
 

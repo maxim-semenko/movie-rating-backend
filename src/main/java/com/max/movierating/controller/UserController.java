@@ -1,5 +1,6 @@
 package com.max.movierating.controller;
 
+import com.max.movierating.dto.UserDTO;
 import com.max.movierating.entity.User;
 import com.max.movierating.service.impl.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
@@ -26,8 +27,8 @@ public class UserController {
     private final UserServiceImpl userService;
 
     @GetMapping("")
-    public ResponseEntity<List<User>> getAll() {
-        return new ResponseEntity<>(userService.findAll(), HttpStatus.OK);
+    public ResponseEntity<List<UserDTO>> getAll() {
+        return new ResponseEntity<>(UserDTO.fromListUser(userService.findAll()), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
@@ -51,9 +52,8 @@ public class UserController {
     }
 
     @GetMapping("/find/{username}")
-    public ResponseEntity<User> findByUsername(@PathVariable String username) {
-        return new ResponseEntity<>(userService.findByUsername(username), HttpStatus.OK);
-
+    public ResponseEntity<UserDTO> findByUsername(@PathVariable String username) {
+        return new ResponseEntity<>(UserDTO.fromUser(userService.getByUsername(username)), HttpStatus.OK);
     }
 
 }

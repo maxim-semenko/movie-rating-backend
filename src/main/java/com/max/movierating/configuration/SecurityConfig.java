@@ -27,6 +27,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private static final String AUTHENTICATION_API = "/api/v1/auth/**";
     private static final String USERS_API = "/api/v1/users/**";
     private static final String FILMS_API = "/api/v1/films/**";
+    private static final String BASKET_API = "/api/v1/baskets/**";
 
     @Bean
     @Override
@@ -45,6 +46,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(AUTHENTICATION_API).permitAll()
                 .antMatchers(USERS_API).permitAll()
                 .antMatchers(FILMS_API).permitAll()
+                .antMatchers(BASKET_API).permitAll()
                 .antMatchers(ADMIN_ENDPOINT).hasRole("ADMIN")
                 .anyRequest().authenticated()
                 .and()

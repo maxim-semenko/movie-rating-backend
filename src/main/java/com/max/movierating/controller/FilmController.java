@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 /**
- * The type Film controller.
+ * The Film REST controller that takes request films API.
  */
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
@@ -24,10 +24,13 @@ import java.util.List;
 @RequiredArgsConstructor
 public class FilmController {
 
+    /**
+     * Film service that execute any operations with film entity.
+     */
     private final FilmServiceImpl filmService;
 
     /**
-     * Gets all.
+     * Method that returns all films.
      *
      * @return all films
      */
@@ -37,10 +40,10 @@ public class FilmController {
     }
 
     /**
-     * Get response entity.
+     * Method that returns the film by given id;
      *
-     * @param id the id
-     * @return the response entity
+     * @param id the film's id
+     * @return the film
      */
     @GetMapping("/{id}")
     public ResponseEntity<Film> get(@PathVariable Long id) {
@@ -48,10 +51,21 @@ public class FilmController {
     }
 
     /**
-     * Save response entity.
+     * Method that returns the film by given name.
      *
-     * @param film the film
-     * @return the response entity
+     * @param name the film's name
+     * @return the film
+     */
+    @GetMapping("/{name}")
+    public ResponseEntity<Film> getByName(@PathVariable String name) {
+        return new ResponseEntity<>(filmService.getByName(name), HttpStatus.OK);
+    }
+
+    /**
+     * Method that save new film by given {@link RequestBody}.
+     *
+     * @param film request body that contain params
+     * @return new film
      */
     @PostMapping("")
     public ResponseEntity<Film> save(@RequestBody Film film) {

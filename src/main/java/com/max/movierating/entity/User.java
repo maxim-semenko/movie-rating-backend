@@ -6,12 +6,14 @@ import lombok.ToString;
 import org.hibernate.annotations.ColumnDefault;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.HashSet;
@@ -21,7 +23,6 @@ import java.util.Set;
 @Data
 @ToString
 @EqualsAndHashCode(callSuper = true)
-@EntityListeners(AuditingEntityListener.class)
 public class User extends BaseEntity {
 
     @NotNull
@@ -32,15 +33,16 @@ public class User extends BaseEntity {
     @Size(min = 2, max = 25)
     private String lastname;
 
-    @NotNull
+    @Column(unique = true, nullable = false)
     @Size(min = 2, max = 25)
     private String username;
+
 
     @NotNull
     @Size(min = 8, max = 255)
     private String password;
 
-    @NotNull
+    @Column(unique = true, nullable = false)
     @Size(min = 2, max = 25)
     private String email;
 
@@ -54,4 +56,8 @@ public class User extends BaseEntity {
             inverseJoinColumns = {@JoinColumn(name = "role_id")})
     private Set<Role> roles = new HashSet<>();
 
+
+    @OneToOne
+    @JoinColumn(name = "basket_id", referencedColumnName = "id")
+    private Basket basket;
 }

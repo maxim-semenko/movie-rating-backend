@@ -9,7 +9,7 @@ import lombok.Data;
  * @version 1.0
  */
 @Data
-public class AuthenticationRequestDto {
+public class AuthenticationRequestDTO {
     private String username;
     private String password;
 }

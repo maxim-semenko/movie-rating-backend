@@ -1,6 +1,5 @@
 package com.max.movierating.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -23,7 +22,6 @@ public class Comment extends BaseEntity {
 
     @ManyToOne(optional = false, cascade = CascadeType.ALL)
     @JoinColumn(name = "film_id")
-    @JsonIgnore
     private Film film;
 
     private String content;

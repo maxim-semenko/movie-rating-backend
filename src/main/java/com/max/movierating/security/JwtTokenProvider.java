@@ -7,7 +7,7 @@ import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.PropertySource;
@@ -33,7 +33,7 @@ import java.util.Set;
  */
 
 @Component
-@PropertySource("/application.properties")
+@PropertySource("/jwt.properties")
 public class JwtTokenProvider {
 
     @Value("${jwt.token.secret}")
@@ -42,7 +42,8 @@ public class JwtTokenProvider {
     @Value("${jwt.token.expired}")
     private long validityInMilliseconds;
 
-    @Qualifier("jwtUserDetailsService")
+    //    @Qualifier("jwtUserDetailsService")
+    @Autowired
     private UserDetailsService userDetailsService;
 
     @Bean
@@ -83,7 +84,7 @@ public class JwtTokenProvider {
     public String resolveToken(HttpServletRequest req) {
         String bearerToken = req.getHeader("Authorization");
         if (bearerToken != null && bearerToken.startsWith("Bearer_")) {
-            return bearerToken.substring(7, bearerToken.length());
+            return bearerToken.substring(7);
         }
         return null;
     }
@@ -100,10 +101,7 @@ public class JwtTokenProvider {
 
     private Set<String> getRoleNames(Set<Role> userRoles) {
         Set<String> roles = new HashSet<>();
-
-        userRoles.forEach(role -> {
-            roles.add(role.getName().toString());
-        });
+        userRoles.forEach(role -> roles.add(role.getName().toString()));
 
         return roles;
     }

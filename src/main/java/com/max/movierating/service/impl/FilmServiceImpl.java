@@ -3,6 +3,7 @@ package com.max.movierating.service.impl;
 import com.max.movierating.entity.EnumGenre;
 import com.max.movierating.entity.Film;
 import com.max.movierating.entity.Genre;
+import com.max.movierating.exception.UserNotFoundException;
 import com.max.movierating.repository.FilmRepository;
 import com.max.movierating.repository.GenreRepository;
 import com.max.movierating.service.DefaultService;
@@ -33,7 +34,8 @@ public class FilmServiceImpl implements DefaultService<Film>, FilmService {
 
     @Override
     public Film findById(Long id) {
-        return filmRepository.getById(id);
+        return filmRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException("User with id: " + id + " was not found"));
     }
 
     @Override
@@ -48,9 +50,10 @@ public class FilmServiceImpl implements DefaultService<Film>, FilmService {
     }
 
     @Override
-    public Long deleteById(Long id) {
-        filmRepository.deleteById(id);
-        return id;
+    public Film deleteById(Long id) {
+        Film film = findById(id);
+        filmRepository.delete(film);
+        return film;
     }
 
     @Override

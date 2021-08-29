@@ -5,6 +5,7 @@ import com.max.movierating.security.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -16,17 +17,27 @@ import org.springframework.security.config.http.SessionCreationPolicy;
  * @author Maxim Semenko
  * @version 1.0
  */
-
 @Configuration
 @RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final JwtTokenProvider jwtTokenProvider;
 
-    private static final String ADMIN_ENDPOINT = "/api/v1/admin/**";
+    /**
+     * Request mapping for Authentication API.
+     */
     private static final String AUTHENTICATION_API = "/api/v1/auth/**";
+    /**
+     * Request mapping for Users API.
+     */
     private static final String USERS_API = "/api/v1/users/**";
+    /**
+     * Request mapping for Films API.
+     */
     private static final String FILMS_API = "/api/v1/films/**";
+    /**
+     * Request mapping for Baskets API.
+     */
     private static final String BASKET_API = "/api/v1/baskets/**";
 
     @Bean
@@ -34,6 +45,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
+
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -44,10 +56,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers(AUTHENTICATION_API).permitAll()
-                .antMatchers(USERS_API).permitAll()
+                .antMatchers(HttpMethod.PUT, USERS_API).hasAnyRole("USER", "ADMIN")
+                .antMatchers(HttpMethod.GET, USERS_API).hasRole("ADMIN")
                 .antMatchers(FILMS_API).permitAll()
                 .antMatchers(BASKET_API).permitAll()
-                .antMatchers(ADMIN_ENDPOINT).hasRole("ADMIN")
                 .anyRequest().authenticated()
                 .and()
                 .apply(new JwtConfigurer(jwtTokenProvider));

@@ -13,4 +13,5 @@ public interface FilmRepository extends JpaRepository<Film, Long> {
     List<Film> getAllByGenre(Genre genre);
 
     Film getByName(String name);
+
 }

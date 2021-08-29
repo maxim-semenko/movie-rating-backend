@@ -1,6 +1,7 @@
 package com.max.movierating.service.impl;
 
 import com.max.movierating.entity.Comment;
+import com.max.movierating.exception.UserNotFoundException;
 import com.max.movierating.repository.CommentRepository;
 import com.max.movierating.service.DefaultService;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +22,8 @@ public class CommentService implements DefaultService<Comment> {
 
     @Override
     public Comment findById(Long id) {
-        return commentRepository.getById(id);
+        return commentRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException("Comment with id: " + id + " was not found"));
     }
 
     @Override
@@ -35,8 +37,9 @@ public class CommentService implements DefaultService<Comment> {
     }
 
     @Override
-    public Long deleteById(Long id) {
-        commentRepository.deleteById(id);
-        return id;
+    public Comment deleteById(Long id) {
+        Comment comment = findById(id);
+        commentRepository.delete(comment);
+        return comment;
     }
 }

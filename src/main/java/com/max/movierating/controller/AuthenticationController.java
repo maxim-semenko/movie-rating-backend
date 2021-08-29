@@ -1,7 +1,8 @@
 package com.max.movierating.controller;
 
-import com.max.movierating.dto.AuthenticationRequestDTO;
+import com.max.movierating.dto.LoginRequestDTO;
 import com.max.movierating.entity.User;
+import com.max.movierating.service.impl.AuthServiceImpl;
 import com.max.movierating.service.impl.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -12,8 +13,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+
 /**
- * REST controller for authentication requests (login, register).
+ * REST controller for authentication requests (login, register, generate token).
  *
  * @author Maxim Semenko
  * @version 1.0
@@ -28,6 +31,10 @@ public class AuthenticationController {
      * User service for working with {@link User}.
      */
     private final UserServiceImpl userService;
+    /**
+     * Authentication service for working with user's login, register, etc.
+     */
+    private final AuthServiceImpl authService;
 
     /**
      * Method that is responsible for login of user.
@@ -36,8 +43,8 @@ public class AuthenticationController {
      * @return user
      */
     @PostMapping("login")
-    public ResponseEntity<?> login(@RequestBody AuthenticationRequestDTO requestDto) {
-        return new ResponseEntity<>(userService.login(requestDto), HttpStatus.OK);
+    public ResponseEntity<?> login(@RequestBody LoginRequestDTO requestDto) {
+        return new ResponseEntity<>(authService.login(requestDto), HttpStatus.OK);
     }
 
     /**
@@ -47,8 +54,19 @@ public class AuthenticationController {
      * @return user
      */
     @PostMapping("register")
-    public ResponseEntity<User> register(@RequestBody User user) {
+    public ResponseEntity<User> register(@Valid @RequestBody User user) {
         return new ResponseEntity<>(userService.save(user), HttpStatus.CREATED);
+    }
+
+    /**
+     * Method that generate new token for user.
+     *
+     * @param user user
+     * @return token
+     */
+    @PostMapping("token")
+    public ResponseEntity<String> generateNewToken(@RequestBody User user) {
+        return new ResponseEntity<>(authService.generateNewToken(user), HttpStatus.OK);
     }
 
 }

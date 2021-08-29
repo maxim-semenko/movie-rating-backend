@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * DTO class for sending user to client.
+ * DTO class for sending {@link User}> object to client.
  *
  * @author Maxim Semenko
  * @version 1.0
@@ -47,7 +47,7 @@ public class UserDTO {
      * Method that convert from {@link User} to {@link UserDTO}.
      *
      * @param user {@link User} from database
-     * @return {@link UserDTO} that will send to client
+     * @return {@link UserDTO} object, that will send to client
      */
     public static UserDTO fromUser(final User user) {
         return UserDTO.builder()
@@ -63,10 +63,10 @@ public class UserDTO {
     }
 
     /**
-     * Method that convert from {@link List<User>} to {@link List<UserDTO>}.
+     * Method that converts from {@link List<User>} to {@link List<UserDTO>}.
      *
      * @param users {@link List<User>} all users from database
-     * @return {@link List<UserDTO>} that will send to client
+     * @return {@link List<UserDTO>} collection, that will send to client
      */
     public static List<UserDTO> fromListUser(final List<User> users) {
         List<UserDTO> listDto = new ArrayList<>();

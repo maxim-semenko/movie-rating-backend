@@ -16,19 +16,19 @@ import org.springframework.web.bind.annotation.RestController;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
-@RequestMapping("api/v1/comments")
+@RequestMapping("api/v1/comments/")
 @RequiredArgsConstructor
 public class CommentController {
 
     private final CommentService commentService;
     private final FilmServiceImpl filmService;
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Comment> get(@PathVariable Long id) {
+    @GetMapping("{id}")
+    public ResponseEntity<Comment> findById(@PathVariable Long id) {
         return new ResponseEntity<>(commentService.findById(id), HttpStatus.OK);
     }
 
-    @PostMapping("/films/{id}")
+    @PostMapping("films/{id}")
     public ResponseEntity<Comment> save(@RequestBody Comment comment, @PathVariable Long id) {
         comment.setFilm(filmService.findById(id));
         return new ResponseEntity<>(commentService.save(comment), HttpStatus.CREATED);

@@ -56,10 +56,10 @@ public class FilmController {
      * @param name the film's name
      * @return the film
      */
-    @GetMapping("/{name}")
-    public ResponseEntity<Film> getByName(@PathVariable String name) {
-        return new ResponseEntity<>(filmService.getByName(name), HttpStatus.OK);
-    }
+//    @GetMapping("/{name}")
+//    public ResponseEntity<Film> getByName(@PathVariable String name) {
+//        return new ResponseEntity<>(filmService.getByName(name), HttpStatus.OK);
+//    }
 
     /**
      * Method that save new film by given {@link RequestBody}.

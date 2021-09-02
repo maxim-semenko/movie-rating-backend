@@ -4,6 +4,7 @@ import com.max.movierating.entity.Basket;
 import com.max.movierating.entity.Film;
 import com.max.movierating.repository.BasketRepository;
 import com.max.movierating.repository.FilmRepository;
+import com.max.movierating.repository.UserRepository;
 import com.max.movierating.service.BasketService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,16 +24,18 @@ public class BasketServiceImpl implements BasketService {
 
     private final BasketRepository basketRepository;
     private final FilmRepository filmRepository;
+    private final UserRepository userRepository;
 
     @Override
     public Basket findById(Long id) {
-        return basketRepository.getById(id);
+        return userRepository.getById(id).getBasket();
     }
 
     @Override
-    public Basket addToBasket(Long basketId, Long filmId) {
-        Basket basket = basketRepository.getById(basketId);
+    public Basket addToBasket(Long userId, Long filmId) {
+        Basket basket = userRepository.getById(userId).getBasket();
         Film film = filmRepository.getById(filmId);
+
         if (!basket.getFilmList().contains(film)) {
             basket.getFilmList().add(film);
             basket.setSumma(basket.getSumma() + film.getPrice());
@@ -42,12 +45,14 @@ public class BasketServiceImpl implements BasketService {
     }
 
     @Override
-    public Basket deleteFromBasket(Long basketId, Long filmId) {
-        Basket basket = basketRepository.getById(basketId);
+    public Basket deleteFromBasket(Long userId, Long filmId) {
+        Basket basket = userRepository.getById(userId).getBasket();
         Film film = filmRepository.getById(filmId);
 
-        basket.getFilmList().remove(film);
-        basket.setSumma(basket.getSumma() - film.getPrice());
+        if (basket.getFilmList().contains(film)) {
+            basket.getFilmList().remove(film);
+            basket.setSumma(basket.getSumma() - film.getPrice());
+        }
 
         return basketRepository.save(basket);
     }

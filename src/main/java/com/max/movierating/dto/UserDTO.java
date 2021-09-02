@@ -5,6 +5,7 @@ import com.max.movierating.entity.Role;
 import com.max.movierating.entity.User;
 import lombok.Builder;
 import lombok.Data;
+import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +19,7 @@ import java.util.Set;
  */
 @Data
 @Builder
+@ToString
 public class UserDTO {
 
     private Long id;

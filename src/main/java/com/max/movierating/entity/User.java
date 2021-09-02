@@ -2,8 +2,11 @@ package com.max.movierating.entity;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.ColumnDefault;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -20,8 +23,15 @@ import java.util.Set;
 @Entity
 @Data
 @ToString
+@SuperBuilder
+@NoArgsConstructor
+@EnableJpaAuditing
 @EqualsAndHashCode(callSuper = true)
 public class User extends BaseEntity {
+
+    @Column(unique = true, nullable = false)
+    @Size(min = 2, max = 25)
+    private String username;
 
     @NotNull
     @Size(min = 2, max = 25)
@@ -30,11 +40,6 @@ public class User extends BaseEntity {
     @NotNull
     @Size(min = 2, max = 25)
     private String lastname;
-
-    @Column(unique = true, nullable = false)
-    @Size(min = 2, max = 25)
-    private String username;
-
 
     @NotNull
     @Size(min = 8, max = 255)
@@ -54,8 +59,8 @@ public class User extends BaseEntity {
             inverseJoinColumns = {@JoinColumn(name = "role_id")})
     private Set<Role> roles = new HashSet<>();
 
-
     @OneToOne
     @JoinColumn(name = "basket_id", referencedColumnName = "id")
     private Basket basket;
+
 }

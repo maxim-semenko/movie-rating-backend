@@ -1,5 +1,6 @@
 package com.max.movierating.controller;
 
+import com.max.movierating.dto.RegisterRequestDTO;
 import com.max.movierating.dto.UserDTO;
 import com.max.movierating.entity.User;
 import com.max.movierating.service.impl.UserServiceImpl;
@@ -7,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,37 +26,40 @@ import java.util.List;
 @RestController
 @RequestMapping("api/v1/users/")
 @RequiredArgsConstructor
-@Slf4j
 public class UserController {
 
     private final UserServiceImpl userService;
 
+
     @GetMapping("")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<UserDTO>> findAll() {
         return new ResponseEntity<>(UserDTO.fromListUser(userService.findAll()), HttpStatus.OK);
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<User> findById(@PathVariable Long id) {
-        return new ResponseEntity<>(userService.findById(id), HttpStatus.OK);
+    public ResponseEntity<UserDTO> findById(@PathVariable Long id) {
+        return new ResponseEntity<>(UserDTO.fromUser(userService.findById(id)), HttpStatus.OK);
     }
 
     @PostMapping("")
-    public ResponseEntity<User> save(@Valid @RequestBody User user) {
-        return new ResponseEntity<>(userService.save(user), HttpStatus.CREATED);
+    public ResponseEntity<User> save(@Valid @RequestBody RegisterRequestDTO requestDTO) {
+        return new ResponseEntity<>(userService.save(requestDTO.toUser()), HttpStatus.CREATED);
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<User> update(@RequestBody User user) {
-        return new ResponseEntity<>(userService.update(user), HttpStatus.OK);
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN') and #userDTO.id == authentication.principal.id")
+    public ResponseEntity<User> update(@Valid @RequestBody UserDTO userDTO) {
+        return new ResponseEntity<>(userService.update(userDTO.toUser()), HttpStatus.OK);
     }
 
     @DeleteMapping("{id}")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN') and #id == authentication.principal.id")
     public ResponseEntity<User> delete(@PathVariable Long id) {
         return new ResponseEntity<>(userService.deleteById(id), HttpStatus.OK);
     }
 
-    @GetMapping("find/{username}")
+    @GetMapping("username/{username}")
     public ResponseEntity<UserDTO> findByUsername(@PathVariable String username) {
         return new ResponseEntity<>(UserDTO.fromUser(userService.getByUsername(username)), HttpStatus.OK);
     }

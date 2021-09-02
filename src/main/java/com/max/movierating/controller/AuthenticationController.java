@@ -1,6 +1,7 @@
 package com.max.movierating.controller;
 
 import com.max.movierating.dto.LoginRequestDTO;
+import com.max.movierating.dto.RegisterRequestDTO;
 import com.max.movierating.entity.User;
 import com.max.movierating.service.impl.AuthServiceImpl;
 import com.max.movierating.service.impl.UserServiceImpl;
@@ -39,7 +40,7 @@ public class AuthenticationController {
     /**
      * Method that is responsible for login of user.
      *
-     * @param requestDto contain username and password
+     * @param requestDto request contain username and password
      * @return user
      */
     @PostMapping("login")
@@ -50,12 +51,12 @@ public class AuthenticationController {
     /**
      * Method that is responsible for register of user.
      *
-     * @param user new user
-     * @return user
+     * @param requestDTO register request
+     * @return {@link User} register user
      */
     @PostMapping("register")
-    public ResponseEntity<User> register(@Valid @RequestBody User user) {
-        return new ResponseEntity<>(userService.save(user), HttpStatus.CREATED);
+    public ResponseEntity<User> register(@Valid @RequestBody RegisterRequestDTO requestDTO) {
+        return new ResponseEntity<>(userService.save(requestDTO.toUser()), HttpStatus.CREATED);
     }
 
     /**

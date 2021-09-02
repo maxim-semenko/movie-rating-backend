@@ -1,6 +1,9 @@
 package com.max.movierating.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -16,8 +19,11 @@ import java.io.Serializable;
  */
 @MappedSuperclass
 @Data
+@SuperBuilder
+@NoArgsConstructor
 public abstract class BaseEntity implements Serializable, Cloneable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
 }

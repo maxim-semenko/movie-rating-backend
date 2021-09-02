@@ -20,7 +20,7 @@ import java.util.List;
  */
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
-@RequestMapping("api/v1/films")
+@RequestMapping("api/v1/films/")
 @RequiredArgsConstructor
 public class FilmController {
 
@@ -45,7 +45,7 @@ public class FilmController {
      * @param id the film's id
      * @return the film
      */
-    @GetMapping("/{id}")
+    @GetMapping("{id}")
     public ResponseEntity<Film> get(@PathVariable Long id) {
         return new ResponseEntity<>(filmService.findById(id), HttpStatus.OK);
     }

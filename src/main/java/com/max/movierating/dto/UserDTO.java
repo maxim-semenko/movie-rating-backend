@@ -5,7 +5,6 @@ import com.max.movierating.entity.Role;
 import com.max.movierating.entity.User;
 import lombok.Builder;
 import lombok.Data;
-import lombok.extern.log4j.Log4j;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -81,7 +80,7 @@ public class UserDTO {
             return new PageImpl<>(listDto, pageable, listDto.size());
         }
 
-        final int start = (int)pageable.getOffset();
+        final int start = (int) pageable.getOffset();
         final int end = Math.min((start + pageable.getPageSize()), listDto.size());
 
         return new PageImpl<>(listDto.subList(start, end), pageable, listDto.size());

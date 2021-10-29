@@ -1,6 +1,7 @@
 package com.max.movierating.dto;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.validation.constraints.NotEmpty;
 
@@ -10,7 +11,8 @@ import javax.validation.constraints.NotEmpty;
  * @author Maxim Semenko
  * @version 1.0
  */
-@Data
+@Getter
+@Setter
 public class LoginRequestDTO {
 
     @NotEmpty(message = "Please provide a username")

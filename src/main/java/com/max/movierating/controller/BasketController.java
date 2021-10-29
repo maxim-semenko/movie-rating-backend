@@ -2,7 +2,6 @@ package com.max.movierating.controller;
 
 import com.max.movierating.entity.Basket;
 import com.max.movierating.service.impl.BasketServiceImpl;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

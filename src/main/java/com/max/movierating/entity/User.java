@@ -1,11 +1,10 @@
 package com.max.movierating.entity;
 
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 import lombok.experimental.SuperBuilder;
-import org.hibernate.annotations.ColumnDefault;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 import javax.persistence.Column;
@@ -55,6 +54,7 @@ public class User extends BaseEntity {
             name = "users_roles",
             joinColumns = {@JoinColumn(name = "user_id")},
             inverseJoinColumns = {@JoinColumn(name = "role_id")})
+    @Builder.Default
     private Set<Role> roles = new HashSet<>();
 
     @ManyToMany(fetch = FetchType.EAGER)
@@ -62,6 +62,7 @@ public class User extends BaseEntity {
             name = "users_purchases",
             joinColumns = {@JoinColumn(name = "user_id")},
             inverseJoinColumns = {@JoinColumn(name = "film_id")})
+    @Builder.Default
     private List<Film> purchases = new ArrayList<>();
 
     @OneToOne

@@ -19,5 +19,4 @@ public interface FilmRepository extends JpaRepository<Film, Long> {
     Film getByName(String name);
 
 
-
 }

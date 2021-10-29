@@ -4,7 +4,6 @@ import com.max.movierating.entity.User;
 import com.max.movierating.exception.ResourceNotFoundException;
 import com.max.movierating.repository.UserRepository;
 import com.max.movierating.security.JwtUserFactory;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;

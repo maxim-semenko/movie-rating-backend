@@ -74,7 +74,7 @@ public class UserServiceImpl implements DefaultService<User, Long>, UserService 
         user.setPassword(existUser.getPassword());
 
         if (!user.getUsername().equals(existUser.getUsername())) {
-           existByUsername(user.getUsername());
+            existByUsername(user.getUsername());
         }
 
         if (!user.getEmail().equals(existUser.getEmail())) {

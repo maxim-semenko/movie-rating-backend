@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping(value = "/api/v1/baskets/")
-@Slf4j
 public class BasketController {
 
     private final BasketServiceImpl basketService;
@@ -37,7 +36,7 @@ public class BasketController {
     @PostMapping("user/{userId}/film/{filmId}")
     @PreAuthorize("hasAnyRole('USER', 'ADMIN') and #userId == authentication.principal.id")
     public ResponseEntity<Basket> addToBasket(@PathVariable Long userId, @PathVariable Long filmId) {
-        return new ResponseEntity<>(basketService.addToBasket(userId, filmId), HttpStatus.CREATED);
+        return new ResponseEntity<>(basketService.addToBasket(userId, filmId), HttpStatus.OK);
     }
 
     @DeleteMapping("user/{userId}/film/{filmId}")

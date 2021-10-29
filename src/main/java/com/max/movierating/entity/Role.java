@@ -1,7 +1,9 @@
 package com.max.movierating.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.Column;
@@ -11,19 +13,12 @@ import javax.persistence.Enumerated;
 
 @Entity
 @Data
-@ToString
+@NoArgsConstructor
+@AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 public class Role extends BaseEntity {
 
-    @Enumerated(EnumType.STRING)
-    @Column(unique = true, length = 20)
-    private EnumRole name;
+    @Column(unique = true, length = 25)
+    private String name;
 
-    public Role(EnumRole name) {
-        this.name = name;
-    }
-
-    public Role() {
-
-    }
 }

@@ -2,7 +2,7 @@ package com.max.movierating.service;
 
 import java.util.List;
 
-public interface DefaultService<T> {
+public interface DefaultService<T, ID> {
 
     /**
      * The method that returns all {@link T} from the database.
@@ -30,7 +30,7 @@ public interface DefaultService<T> {
      *
      * @return {@link T} object
      */
-    T update(T t);
+    T update(T t, ID id);
 
     /**
      * The method that delete object {@link T} from the database.

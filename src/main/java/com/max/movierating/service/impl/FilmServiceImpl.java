@@ -1,14 +1,14 @@
 package com.max.movierating.service.impl;
 
-import com.max.movierating.entity.EnumGenre;
 import com.max.movierating.entity.Film;
 import com.max.movierating.entity.Genre;
-import com.max.movierating.exception.UserNotFoundException;
+import com.max.movierating.exception.ResourceNotFoundException;
 import com.max.movierating.repository.FilmRepository;
-import com.max.movierating.repository.GenreRepository;
 import com.max.movierating.service.DefaultService;
 import com.max.movierating.service.FilmService;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,11 +21,14 @@ import java.util.List;
  * @version 1.0
  */
 @Service
-@RequiredArgsConstructor
-public class FilmServiceImpl implements DefaultService<Film>, FilmService {
+public class FilmServiceImpl implements DefaultService<Film, Long>, FilmService {
 
     private final FilmRepository filmRepository;
-    private final GenreRepository genreRepository;
+
+    @Autowired
+    public FilmServiceImpl(FilmRepository filmRepository) {
+        this.filmRepository = filmRepository;
+    }
 
     @Override
     public List<Film> findAll() {
@@ -35,17 +38,17 @@ public class FilmServiceImpl implements DefaultService<Film>, FilmService {
     @Override
     public Film findById(Long id) {
         return filmRepository.findById(id)
-                .orElseThrow(() -> new UserNotFoundException("User with id: " + id + " was not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User with id: " + id + " was not found"));
     }
 
     @Override
     public Film save(Film film) {
-        film.setGenre(genreRepository.findByName(EnumGenre.ACTION));
         return filmRepository.save(film);
     }
 
     @Override
-    public Film update(Film film) {
+    public Film update(Film film, Long id) {
+        film.setId(id);
         return filmRepository.save(film);
     }
 
@@ -64,5 +67,10 @@ public class FilmServiceImpl implements DefaultService<Film>, FilmService {
     @Override
     public Film getByName(String name) {
         return filmRepository.getByName(name);
+    }
+
+    @Override
+    public Page<Film> getAllByPages(Pageable pageable) {
+        return filmRepository.findAll(pageable);
     }
 }

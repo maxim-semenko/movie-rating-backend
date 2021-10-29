@@ -22,7 +22,7 @@ public class Basket extends BaseEntity {
 
     @ManyToMany(cascade = {CascadeType.ALL})
     @JoinTable(
-            name = "basket_film",
+            name = "baskets_films",
             joinColumns = {@JoinColumn(name = "basket_id")},
             inverseJoinColumns = {@JoinColumn(name = "film_id")}
     )

@@ -5,7 +5,7 @@ import com.max.movierating.dto.RegisterRequestDTO;
 import com.max.movierating.entity.User;
 import com.max.movierating.service.impl.AuthServiceImpl;
 import com.max.movierating.service.impl.UserServiceImpl;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -25,17 +25,22 @@ import javax.validation.Valid;
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping(value = "/api/v1/auth/")
-@RequiredArgsConstructor
 public class AuthenticationController {
 
     /**
-     * User service for working with {@link User}.
+     * User service for working with user {@link User}.
      */
     private final UserServiceImpl userService;
     /**
      * Authentication service for working with user's login, register, etc.
      */
     private final AuthServiceImpl authService;
+
+    @Autowired
+    public AuthenticationController(UserServiceImpl userService, AuthServiceImpl authService) {
+        this.userService = userService;
+        this.authService = authService;
+    }
 
     /**
      * Method that is responsible for login of user.

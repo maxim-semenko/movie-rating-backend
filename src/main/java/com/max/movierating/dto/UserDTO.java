@@ -5,7 +5,11 @@ import com.max.movierating.entity.Role;
 import com.max.movierating.entity.User;
 import lombok.Builder;
 import lombok.Data;
-import lombok.ToString;
+import lombok.extern.log4j.Log4j;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +23,7 @@ import java.util.Set;
  */
 @Data
 @Builder
-@ToString
+@Slf4j
 public class UserDTO {
 
     private Long id;
@@ -27,7 +31,6 @@ public class UserDTO {
     private String firstname;
     private String lastname;
     private String email;
-    private Integer balance;
     private Basket basket;
     private Set<Role> roles;
 
@@ -38,7 +41,6 @@ public class UserDTO {
         user.setFirstname(firstname);
         user.setLastname(lastname);
         user.setEmail(email);
-        user.setBalance(balance);
         user.setBasket(basket);
         user.setRoles(roles);
 
@@ -58,7 +60,6 @@ public class UserDTO {
                 .firstname(user.getFirstname())
                 .lastname(user.getLastname())
                 .email(user.getEmail())
-                .balance(user.getBalance())
                 .basket(user.getBasket())
                 .roles(user.getRoles())
                 .build();
@@ -70,12 +71,20 @@ public class UserDTO {
      * @param users {@link List<User>} all users from database
      * @return {@link List<UserDTO>} collection, that will send to client
      */
-    public static List<UserDTO> fromListUser(final List<User> users) {
+    public static Page<UserDTO> fromListUser(final List<User> users, Pageable pageable) {
         List<UserDTO> listDto = new ArrayList<>();
+
         for (User user : users) {
             listDto.add(fromUser(user));
         }
-        return listDto;
+        if (pageable.getPageSize() > listDto.size()) {
+            return new PageImpl<>(listDto, pageable, listDto.size());
+        }
+
+        final int start = (int)pageable.getOffset();
+        final int end = Math.min((start + pageable.getPageSize()), listDto.size());
+
+        return new PageImpl<>(listDto.subList(start, end), pageable, listDto.size());
     }
 
 }

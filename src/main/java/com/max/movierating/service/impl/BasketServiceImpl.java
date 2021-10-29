@@ -6,8 +6,8 @@ import com.max.movierating.repository.BasketRepository;
 import com.max.movierating.repository.FilmRepository;
 import com.max.movierating.repository.UserRepository;
 import com.max.movierating.service.BasketService;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
@@ -18,13 +18,21 @@ import org.springframework.stereotype.Service;
  * @version 1.0
  */
 @Service
-@RequiredArgsConstructor
 @Slf4j
 public class BasketServiceImpl implements BasketService {
 
     private final BasketRepository basketRepository;
     private final FilmRepository filmRepository;
     private final UserRepository userRepository;
+
+    @Autowired
+    public BasketServiceImpl(BasketRepository basketRepository,
+                             FilmRepository filmRepository,
+                             UserRepository userRepository) {
+        this.basketRepository = basketRepository;
+        this.filmRepository = filmRepository;
+        this.userRepository = userRepository;
+    }
 
     @Override
     public Basket findById(Long id) {

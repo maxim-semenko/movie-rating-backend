@@ -1,7 +1,6 @@
 package com.max.movierating.dto;
 
 import com.max.movierating.entity.Basket;
-import com.max.movierating.entity.EnumRole;
 import com.max.movierating.entity.Role;
 import com.max.movierating.entity.User;
 import org.junit.Assert;
@@ -23,8 +22,7 @@ class UserDTOTest {
                 .username("username1")
                 .password("12345678")
                 .email("email1")
-                .roles(Set.of(new Role(EnumRole.ROLE_USER)))
-                .balance(0)
+                .roles(Set.of(new Role("ROLE_USER")))
                 .basket(new Basket())
                 .build();
     }
@@ -42,8 +40,7 @@ class UserDTOTest {
                 .lastname("last1")
                 .username("username1")
                 .email("email1")
-                .roles(Set.of(new Role(EnumRole.ROLE_USER)))
-                .balance(0)
+                .roles(Set.of(new Role("ROLE_USER")))
                 .basket(new Basket())
                 .build();
 

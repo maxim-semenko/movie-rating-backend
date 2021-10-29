@@ -17,12 +17,13 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
 @Data
-@ToString
 @SuperBuilder
 @NoArgsConstructor
 @EnableJpaAuditing
@@ -49,15 +50,19 @@ public class User extends BaseEntity {
     @Size(min = 2, max = 25)
     private String email;
 
-    @ColumnDefault(value = "0")
-    private Integer balance = 0;
-
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "users_roles",
             joinColumns = {@JoinColumn(name = "user_id")},
             inverseJoinColumns = {@JoinColumn(name = "role_id")})
     private Set<Role> roles = new HashSet<>();
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "users_purchases",
+            joinColumns = {@JoinColumn(name = "user_id")},
+            inverseJoinColumns = {@JoinColumn(name = "film_id")})
+    private List<Film> purchases = new ArrayList<>();
 
     @OneToOne
     @JoinColumn(name = "basket_id", referencedColumnName = "id")

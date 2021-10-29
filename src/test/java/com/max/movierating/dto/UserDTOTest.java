@@ -15,16 +15,16 @@ class UserDTOTest {
 
     @BeforeEach
     void setUp() {
-        user1 = User.builder()
-                .id(1L)
-                .firstname("first1")
-                .lastname("last1")
-                .username("username1")
-                .password("12345678")
-                .email("email1")
-                .roles(Set.of(new Role("ROLE_USER")))
-                .basket(new Basket())
-                .build();
+//        user1 = User.builder()
+//                .id(1L)
+//                .firstname("first1")
+//                .lastname("last1")
+//                .username("username1")
+//                .password("12345678")
+//                .email("email1")
+//                .roles(Set.of(new Role("ROLE_USER")))
+//                .basket(new Basket())
+//                .build();
     }
 
 //    @Test
@@ -34,18 +34,18 @@ class UserDTOTest {
 
     @Test
     void fromUser() {
-        UserDTO expectedUserDTO = UserDTO.builder()
-                .id(1L)
-                .firstname("first1")
-                .lastname("last1")
-                .username("username1")
-                .email("email1")
-                .roles(Set.of(new Role("ROLE_USER")))
-                .basket(new Basket())
-                .build();
-
-        UserDTO actualUserDTO = UserDTO.fromUser(user1);
-        Assert.assertEquals(expectedUserDTO.toString(), actualUserDTO.toString());
+//        UserDTO expectedUserDTO = UserDTO.builder()
+//                .id(1L)
+//                .firstname("first1")
+//                .lastname("last1")
+//                .username("username1")
+//                .email("email1")
+//                .roles(Set.of(new Role("ROLE_USER")))
+//                .basket(new Basket())
+//                .build();
+//
+//        UserDTO actualUserDTO = UserDTO.fromUser(user1);
+//        Assert.assertEquals(expectedUserDTO.toString(), actualUserDTO.toString());
     }
 //
 //    @Test

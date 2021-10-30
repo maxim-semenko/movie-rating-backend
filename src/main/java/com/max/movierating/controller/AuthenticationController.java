@@ -1,7 +1,7 @@
 package com.max.movierating.controller;
 
-import com.max.movierating.dto.LoginRequestDTO;
-import com.max.movierating.dto.RegisterRequestDTO;
+import com.max.movierating.dto.RequestLoginDTO;
+import com.max.movierating.dto.RequestRegisterDTO;
 import com.max.movierating.entity.User;
 import com.max.movierating.service.impl.AuthServiceImpl;
 import com.max.movierating.service.impl.UserServiceImpl;
@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.util.Map;
 
 /**
  * REST controller for authentication requests (login, register, generate token).
@@ -46,10 +47,10 @@ public class AuthenticationController {
      * Method that is responsible for login of user.
      *
      * @param requestDto request contain username and password
-     * @return user
+     * @return user and token
      */
     @PostMapping("login")
-    public ResponseEntity<?> login(@RequestBody LoginRequestDTO requestDto) {
+    public ResponseEntity<Map<String, Object>> login(@RequestBody RequestLoginDTO requestDto) {
         return new ResponseEntity<>(authService.login(requestDto), HttpStatus.OK);
     }
 
@@ -60,7 +61,7 @@ public class AuthenticationController {
      * @return {@link User} register user
      */
     @PostMapping("register")
-    public ResponseEntity<User> register(@Valid @RequestBody RegisterRequestDTO requestDTO) {
+    public ResponseEntity<User> register(@Valid @RequestBody RequestRegisterDTO requestDTO) {
         return new ResponseEntity<>(userService.save(requestDTO.toUser()), HttpStatus.CREATED);
     }
 

@@ -37,15 +37,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     /**
      * Request mapping for Users API.
      */
-    private static final String USERS_API = "/api/v1/users/**";
+    private static final String USERS_API = "/api/v1/user/**";
     /**
      * Request mapping for Films API.
      */
-    private static final String FILMS_API = "/api/v1/films/**";
+    private static final String FILMS_API = "/api/v1/film/**";
     /**
      * Request mapping for Baskets API.
      */
-    private static final String BASKET_API = "/api/v1/baskets/**";
+    private static final String BASKET_API = "/api/v1/basket/**";
 
     @Bean
     @Override
@@ -57,7 +57,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .httpBasic().disable()
-//                .csrf().disable()
+                .csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()

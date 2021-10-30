@@ -1,6 +1,6 @@
 package com.max.movierating.service.impl;
 
-import com.max.movierating.dto.LoginRequestDTO;
+import com.max.movierating.dto.RequestLoginDTO;
 import com.max.movierating.dto.UserDTO;
 import com.max.movierating.entity.User;
 import com.max.movierating.repository.UserRepository;
@@ -25,7 +25,7 @@ public class AuthServiceImpl implements AuthService {
     private final JwtTokenProvider jwtTokenProvider;
 
     @Override
-    public Map<String, Object> login(LoginRequestDTO requestDto) {
+    public Map<String, Object> login(RequestLoginDTO requestDto) {
         String username = requestDto.getUsername();
         User user = userRepository.findByUsername(username);
 

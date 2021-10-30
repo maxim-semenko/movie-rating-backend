@@ -25,7 +25,7 @@ import javax.validation.Valid;
  */
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
-@RequestMapping("api/v1/films/")
+@RequestMapping("api/v1/film/")
 public class FilmController {
 
     /**
@@ -66,11 +66,10 @@ public class FilmController {
      * @param name the film's name
      * @return the film
      */
-
-//    @GetMapping("/{name}")
-//    public ResponseEntity<Film> getByName(@PathVariable String name) {
-//        return new ResponseEntity<>(filmService.getByName(name), HttpStatus.OK);
-//    }
+    @GetMapping("/name/{name}")
+    public ResponseEntity<Film> getByName(@PathVariable String name) {
+        return new ResponseEntity<>(filmService.getByName(name), HttpStatus.OK);
+    }
 
     /**
      * Method that save new film by given {@link RequestBody}.

@@ -13,7 +13,7 @@ import javax.validation.constraints.NotEmpty;
  */
 @Getter
 @Setter
-public class LoginRequestDTO {
+public class RequestLoginDTO {
 
     @NotEmpty(message = "Please provide a username")
     private String username;

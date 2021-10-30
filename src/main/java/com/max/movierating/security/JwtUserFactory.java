@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 
 public final class JwtUserFactory {
 
-    public JwtUserFactory() {
+    private JwtUserFactory() {
     }
 
     public static JwtUser create(User user) {
@@ -26,7 +26,7 @@ public final class JwtUserFactory {
     private static Set<GrantedAuthority> mapToGrantedAuthorities(Set<Role> userRoles) {
         return userRoles
                 .stream()
-                .map(role -> new SimpleGrantedAuthority(role.getName().toString()))
+                .map(role -> new SimpleGrantedAuthority(role.getName()))
                 .collect(Collectors.toSet());
     }
 }

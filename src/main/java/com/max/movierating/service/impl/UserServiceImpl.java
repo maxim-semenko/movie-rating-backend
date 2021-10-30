@@ -96,7 +96,7 @@ public class UserServiceImpl implements DefaultService<User, Long>, UserService 
     public User getByUsername(String username) {
         User user = userRepository.findByUsername(username);
         if (user == null) {
-            log.warn("User not found with username: " + username);
+            log.warn("User was not found with username: " + username);
             throw new ResourceNotFoundException("User not found with username = " + username);
         }
         return user;
@@ -104,14 +104,14 @@ public class UserServiceImpl implements DefaultService<User, Long>, UserService 
 
     @Override
     public void existByUsername(String username) {
-        if (userRepository.existsByUsername(username)) {
+        if (Boolean.TRUE.equals(userRepository.existsByUsername(username))) {
             throw new UserExistException("Username: " + username + " are existed already");
         }
     }
 
     @Override
     public void existByEmail(String email) {
-        if (userRepository.existsByEmail(email)) {
+        if (Boolean.TRUE.equals(userRepository.existsByEmail(email))) {
             throw new UserExistException("Email: " + email + " are existed already");
         }
     }

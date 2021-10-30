@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
-@RequestMapping(value = "/api/v1/baskets/")
+@RequestMapping(value = "/api/v1/basket/")
 public class BasketController {
 
     private final BasketServiceImpl basketService;

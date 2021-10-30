@@ -17,11 +17,6 @@ public class DataLoader implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) {
-//        if (!roleRepository.existsById(1L)) {
-//            roleRepository.save(new Role(EnumRole.ROLE_ADMIN));
-//        }
-//        if (!roleRepository.existsById(2L)) {
-//            roleRepository.save(new Role(EnumRole.ROLE_USER));
-//        }
+
     }
 }

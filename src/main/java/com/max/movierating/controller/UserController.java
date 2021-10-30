@@ -1,6 +1,6 @@
 package com.max.movierating.controller;
 
-import com.max.movierating.dto.RegisterRequestDTO;
+import com.max.movierating.dto.RequestRegisterDTO;
 import com.max.movierating.dto.UserDTO;
 import com.max.movierating.entity.User;
 import com.max.movierating.service.impl.UserServiceImpl;
@@ -24,7 +24,7 @@ import javax.validation.Valid;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
-@RequestMapping("api/v1/users/")
+@RequestMapping("api/v1/user/")
 public class UserController {
 
     private final UserServiceImpl userService;
@@ -46,7 +46,7 @@ public class UserController {
     }
 
     @PostMapping("")
-    public ResponseEntity<User> create(@Valid @RequestBody RegisterRequestDTO requestDTO) {
+    public ResponseEntity<User> create(@Valid @RequestBody RequestRegisterDTO requestDTO) {
         return new ResponseEntity<>(userService.save(requestDTO.toUser()), HttpStatus.CREATED);
     }
 

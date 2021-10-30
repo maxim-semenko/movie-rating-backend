@@ -1,5 +1,6 @@
 package com.max.movierating.controller;
 
+import com.max.movierating.dto.RequestGenreDTO;
 import com.max.movierating.entity.Genre;
 import com.max.movierating.service.impl.GenreServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,7 @@ import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
-@RequestMapping(value = "/api/v1/genres/")
+@RequestMapping(value = "/api/v1/genre/")
 public class GenreController {
 
     private final GenreServiceImpl genreService;
@@ -45,14 +46,14 @@ public class GenreController {
 
     @PostMapping("")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Genre> create(@Valid @RequestBody Genre genre) {
-        return new ResponseEntity<>(genreService.save(genre), HttpStatus.CREATED);
+    public ResponseEntity<Genre> create(@Valid @RequestBody RequestGenreDTO genreDTO) {
+        return new ResponseEntity<>(genreService.save(genreDTO.toGenre()), HttpStatus.CREATED);
     }
 
     @PutMapping("{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Genre> update(@PathVariable Long id, @Valid @RequestBody Genre genre) {
-        return new ResponseEntity<>(genreService.update(genre, id), HttpStatus.OK);
+    public ResponseEntity<Genre> update(@PathVariable Long id, @Valid @RequestBody RequestGenreDTO genreDTO) {
+        return new ResponseEntity<>(genreService.update(genreDTO.toGenre(), id), HttpStatus.OK);
     }
 
     @DeleteMapping("{id}")

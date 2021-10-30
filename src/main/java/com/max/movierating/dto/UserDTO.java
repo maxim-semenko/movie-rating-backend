@@ -5,6 +5,8 @@ import com.max.movierating.entity.Role;
 import com.max.movierating.entity.User;
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -20,7 +22,8 @@ import java.util.Set;
  * @author Maxim Semenko
  * @version 1.0
  */
-@Data
+@Getter
+@Setter
 @Builder
 @Slf4j
 public class UserDTO {

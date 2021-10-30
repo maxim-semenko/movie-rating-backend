@@ -1,5 +1,6 @@
 package com.max.movierating.controller;
 
+import com.max.movierating.dto.RequestCountryDTO;
 import com.max.movierating.entity.Country;
 import com.max.movierating.service.impl.CountryServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,7 @@ import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
-@RequestMapping(value = "/api/v1/countries/")
+@RequestMapping(value = "/api/v1/country/")
 public class CountryController {
 
     private final CountryServiceImpl countryService;
@@ -45,14 +46,14 @@ public class CountryController {
 
     @PostMapping("")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Country> create(@Valid @RequestBody Country country) {
-        return new ResponseEntity<>(countryService.save(country), HttpStatus.CREATED);
+    public ResponseEntity<Country> create(@Valid @RequestBody RequestCountryDTO countryDTO) {
+        return new ResponseEntity<>(countryService.save(countryDTO.toCountry()), HttpStatus.CREATED);
     }
 
     @PutMapping("{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Country> update(@PathVariable Long id, @Valid @RequestBody Country country) {
-        return new ResponseEntity<>(countryService.update(country, id), HttpStatus.OK);
+    public ResponseEntity<Country> update(@PathVariable Long id, @Valid @RequestBody RequestCountryDTO countryDTO) {
+        return new ResponseEntity<>(countryService.update(countryDTO.toCountry(), id), HttpStatus.OK);
     }
 
     @DeleteMapping("{id}")

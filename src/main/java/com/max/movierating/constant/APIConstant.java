@@ -2,6 +2,9 @@ package com.max.movierating.constant;
 
 public final class APIConstant {
 
+    private APIConstant() {
+    }
+
     /**
      * Request mapping for Authentication API.
      */

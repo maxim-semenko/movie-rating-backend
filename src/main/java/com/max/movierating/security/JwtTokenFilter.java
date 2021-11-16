@@ -46,7 +46,6 @@ public class JwtTokenFilter extends GenericFilterBean {
             }
         } catch (JwtAuthenticationException | AccountLockedException e) {
             log.info("ERROR");
-            System.out.println("Error");
         }
 
         filterChain.doFilter(req, res);

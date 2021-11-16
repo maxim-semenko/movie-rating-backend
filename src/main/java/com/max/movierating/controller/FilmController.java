@@ -2,7 +2,6 @@ package com.max.movierating.controller;
 
 import com.max.movierating.entity.Film;
 import com.max.movierating.service.impl.FilmServiceImpl;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

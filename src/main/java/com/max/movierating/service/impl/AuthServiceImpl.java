@@ -45,7 +45,7 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public Boolean register(RequestRegisterDTO registerDTO) {
-        return null;
+        return true;
     }
 
     @Override

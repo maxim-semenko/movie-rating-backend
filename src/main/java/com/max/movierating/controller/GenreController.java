@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,9 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 import java.util.List;
 
-@CrossOrigin(origins = "http://localhost:3000")
 @RestController
-@RequestMapping(value = "/api/v1/genre/")
+@RequestMapping(value = "/api/v1/genres")
 public class GenreController {
 
     private final GenreServiceImpl genreService;
@@ -38,7 +36,7 @@ public class GenreController {
         return new ResponseEntity<>(genreService.findAll(), HttpStatus.OK);
     }
 
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Genre> findById(@PathVariable Long id) {
         return new ResponseEntity<>(genreService.findById(id), HttpStatus.OK);
@@ -50,13 +48,13 @@ public class GenreController {
         return new ResponseEntity<>(genreService.save(genreDTO.toGenre()), HttpStatus.CREATED);
     }
 
-    @PutMapping("{id}")
+    @PutMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Genre> update(@PathVariable Long id, @Valid @RequestBody RequestGenreDTO genreDTO) {
         return new ResponseEntity<>(genreService.update(genreDTO.toGenre(), id), HttpStatus.OK);
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Genre> delete(@PathVariable Long id) {
         return new ResponseEntity<>(genreService.deleteById(id), HttpStatus.OK);

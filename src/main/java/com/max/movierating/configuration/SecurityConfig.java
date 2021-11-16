@@ -1,16 +1,21 @@
 package com.max.movierating.configuration;
 
+import com.max.movierating.constant.APIConstant;
 import com.max.movierating.security.JwtConfigurer;
 import com.max.movierating.security.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 /**
  * Security configuration class for JWT based Spring Security application.
@@ -30,23 +35,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         this.jwtTokenProvider = jwtTokenProvider;
     }
 
-    /**
-     * Request mapping for Authentication API.
-     */
-    private static final String AUTHENTICATION_API = "/api/v1/auth/**";
-    /**
-     * Request mapping for Users API.
-     */
-    private static final String USERS_API = "/api/v1/user/**";
-    /**
-     * Request mapping for Films API.
-     */
-    private static final String FILMS_API = "/api/v1/film/**";
-    /**
-     * Request mapping for Baskets API.
-     */
-    private static final String BASKET_API = "/api/v1/basket/**";
-
     @Bean
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
@@ -61,13 +49,23 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers(AUTHENTICATION_API).permitAll()
-                .antMatchers(USERS_API).permitAll()
-                .antMatchers(FILMS_API).permitAll()
-                .antMatchers(BASKET_API).permitAll()
+                .antMatchers(APIConstant.AUTHENTICATION_API).permitAll()
+                .antMatchers(HttpMethod.GET, APIConstant.FILM_API).permitAll()
+//                .antMatchers(APIConstant.BASKET_API).permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .apply(new JwtConfigurer(jwtTokenProvider));
     }
+
+    @Bean
+    CorsConfigurationSource corsConfigurationSource() {
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration(
+                "http://localhost:3000",
+                new CorsConfiguration().applyPermitDefaultValues());
+
+        return source;
+    }
 }
+
 

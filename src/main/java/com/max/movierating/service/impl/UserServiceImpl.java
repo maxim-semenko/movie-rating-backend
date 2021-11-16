@@ -62,6 +62,7 @@ public class UserServiceImpl implements DefaultService<User, Long>, UserService 
         basketRepository.save(basket);
 
         user.setRoles(Set.of(roleRepository.findByName("ROLE_USER")));
+        user.setIsAccountNonLocked(Boolean.TRUE);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setBasket(basket);
 

@@ -4,7 +4,6 @@ import com.max.movierating.entity.Basket;
 import com.max.movierating.entity.Role;
 import com.max.movierating.entity.User;
 import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;

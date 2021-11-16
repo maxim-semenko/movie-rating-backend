@@ -11,7 +11,7 @@ public interface FilmService {
 
     List<Film> getAllByGenre(Genre genre);
 
-    Film getByName(String name);
+    Film findByName(String name);
 
     Page<Film> getAllByPages(Pageable pageable);
 

@@ -19,6 +19,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import javax.security.auth.login.AccountLockedException;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Base64;
 import java.util.Date;
@@ -75,8 +76,12 @@ public class JwtTokenProvider {
                 .compact();
     }
 
-    public Authentication getAuthentication(String token) {
-        UserDetails userDetails = userDetailsService.loadUserByUsername(getUsername(token));
+    public Authentication getAuthentication(String token) throws AccountLockedException {
+        String username = getUsername(token);
+        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+        if (!userDetails.isAccountNonLocked()) {
+            throw new AccountLockedException("Account with username: " + username + " is locked");
+        }
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 
@@ -104,7 +109,7 @@ public class JwtTokenProvider {
 
     private Set<String> getRoleNames(Set<Role> userRoles) {
         Set<String> roles = new HashSet<>();
-        userRoles.forEach(role -> roles.add(role.getName().toString()));
+        userRoles.forEach(role -> roles.add(role.getName()));
 
         return roles;
     }

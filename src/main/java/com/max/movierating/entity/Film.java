@@ -21,8 +21,8 @@ public class Film extends BaseEntity {
     private String imageURL;
     private Integer timeInMinutes;
     private Integer year;
-    private Float rating;
-    private Float price;
+    private Double rating;
+    private Double price;
 
     @ManyToOne
     @JoinColumn(name = "genre_id", referencedColumnName = "id")

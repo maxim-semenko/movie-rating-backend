@@ -1,6 +1,7 @@
 package com.max.movierating.service.impl;
 
 import com.max.movierating.dto.RequestLoginDTO;
+import com.max.movierating.dto.RequestRegisterDTO;
 import com.max.movierating.dto.UserDTO;
 import com.max.movierating.entity.User;
 import com.max.movierating.repository.UserRepository;
@@ -25,12 +26,12 @@ public class AuthServiceImpl implements AuthService {
     private final JwtTokenProvider jwtTokenProvider;
 
     @Override
-    public Map<String, Object> login(RequestLoginDTO requestDto) {
-        String username = requestDto.getUsername();
+    public Map<String, Object> login(RequestLoginDTO loginDTO) {
+        String username = loginDTO.getUsername();
         User user = userRepository.findByUsername(username);
 
         try {
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, requestDto.getPassword()));
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, loginDTO.getPassword()));
             Map<String, Object> response = new HashMap<>();
             response.put("user", UserDTO.fromUser(user));
             response.put("token", generateNewToken(user));
@@ -40,6 +41,11 @@ public class AuthServiceImpl implements AuthService {
             throw new BadCredentialsException("Invalid password");
         }
 
+    }
+
+    @Override
+    public Boolean register(RequestRegisterDTO registerDTO) {
+        return null;
     }
 
     @Override

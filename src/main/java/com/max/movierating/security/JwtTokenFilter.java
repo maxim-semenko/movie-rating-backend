@@ -1,9 +1,12 @@
 package com.max.movierating.security;
 
+import com.max.movierating.exception.JwtAuthenticationException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.GenericFilterBean;
 
+import javax.security.auth.login.AccountLockedException;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
@@ -18,7 +21,7 @@ import java.io.IOException;
  * @version 1.0
  */
 
-//@RequiredArgsConstructor
+@Slf4j
 public class JwtTokenFilter extends GenericFilterBean {
 
     private final JwtTokenProvider jwtTokenProvider;
@@ -32,13 +35,20 @@ public class JwtTokenFilter extends GenericFilterBean {
             throws IOException, ServletException {
 
         String token = jwtTokenProvider.resolveToken((HttpServletRequest) req);
-        if (token != null && jwtTokenProvider.validateToken(token)) {
-            Authentication auth = jwtTokenProvider.getAuthentication(token);
 
-            if (auth != null) {
-                SecurityContextHolder.getContext().setAuthentication(auth);
+        try {
+            if (token != null && jwtTokenProvider.validateToken(token)) {
+                Authentication auth = jwtTokenProvider.getAuthentication(token);
+
+                if (auth != null) {
+                    SecurityContextHolder.getContext().setAuthentication(auth);
+                }
             }
+        } catch (JwtAuthenticationException | AccountLockedException e) {
+            log.info("ERROR");
+            System.out.println("Error");
         }
+
         filterChain.doFilter(req, res);
     }
 

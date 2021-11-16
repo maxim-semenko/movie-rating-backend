@@ -18,7 +18,7 @@ import java.util.Set;
 public class Basket extends BaseEntity {
 
     @ColumnDefault(value = "0")
-    private Float summa = 0.0f;
+    private Double summa = 0.0;
 
     @ManyToMany(cascade = {CascadeType.ALL})
     @JoinTable(

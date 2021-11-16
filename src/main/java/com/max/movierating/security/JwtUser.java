@@ -11,15 +11,18 @@ public class JwtUser implements UserDetails {
     private final Long id;
     private final String username;
     private final String password;
+    private final Boolean isAccountNonLocked;
     private final Collection<? extends GrantedAuthority> authorities;
 
     public JwtUser(Long id,
                    String username,
                    String password,
+                   Boolean isAccountNonLocked,
                    Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
         this.username = username;
         this.password = password;
+        this.isAccountNonLocked = isAccountNonLocked;
         this.authorities = authorities;
     }
 
@@ -42,7 +45,7 @@ public class JwtUser implements UserDetails {
     @JsonIgnore
     @Override
     public boolean isAccountNonLocked() {
-        return true;
+        return isAccountNonLocked;
     }
 
     @JsonIgnore

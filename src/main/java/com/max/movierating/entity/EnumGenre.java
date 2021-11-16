@@ -1,14 +1,12 @@
 package com.max.movierating.entity;
 
 public enum EnumGenre {
-    ACTION,
-    ADVENTURE,
-    BLOCKBUSTER,
-    COMEDY,
-    SCIENTIFIC,
-    FANTASTIC,
-    FANTASY,
-    MUSICAL,
-    ROMANTIC,
-    HORROR,
+    ACTION, // Боевик
+    ADVENTURE, // Приключения
+    COMEDY, // Комеди
+    SCIENTIFIC, // Научный
+    FANTASY, // Фантистика
+    CARTOON, // Мультфильм
+    ROMANTIC, // Драма
+    HORROR, // Ужастик
 }

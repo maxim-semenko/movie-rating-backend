@@ -1,7 +1,6 @@
 package com.max.movierating.service.impl;
 
 import com.max.movierating.entity.User;
-import com.max.movierating.exception.ResourceNotFoundException;
 import com.max.movierating.repository.UserRepository;
 import com.max.movierating.security.JwtUserFactory;
 import lombok.extern.slf4j.Slf4j;
@@ -25,9 +24,8 @@ public class JwtUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByUsername(username);
-
         if (user == null) {
-            throw new ResourceNotFoundException("User with username: " + username + " not found");
+            throw new UsernameNotFoundException("User with username: " + username + " not found");
         }
 
         return JwtUserFactory.create(user);

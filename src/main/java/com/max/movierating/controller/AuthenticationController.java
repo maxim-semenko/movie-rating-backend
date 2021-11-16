@@ -8,7 +8,6 @@ import com.max.movierating.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,9 +22,8 @@ import java.util.Map;
  * @author Maxim Semenko
  * @version 1.0
  */
-@CrossOrigin(origins = "http://localhost:3000")
 @RestController
-@RequestMapping(value = "/api/v1/auth/")
+@RequestMapping(value = "/api/v1/auth")
 public class AuthenticationController {
 
     /**
@@ -49,7 +47,7 @@ public class AuthenticationController {
      * @param requestDto request contain username and password
      * @return user and token
      */
-    @PostMapping("login")
+    @PostMapping("/login")
     public ResponseEntity<Map<String, Object>> login(@RequestBody RequestLoginDTO requestDto) {
         return new ResponseEntity<>(authService.login(requestDto), HttpStatus.OK);
     }
@@ -60,7 +58,7 @@ public class AuthenticationController {
      * @param requestDTO register request
      * @return {@link User} register user
      */
-    @PostMapping("register")
+    @PostMapping("/register")
     public ResponseEntity<User> register(@Valid @RequestBody RequestRegisterDTO requestDTO) {
         return new ResponseEntity<>(userService.save(requestDTO.toUser()), HttpStatus.CREATED);
     }

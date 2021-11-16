@@ -36,7 +36,17 @@ public class BasketServiceImpl implements BasketService {
 
     @Override
     public Basket findById(Long id) {
-        return userRepository.getById(id).getBasket();
+        Basket basket = userRepository.getById(id).getBasket();
+        Double summa = 0.0;
+
+        for (Film film : basket.getFilmList()) {
+            summa += film.getPrice();
+        }
+
+        basket.setSumma(summa);
+        basketRepository.save(basket);
+
+        return basket;
     }
 
     @Override

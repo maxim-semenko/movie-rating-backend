@@ -19,6 +19,7 @@ public final class JwtUserFactory {
                 user.getId(),
                 user.getUsername(),
                 user.getPassword(),
+                user.getIsAccountNonLocked(),
                 mapToGrantedAuthorities(new HashSet<>(user.getRoles()))
         );
     }

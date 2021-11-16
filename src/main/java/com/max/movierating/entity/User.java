@@ -49,6 +49,9 @@ public class User extends BaseEntity {
     @Size(min = 2, max = 25)
     private String email;
 
+    @NotNull
+    private Boolean isAccountNonLocked;
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "users_roles",

@@ -1,12 +1,12 @@
 package com.max.movierating.controller;
 
+import com.max.movierating.dto.RequestRoleDTO;
 import com.max.movierating.entity.Role;
 import com.max.movierating.service.impl.RoleServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,9 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 import java.util.List;
 
-@CrossOrigin(origins = "http://localhost:3000")
 @RestController
-@RequestMapping(value = "/api/v1/role/")
+@RequestMapping(value = "/api/v1/roles")
 public class RoleController {
 
     private final RoleServiceImpl roleService;
@@ -45,14 +44,14 @@ public class RoleController {
 
     @PostMapping("")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Role> create(@Valid @RequestBody Role role) {
-        return new ResponseEntity<>(roleService.save(role), HttpStatus.CREATED);
+    public ResponseEntity<Role> create(@Valid @RequestBody RequestRoleDTO roleDTO) {
+        return new ResponseEntity<>(roleService.save(roleDTO.toRole()), HttpStatus.CREATED);
     }
 
     @PutMapping("{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Role> update(@PathVariable Long id, @Valid @RequestBody Role role) {
-        return new ResponseEntity<>(roleService.update(role, id), HttpStatus.OK);
+    public ResponseEntity<Role> update(@PathVariable Long id, @Valid @RequestBody RequestRoleDTO roleDTO) {
+        return new ResponseEntity<>(roleService.update(roleDTO.toRole(), id), HttpStatus.OK);
     }
 
     @DeleteMapping("{id}")

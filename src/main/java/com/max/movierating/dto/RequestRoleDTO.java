@@ -1,7 +1,6 @@
 package com.max.movierating.dto;
 
 import com.max.movierating.entity.Role;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 

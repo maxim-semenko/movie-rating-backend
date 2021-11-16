@@ -10,7 +10,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,9 +21,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 
-@CrossOrigin(origins = "http://localhost:3000")
 @RestController
-@RequestMapping("api/v1/user/")
+@RequestMapping("api/v1/users")
 public class UserController {
 
     private final UserServiceImpl userService;
@@ -35,7 +33,7 @@ public class UserController {
     }
 
     @GetMapping("")
-//    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Page<UserDTO>> findAll(Pageable pageable) {
         return new ResponseEntity<>(UserDTO.fromListUser(userService.findAll(), pageable), HttpStatus.OK);
     }

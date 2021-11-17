@@ -56,7 +56,7 @@ public class AuthenticationController {
      * Method that is responsible for register of user.
      *
      * @param requestDTO register request
-     * @return {@link User} register user
+     * @return register user {@link User}
      */
     @PostMapping("/register")
     public ResponseEntity<User> register(@Valid @RequestBody RequestRegisterDTO requestDTO) {
@@ -64,7 +64,7 @@ public class AuthenticationController {
     }
 
     /**
-     * Method that generate new token for user.
+     * Method that generates new token for user.
      *
      * @param user user
      * @return token

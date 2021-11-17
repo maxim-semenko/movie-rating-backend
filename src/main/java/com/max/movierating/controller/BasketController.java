@@ -13,10 +13,19 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * REST controller for baskets requests.
+ *
+ * @author Maxim Semenko
+ * @version 1.0
+ */
 @RestController
 @RequestMapping(value = "/api/v1/baskets")
 public class BasketController {
 
+    /**
+     * Basket service for working with basket {@link Basket}.
+     */
     private final BasketServiceImpl basketService;
 
     @Autowired
@@ -30,15 +39,29 @@ public class BasketController {
         return new ResponseEntity<>(basketService.findById(id), HttpStatus.OK);
     }
 
-    @PostMapping("/user/{userId}/film/{filmId}")
-    @PreAuthorize("hasAnyRole('USER', 'ADMIN') and #userId == authentication.principal.id")
-    public ResponseEntity<Basket> addToBasket(@PathVariable Long userId, @PathVariable Long filmId) {
-        return new ResponseEntity<>(basketService.addToBasket(userId, filmId), HttpStatus.OK);
+    /**
+     * Method that adds film to basket {@link Basket}.
+     *
+     * @param id     basket' id (basket id === user id)
+     * @param filmId film's id {@link com.max.movierating.entity.Film}
+     * @return basket {@link Basket}
+     */
+    @PostMapping("/{id}/film/{filmId}")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN') and #id == authentication.principal.id")
+    public ResponseEntity<Basket> addToBasket(@PathVariable Long id, @PathVariable Long filmId) {
+        return new ResponseEntity<>(basketService.addToBasket(id, filmId), HttpStatus.OK);
     }
 
-    @DeleteMapping("/user/{userId}/film/{filmId}")
-    @PreAuthorize("hasAnyRole('USER', 'ADMIN') and #userId == authentication.principal.id")
-    public ResponseEntity<Basket> deleteFromBasket(@PathVariable Long userId, @PathVariable Long filmId) {
-        return new ResponseEntity<>(basketService.deleteFromBasket(userId, filmId), HttpStatus.OK);
+    /**
+     * Method that deletes film from basket {@link Basket}.
+     *
+     * @param id     basket' id (basket id === user id)
+     * @param filmId film's id {@link com.max.movierating.entity.Film}
+     * @return basket {@link Basket}
+     */
+    @DeleteMapping("/{id}/film/{filmId}")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN') and #id == authentication.principal.id")
+    public ResponseEntity<Basket> deleteFromBasket(@PathVariable Long id, @PathVariable Long filmId) {
+        return new ResponseEntity<>(basketService.deleteFromBasket(id, filmId), HttpStatus.OK);
     }
 }

@@ -19,6 +19,12 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 import java.util.List;
 
+/**
+ * REST controller for countries requests.
+ *
+ * @author Maxim Semenko
+ * @version 1.0
+ */
 @RestController
 @RequestMapping(value = "/api/v1/countries")
 public class CountryController {

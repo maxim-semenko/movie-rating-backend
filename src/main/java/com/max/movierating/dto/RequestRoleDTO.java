@@ -11,6 +11,6 @@ public class RequestRoleDTO {
     private String name;
 
     public Role toRole() {
-        return new Role(name);
+        return Role.builder().name(name).build();
     }
 }

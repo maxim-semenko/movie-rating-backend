@@ -65,6 +65,7 @@ public class UserServiceImpl implements DefaultService<User, Long>, UserService 
         user.setIsAccountNonLocked(Boolean.TRUE);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setBasket(basket);
+        user.setId(basket.getId());
 
         return userRepository.save(user);
     }
@@ -73,6 +74,7 @@ public class UserServiceImpl implements DefaultService<User, Long>, UserService 
     public User update(User user, Long id) {
         User existUser = findById(id);
         user.setPassword(existUser.getPassword());
+        user.setIsAccountNonLocked(existUser.getIsAccountNonLocked());
 
         if (!user.getUsername().equals(existUser.getUsername())) {
             existByUsername(user.getUsername());

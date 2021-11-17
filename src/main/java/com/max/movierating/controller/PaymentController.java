@@ -1,12 +1,17 @@
 package com.max.movierating.controller;
 
+import com.max.movierating.dto.RequestPaymentDTO;
 import com.max.movierating.service.impl.PaymentServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping(value = "/api/v1/payment")
@@ -19,9 +24,10 @@ public class PaymentController {
         this.paymentService = paymentService;
     }
 
-    @GetMapping("")
-    public ResponseEntity<Boolean> pay() {
-        return new ResponseEntity<>(paymentService.pay("token"), HttpStatus.OK);
+    @PostMapping("")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN') and #requestPaymentDTO.userId == authentication.principal.id")
+    public ResponseEntity<Boolean> pay(@Valid @RequestBody RequestPaymentDTO requestPaymentDTO) {
+        return new ResponseEntity<>(paymentService.pay(), HttpStatus.OK);
     }
 
 }

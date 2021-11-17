@@ -4,7 +4,7 @@ import org.junit.Assert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class LoginRequestDTOTest {
+class RequestLoginDTOTest {
 
     private final RequestLoginDTO loginRequestDTO = new RequestLoginDTO();
 
@@ -28,7 +28,6 @@ class LoginRequestDTOTest {
     void setUsername() {
         loginRequestDTO.setUsername("username1");
         Assert.assertEquals("username1", loginRequestDTO.getUsername());
-
     }
 
     @Test

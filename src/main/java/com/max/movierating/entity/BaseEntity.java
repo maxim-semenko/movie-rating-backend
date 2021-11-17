@@ -21,8 +21,8 @@ import java.io.Serializable;
 @SuperBuilder
 @NoArgsConstructor
 public abstract class BaseEntity implements Serializable, Cloneable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
 }

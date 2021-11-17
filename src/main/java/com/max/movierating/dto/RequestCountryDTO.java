@@ -10,6 +10,6 @@ public class RequestCountryDTO {
     private String name;
 
     public Country toCountry() {
-        return new Country(name);
+        return Country.builder().name(name).build();
     }
 }

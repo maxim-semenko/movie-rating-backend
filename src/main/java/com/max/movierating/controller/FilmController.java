@@ -21,7 +21,10 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 
 /**
- * The Film REST controller that takes request films API.
+ * REST controller for films requests.
+ *
+ * @author Maxim Semenko
+ * @version 1.0
  */
 @RestController
 @RequestMapping("api/v1/films")

@@ -16,8 +16,6 @@ public interface FilmRepository extends JpaRepository<Film, Long> {
 
     List<Film> getAllByGenre(Genre genre);
 
-//    Page<Film> findAllByOrderByIdDesc(Pageable pageable);
-
     Page<Film> findAll(Pageable pageable);
 
     @Query("select e from Film e where" +

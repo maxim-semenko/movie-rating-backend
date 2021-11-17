@@ -10,6 +10,6 @@ public class RequestGenreDTO {
     private String name;
 
     public Genre toGenre() {
-        return new Genre(name);
+        return Genre.builder().name(name).build();
     }
 }

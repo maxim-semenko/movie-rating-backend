@@ -1,5 +1,6 @@
 package com.max.movierating.controller;
 
+import com.max.movierating.constant.APIConstant;
 import com.max.movierating.dto.RequestLoginDTO;
 import com.max.movierating.dto.RequestRegisterDTO;
 import com.max.movierating.entity.User;
@@ -23,8 +24,8 @@ import java.util.Map;
  * @version 1.0
  */
 @RestController
-@RequestMapping(value = "/api/v1/auth")
-public class AuthenticationController {
+@RequestMapping(value = APIConstant.AUTHENTICATION_API)
+public class AuthController {
 
     /**
      * User service for working with user {@link User}.
@@ -36,7 +37,7 @@ public class AuthenticationController {
     private final AuthServiceImpl authService;
 
     @Autowired
-    public AuthenticationController(UserServiceImpl userService, AuthServiceImpl authService) {
+    public AuthController(UserServiceImpl userService, AuthServiceImpl authService) {
         this.userService = userService;
         this.authService = authService;
     }
@@ -48,8 +49,19 @@ public class AuthenticationController {
      * @return user and token
      */
     @PostMapping("/login")
-    public ResponseEntity<Map<String, Object>> login(@RequestBody RequestLoginDTO requestDto) {
+    public ResponseEntity<Map<String, Object>> login(@Valid @RequestBody RequestLoginDTO requestDto) {
         return new ResponseEntity<>(authService.login(requestDto), HttpStatus.OK);
+    }
+
+    /**
+     * Method that is responsible for logout of user.
+     *
+     * @param requestDto request contain username and password
+     * @return user and token
+     */
+    @PostMapping("/logout")
+    public ResponseEntity<Boolean> logout(@RequestBody RequestLoginDTO requestDto) {
+        return new ResponseEntity<>(authService.logout(), HttpStatus.OK);
     }
 
     /**

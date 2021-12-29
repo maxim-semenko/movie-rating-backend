@@ -15,8 +15,8 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 /**
- * Film Service implementation that realize
- * {@link DefaultService} and {@link FilmService} interface.
+ * Film Service implementation that realize defaultService {@link DefaultService}
+ * and filmService {@link FilmService} interfaces.
  *
  * @author Maxim Semenko
  * @version 1.0
@@ -56,6 +56,7 @@ public class FilmServiceImpl implements DefaultService<Film, Long>, FilmService 
         film.setId(id);
         film.setRating(existedFilm.getRating());
 
+        log.info("Film with id: " + id + " was successfully updated");
         return filmRepository.save(film);
     }
 
@@ -63,6 +64,8 @@ public class FilmServiceImpl implements DefaultService<Film, Long>, FilmService 
     public Film deleteById(Long id) {
         Film film = findById(id);
         filmRepository.delete(film);
+
+        log.info("Film with id: " + id + " was successfully deleted");
         return film;
     }
 
@@ -79,6 +82,11 @@ public class FilmServiceImpl implements DefaultService<Film, Long>, FilmService 
     @Override
     public Page<Film> getAllByPages(Pageable pageable) {
         return filmRepository.findAll(pageable);
+    }
+
+    @Override
+    public Page<Film> findAllByName(Pageable pageable, String name) {
+        return filmRepository.findAllByNameContaining(pageable, name);
     }
 
     public Page<Film> search(Pageable pageable, String name, Integer year, Double price) {

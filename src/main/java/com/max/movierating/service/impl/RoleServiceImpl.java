@@ -4,12 +4,14 @@ import com.max.movierating.entity.Role;
 import com.max.movierating.exception.ResourceNotFoundException;
 import com.max.movierating.repository.RoleRepository;
 import com.max.movierating.service.DefaultService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@Slf4j
 public class RoleServiceImpl implements DefaultService<Role, Long> {
 
     private final RoleRepository roleRepository;

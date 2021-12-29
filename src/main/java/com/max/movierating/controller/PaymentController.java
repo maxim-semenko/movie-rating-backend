@@ -1,5 +1,6 @@
 package com.max.movierating.controller;
 
+import com.max.movierating.constant.APIConstant;
 import com.max.movierating.dto.RequestPaymentDTO;
 import com.max.movierating.service.impl.PaymentServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping(value = "/api/v1/payment")
+@RequestMapping(value = APIConstant.PAYMENT_API)
 public class PaymentController {
 
     private final PaymentServiceImpl paymentService;

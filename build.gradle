@@ -39,6 +39,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-devtools'
     implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
+    implementation 'org.springframework.boot:spring-boot-starter-mail:1.2.0.RELEASE'
     implementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.8.0'
     implementation 'org.junit.jupiter:junit-jupiter:5.4.2'
     implementation 'junit:junit:4.12'

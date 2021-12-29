@@ -8,10 +8,14 @@ public interface UserService {
 
     User getByUsername(String username);
 
+    User updatePasswordById(Long id, String oldPassword, String newPassword);
+
     void existByUsername(String username);
 
     void existByEmail(String email);
 
     Page<User> getAllByPages(Pageable pageable);
+
+    Boolean deleteAccount(Long id, String password);
 
 }

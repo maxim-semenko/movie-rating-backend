@@ -1,7 +1,10 @@
 package com.max.movierating.controller;
 
+import com.max.movierating.constant.APIConstant;
+import com.max.movierating.dto.RequestFilmDTO;
 import com.max.movierating.entity.Film;
 import com.max.movierating.service.impl.FilmServiceImpl;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -27,7 +30,8 @@ import javax.validation.Valid;
  * @version 1.0
  */
 @RestController
-@RequestMapping("api/v1/films")
+@RequestMapping(value = APIConstant.FILMS_API)
+@Slf4j
 public class FilmController {
 
     /**
@@ -79,25 +83,25 @@ public class FilmController {
     /**
      * Method that save new film by given {@link RequestBody}.
      *
-     * @param film {@link Film} request body that contain params
+     * @param filmDTO {@link RequestFilmDTO} request body that contain params
      * @return new film
      */
     @PostMapping("")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Film> create(@Valid @RequestBody Film film) {
-        return new ResponseEntity<>(filmService.save(film), HttpStatus.CREATED);
+    public ResponseEntity<Film> create(@Valid @RequestBody RequestFilmDTO filmDTO) {
+        return new ResponseEntity<>(filmService.save(filmDTO.toFilm()), HttpStatus.CREATED);
     }
 
     /**
      * Method that save new film by given {@link RequestBody}.
      *
-     * @param film {@link Film} request body that contain params
+     * @param filmDTO {@link RequestFilmDTO} request body that contain params
      * @return new film
      */
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Film> update(@PathVariable Long id, @Valid @RequestBody Film film) {
-        return new ResponseEntity<>(filmService.update(film, id), HttpStatus.OK);
+    public ResponseEntity<Film> update(@PathVariable Long id, @Valid @RequestBody RequestFilmDTO filmDTO) {
+        return new ResponseEntity<>(filmService.update(filmDTO.toFilm(), id), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
@@ -105,5 +109,17 @@ public class FilmController {
     public ResponseEntity<Film> delete(@PathVariable Long id) {
         return new ResponseEntity<>(filmService.deleteById(id), HttpStatus.OK);
     }
+
+    /**
+     * Method that returns all films by name with pages and size.
+     *
+     * @param pageable {@link Pageable} contain page and size
+     * @return all films
+     */
+    @GetMapping("/name/{name}")
+    public ResponseEntity<Page<Film>> findAllByName(Pageable pageable, @PathVariable String name) {
+        return new ResponseEntity<>(filmService.findAllByName(pageable, name), HttpStatus.OK);
+    }
+
 
 }

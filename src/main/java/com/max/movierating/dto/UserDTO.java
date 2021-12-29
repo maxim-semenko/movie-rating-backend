@@ -34,6 +34,7 @@ public class UserDTO {
     private String email;
     private Basket basket;
     private Set<Role> roles;
+    private Boolean isAccountNonLocked;
 
     public User toUser() {
         User user = new User();
@@ -44,6 +45,7 @@ public class UserDTO {
         user.setEmail(email);
         user.setBasket(basket);
         user.setRoles(roles);
+        user.setIsAccountNonLocked(isAccountNonLocked);
 
         return user;
     }
@@ -63,6 +65,7 @@ public class UserDTO {
                 .email(user.getEmail())
                 .basket(user.getBasket())
                 .roles(user.getRoles())
+                .isAccountNonLocked(user.getIsAccountNonLocked())
                 .build();
     }
 

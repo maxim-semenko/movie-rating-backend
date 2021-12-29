@@ -1,10 +1,12 @@
 package com.max.movierating.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.experimental.SuperBuilder;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 import javax.persistence.Column;
@@ -22,11 +24,14 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
-@Data
-@SuperBuilder
-@NoArgsConstructor
+@Getter
+@Setter
+@ToString
+@RequiredArgsConstructor
+@AllArgsConstructor
+@Builder
 @EnableJpaAuditing
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(callSuper = false)
 public class User extends BaseEntity {
 
     @Column(unique = true, nullable = false)
@@ -46,7 +51,7 @@ public class User extends BaseEntity {
     private String password;
 
     @Column(unique = true, nullable = false)
-    @Size(min = 2, max = 25)
+    @Size(min = 2, max = 30)
     private String email;
 
     @NotNull
@@ -71,5 +76,6 @@ public class User extends BaseEntity {
     @OneToOne
     @JoinColumn(name = "basket_id", referencedColumnName = "id")
     private Basket basket;
+
 
 }

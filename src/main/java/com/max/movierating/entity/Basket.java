@@ -1,7 +1,10 @@
 package com.max.movierating.entity;
 
-import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.CascadeType;
@@ -13,7 +16,10 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Data
+@Getter
+@Setter
+@ToString
+@RequiredArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 public class Basket extends BaseEntity {
 
@@ -26,6 +32,7 @@ public class Basket extends BaseEntity {
             joinColumns = {@JoinColumn(name = "basket_id")},
             inverseJoinColumns = {@JoinColumn(name = "film_id")}
     )
+    @ToString.Exclude
     private Set<Film> filmList = new HashSet<>();
 
 }

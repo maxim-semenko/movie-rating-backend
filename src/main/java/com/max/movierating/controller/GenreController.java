@@ -1,5 +1,6 @@
 package com.max.movierating.controller;
 
+import com.max.movierating.constant.APIConstant;
 import com.max.movierating.dto.RequestGenreDTO;
 import com.max.movierating.entity.Genre;
 import com.max.movierating.service.impl.GenreServiceImpl;
@@ -26,7 +27,7 @@ import java.util.List;
  * @version 1.0
  */
 @RestController
-@RequestMapping(value = "/api/v1/genres")
+@RequestMapping(value = APIConstant.GENRES_API)
 public class GenreController {
 
     private final GenreServiceImpl genreService;

@@ -1,9 +1,12 @@
 package com.max.movierating.controller;
 
+import com.max.movierating.constant.APIConstant;
 import com.max.movierating.dto.RequestCountryDTO;
 import com.max.movierating.entity.Country;
 import com.max.movierating.service.impl.CountryServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -17,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
-import java.util.List;
 
 /**
  * REST controller for countries requests.
@@ -26,7 +28,7 @@ import java.util.List;
  * @version 1.0
  */
 @RestController
-@RequestMapping(value = "/api/v1/countries")
+@RequestMapping(value = APIConstant.COUNTRIES_API)
 public class CountryController {
 
     private final CountryServiceImpl countryService;
@@ -36,18 +38,33 @@ public class CountryController {
         this.countryService = countryService;
     }
 
+    /**
+     * Method that returns all countries {@link Country}.
+     *
+     * @return countries {@link Country}
+     */
     @GetMapping("")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<List<Country>> findAll() {
-        return new ResponseEntity<>(countryService.findAll(), HttpStatus.OK);
+    public ResponseEntity<Page<Country>> findAllByPages(Pageable pageable) {
+        return new ResponseEntity<>(countryService.getAllByPages(pageable), HttpStatus.OK);
     }
 
+    /**
+     * Method that returns country by id {@link Country}.
+     *
+     * @return country {@link Country}
+     */
     @GetMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Country> findById(@PathVariable Long id) {
         return new ResponseEntity<>(countryService.findById(id), HttpStatus.OK);
     }
 
+    /**
+     * Method that create a new country {@link Country}.
+     *
+     * @return country {@link Country}
+     */
     @PostMapping("")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Country> create(@Valid @RequestBody RequestCountryDTO countryDTO) {

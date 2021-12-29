@@ -3,14 +3,19 @@ package com.max.movierating.service.impl;
 import com.max.movierating.entity.Country;
 import com.max.movierating.exception.ResourceNotFoundException;
 import com.max.movierating.repository.CountryRepository;
+import com.max.movierating.service.CountryService;
 import com.max.movierating.service.DefaultService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class CountryServiceImpl implements DefaultService<Country, Long> {
+@Slf4j
+public class CountryServiceImpl implements DefaultService<Country, Long>, CountryService {
 
     private final CountryRepository countryRepository;
 
@@ -46,5 +51,10 @@ public class CountryServiceImpl implements DefaultService<Country, Long> {
         Country country = findById(id);
         countryRepository.delete(country);
         return country;
+    }
+
+    @Override
+    public Page<Country> getAllByPages(Pageable pageable) {
+        return countryRepository.findAll(pageable);
     }
 }

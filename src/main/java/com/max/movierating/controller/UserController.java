@@ -1,6 +1,9 @@
 package com.max.movierating.controller;
 
+import com.max.movierating.constant.APIConstant;
+import com.max.movierating.dto.RequestDeleteAccountDTO;
 import com.max.movierating.dto.RequestRegisterDTO;
+import com.max.movierating.dto.RequestUpdatePasswordDTO;
 import com.max.movierating.dto.UserDTO;
 import com.max.movierating.entity.User;
 import com.max.movierating.service.impl.UserServiceImpl;
@@ -22,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("api/v1/users")
+@RequestMapping(value = APIConstant.USERS_API)
 public class UserController {
 
     private final UserServiceImpl userService;
@@ -38,7 +41,7 @@ public class UserController {
         return new ResponseEntity<>(UserDTO.fromListUser(userService.findAll(), pageable), HttpStatus.OK);
     }
 
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<UserDTO> findById(@PathVariable Long id) {
         return new ResponseEntity<>(UserDTO.fromUser(userService.findById(id)), HttpStatus.OK);
     }
@@ -48,19 +51,27 @@ public class UserController {
         return new ResponseEntity<>(userService.save(requestDTO.toUser()), HttpStatus.CREATED);
     }
 
-    @PutMapping("{id}")
-    @PreAuthorize("hasAnyRole('USER', 'ADMIN') and #userDTO.id == authentication.principal.id")
+    @PutMapping("/{id}")
+    @PreAuthorize("hasRole('USER') and #id == authentication.principal.id")
     public ResponseEntity<User> update(@PathVariable Long id, @Valid @RequestBody UserDTO userDTO) {
         return new ResponseEntity<>(userService.update(userDTO.toUser(), id), HttpStatus.OK);
     }
 
-    @DeleteMapping("{id}")
-    @PreAuthorize("hasAnyRole('USER', 'ADMIN') and #id == authentication.principal.id")
-    public ResponseEntity<User> delete(@PathVariable Long id) {
-        return new ResponseEntity<>(userService.deleteById(id), HttpStatus.OK);
+    @PutMapping("/password/{id}")
+    @PreAuthorize("hasRole('USER') and #id == authentication.principal.id")
+    public ResponseEntity<User> updatePassword(@PathVariable Long id,
+                                               @Valid @RequestBody RequestUpdatePasswordDTO request) {
+        return new ResponseEntity<>(userService.updatePasswordById(
+                id, request.getOldPassword(), request.getNewPassword()), HttpStatus.OK);
     }
 
-    @GetMapping("username/{username}")
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('USER') and #id == authentication.principal.id")
+    public ResponseEntity<Boolean> delete(@PathVariable Long id, @RequestBody RequestDeleteAccountDTO request) {
+        return new ResponseEntity<>(userService.deleteAccount(id, request.getPassword()), HttpStatus.OK);
+    }
+
+    @GetMapping("/username/{username}")
     public ResponseEntity<UserDTO> findByUsername(@PathVariable String username) {
         return new ResponseEntity<>(UserDTO.fromUser(userService.getByUsername(username)), HttpStatus.OK);
     }

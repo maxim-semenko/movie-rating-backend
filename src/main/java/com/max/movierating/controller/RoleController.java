@@ -1,5 +1,6 @@
 package com.max.movierating.controller;
 
+import com.max.movierating.constant.APIConstant;
 import com.max.movierating.dto.RequestRoleDTO;
 import com.max.movierating.entity.Role;
 import com.max.movierating.service.impl.RoleServiceImpl;
@@ -26,7 +27,7 @@ import java.util.List;
  * @version 1.0
  */
 @RestController
-@RequestMapping(value = "/api/v1/roles")
+@RequestMapping(value = APIConstant.ROLES_API)
 public class RoleController {
 
     private final RoleServiceImpl roleService;

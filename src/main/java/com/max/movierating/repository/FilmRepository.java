@@ -18,6 +18,8 @@ public interface FilmRepository extends JpaRepository<Film, Long> {
 
     Page<Film> findAll(Pageable pageable);
 
+    Page<Film> findAllByNameContaining(Pageable pageable, String name);
+
     @Query("select e from Film e where" +
             "(:name is null or e.name =:name) " +
             "and (:year is null or e.year=:year) " +

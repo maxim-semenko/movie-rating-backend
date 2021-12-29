@@ -28,7 +28,7 @@ public class PaymentController {
     @PostMapping("")
     @PreAuthorize("hasAnyRole('USER', 'ADMIN') and #requestPaymentDTO.userId == authentication.principal.id")
     public ResponseEntity<Boolean> pay(@Valid @RequestBody RequestPaymentDTO requestPaymentDTO) {
-        return new ResponseEntity<>(paymentService.pay(), HttpStatus.OK);
+        return new ResponseEntity<>(paymentService.pay(requestPaymentDTO), HttpStatus.OK);
     }
 
 }

@@ -14,9 +14,9 @@ public class RequestPaymentDTO {
     private String numberCard;
     private String cardHolderName;
     private String expirationMMYY;
-    private String securityCode;
-    private String CodeFromEmail;
-    private List<Film> filmsIdList;
-    private Double total;
+    private String securityCardCode;
+    private String emailCode;
+    private List<Film> filmsList;
+    private Double totalPrice;
     private Date date;
 }

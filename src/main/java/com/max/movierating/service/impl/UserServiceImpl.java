@@ -1,5 +1,6 @@
 package com.max.movierating.service.impl;
 
+import com.max.movierating.constant.ErrorConstant;
 import com.max.movierating.entity.Basket;
 import com.max.movierating.entity.User;
 import com.max.movierating.exception.BadRequestException;
@@ -119,8 +120,8 @@ public class UserServiceImpl implements DefaultService<User, Long>, UserService 
                 existUser.setPassword(passwordEncoder.encode(newPassword));
                 userRepository.save(existUser);
             } else {
-                log.error("Invalid old Password!");
-                throw new BadRequestException("Invalid old Password!");
+                log.error(ErrorConstant.ERROR_INVALID_OLD_PASSWORD);
+                throw new BadRequestException(ErrorConstant.ERROR_INVALID_OLD_PASSWORD);
             }
         }
         return existUser;
@@ -155,8 +156,8 @@ public class UserServiceImpl implements DefaultService<User, Long>, UserService 
                 SecurityContextHolder.clearContext();
                 log.info("User have deleted successfully!");
             } else {
-                log.error("Invalid old Password!");
-                throw new BadRequestException("Invalid old Password!");
+                log.error(ErrorConstant.ERROR_INVALID_OLD_PASSWORD);
+                throw new BadRequestException(ErrorConstant.ERROR_INVALID_OLD_PASSWORD);
             }
         }
         return true;

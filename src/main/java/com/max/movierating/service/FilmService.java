@@ -2,7 +2,6 @@ package com.max.movierating.service;
 
 import com.max.movierating.entity.Film;
 import com.max.movierating.entity.Genre;
-import com.max.movierating.entity.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -17,7 +16,6 @@ public interface FilmService {
     Page<Film> getAllByPages(Pageable pageable);
 
     Page<Film> findAllByName(Pageable pageable, String name);
-
 
 
 }

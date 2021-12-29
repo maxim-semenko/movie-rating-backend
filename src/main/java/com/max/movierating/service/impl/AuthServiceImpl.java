@@ -55,7 +55,7 @@ public class AuthServiceImpl implements AuthService {
                     authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, loginDTO.getPassword()));
                     Map<String, Object> response = new HashMap<>();
                     response.put("user", UserDTO.fromUser(user));
-                    response.put("token", generateNewToken(user));
+                    response.put("token", jwtTokenProvider.createToken(user.getUsername(), user.getRoles()));
                     log.info("User login is successful!");
 
                     return response;
@@ -81,8 +81,15 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public String generateNewToken(User user) {
-        return jwtTokenProvider.createToken(user.getUsername(), user.getRoles());
+    public String generateNewToken(String username) {
+        User user = userRepository.findByUsername(username);
+        String token;
+        if (user != null) {
+            token = jwtTokenProvider.createToken(user.getUsername(), user.getRoles());
+        } else {
+            throw new ResourceNotFoundException("User not found!");
+        }
+        return token;
     }
 
 }

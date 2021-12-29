@@ -1,12 +1,18 @@
 package com.max.movierating.entity;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class RoleTest {
 
-    private final Role role = new Role("testName");
+    private final Role role = new Role();
+
+    @BeforeEach
+    void setUp() {
+        role.setName("testName");
+    }
 
     @Test
     void testEquals() {
@@ -29,5 +35,11 @@ class RoleTest {
     void testToString() {
         final Role role1 = new Role("testName");
         assertEquals(role.toString(), role1.toString());
+    }
+
+    @Test
+    void testBuilder() {
+        Role role1 = Role.builder().name("testName").build();
+        assertEquals(role, role1);
     }
 }

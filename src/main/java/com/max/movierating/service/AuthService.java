@@ -11,5 +11,5 @@ public interface AuthService {
 
     Boolean logout();
 
-    String generateNewToken(User user);
+    String generateNewToken(String username);
 }

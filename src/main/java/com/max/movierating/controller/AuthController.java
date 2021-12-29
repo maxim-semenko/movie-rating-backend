@@ -9,6 +9,7 @@ import com.max.movierating.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -54,13 +55,12 @@ public class AuthController {
     }
 
     /**
-     * Method that is responsible for logout of user.
+     * Method that logout user from system.
      *
-     * @param requestDto request contain username and password
-     * @return user and token
+     * @return boolean
      */
     @PostMapping("/logout")
-    public ResponseEntity<Boolean> logout(@RequestBody RequestLoginDTO requestDto) {
+    public ResponseEntity<Boolean> logout() {
         return new ResponseEntity<>(authService.logout(), HttpStatus.OK);
     }
 
@@ -78,12 +78,12 @@ public class AuthController {
     /**
      * Method that generates new token for user.
      *
-     * @param user user
-     * @return token
+     * @param username user's username
+     * @return token {@link String}
      */
-    @PostMapping("token")
-    public ResponseEntity<String> generateNewToken(@RequestBody User user) {
-        return new ResponseEntity<>(authService.generateNewToken(user), HttpStatus.OK);
+    @PostMapping("/token/{username}")
+    public ResponseEntity<String> generateNewToken(@PathVariable String username) {
+        return new ResponseEntity<>(authService.generateNewToken(username), HttpStatus.OK);
     }
 
 }

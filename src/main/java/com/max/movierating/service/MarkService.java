@@ -1,6 +1,5 @@
 package com.max.movierating.service;
 
-import com.max.movierating.entity.Film;
 import com.max.movierating.entity.Mark;
 
 public interface MarkService {

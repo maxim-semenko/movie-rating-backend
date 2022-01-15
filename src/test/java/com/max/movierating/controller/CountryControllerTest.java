@@ -31,136 +31,136 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 class CountryControllerTest {
 
-//    @Autowired
-//    private MockMvc mockMvc;
-//
-//    @Autowired
-//    private ObjectMapper objectMapper;
-//
-//    @MockBean
-//    CountryServiceImpl countryService;
+    @Autowired
+    private MockMvc mockMvc;
 
-//    @Test
-//    @WithMockUser(username = "admin", password = "admin", roles = {"USER", "ADMIN"})
-//    void findAllByPages() throws Exception {
-//        // given
-//        String URL = "/api/v1/countries?page=0&size=2";
-//        List<Country> countryList = new ArrayList<>();
-//        countryList.add(new Country(1L, "RUSSIA"));
-//        countryList.add(new Country(2L, "USA"));
-//        Page<Country> page = new PageImpl<>(countryList);
-//
-//        // when
-//        Mockito.when(countryService.getAllByPages(Mockito.any(PageRequest.class))).thenReturn(page);
-//
-//        // then
-//        MvcResult mvcResult = mockMvc
-//                .perform(get(URL))
-//                .andExpect(status().isOk())
-//                .andReturn();
-//
-//        String actualJsonResponse = mvcResult.getResponse().getContentAsString();
-//        String expectedJsonResponse = objectMapper.writeValueAsString(page);
-//
-//        assertEquals(expectedJsonResponse, actualJsonResponse);
-//    }
-//
-//    @Test
-//    @WithMockUser(username = "admin", password = "admin", roles = {"USER", "ADMIN"})
-//    void findById() throws Exception {
-//        // given
-//        Long id = 1L;
-//        final String URL = "/api/v1/countries/" + id;
-//        Country country1 = new Country(id, "RUSSIA");
-//
-//        // when
-//        Mockito.when(countryService.findById(id)).thenReturn(country1);
-//
-//        // then
-//        MvcResult mvcResult = mockMvc
-//                .perform(get(URL))
-//                .andExpect(status().isOk())
-//                .andReturn();
-//
-//        String actualJsonResponse = mvcResult.getResponse().getContentAsString();
-//        String expectedJsonResponse = objectMapper.writeValueAsString(country1);
-//
-//        assertEquals(expectedJsonResponse, actualJsonResponse);
-//    }
-//
-//    @Test
-//    @WithMockUser(username = "admin", password = "admin", roles = {"USER", "ADMIN"})
-//    void create() throws Exception {
-//        // given
-//        final String URL = "/api/v1/countries";
-//        Country newCountry = Country.builder().name("Test").build();
-//        Country saveCountry = new Country(1L, "Test");
-//
-//        // when
-//        Mockito.when(countryService.save(newCountry)).thenReturn(saveCountry);
-//
-//        // then
-//        MvcResult mvcResult = mockMvc
-//                .perform(post(URL)
-//                        .contentType("application/json")
-//                        .content(objectMapper.writeValueAsString(newCountry)))
-//                .andExpect(status().isCreated())
-//                .andReturn();
-//
-//        String actualJsonResponse = mvcResult.getResponse().getContentAsString();
-//        String expectedJsonResponse = objectMapper.writeValueAsString(saveCountry);
-//
-//        assertEquals(expectedJsonResponse, actualJsonResponse);
-//    }
-//
-//    @Test
-//    @WithMockUser(username = "admin", password = "admin", roles = {"USER", "ADMIN"})
-//    void update() throws Exception {
-//        // given
-//        final Long id = 1L;
-//        final String URL = "/api/v1/countries/" + id;
-//        RequestCountryDTO countryDTO = new RequestCountryDTO();
-//        countryDTO.setName("Test");
-//        Country updatedCountry = new Country(id, "Test");
-//
-//        // when
-//        Mockito.when(countryService.update(countryDTO.toCountry(), id)).thenReturn(updatedCountry);
-//
-//        // then
-//        MvcResult mvcResult = mockMvc
-//                .perform(put(URL)
-//                        .contentType("application/json")
-//                        .content(objectMapper.writeValueAsString(countryDTO)))
-//                .andExpect(status().isOk())
-//                .andReturn();
-//
-//        String actualJsonResponse = mvcResult.getResponse().getContentAsString();
-//        String expectedJsonResponse = objectMapper.writeValueAsString(updatedCountry);
-//
-//        assertEquals(expectedJsonResponse, actualJsonResponse);
-//    }
-//
-//    @Test
-//    @WithMockUser(username = "admin", password = "admin", roles = {"USER", "ADMIN"})
-//    void deleteTestWithSuccess() throws Exception {
-//        // given
-//        final Long id = 1L;
-//        final String URL = "/api/v1/countries/" + id;
-//        Country deletedCountry = new Country(id, "Test");
-//
-//        // when
-//        Mockito.when(countryService.deleteById(1L)).thenReturn(deletedCountry);
-//
-//        // then
-//        MvcResult mvcResult = mockMvc
-//                .perform(delete(URL)
-//                        .contentType("application/json"))
-//                .andExpect(status().isOk())
-//                .andReturn();
-//
-//        String actualJsonResponse = mvcResult.getResponse().getContentAsString();
-//        String expectedJsonResponse = objectMapper.writeValueAsString(deletedCountry);
-//
-//        assertEquals(expectedJsonResponse, actualJsonResponse);
-//    }
+    @Autowired
+    private ObjectMapper objectMapper;
+
+    @MockBean
+    CountryServiceImpl countryService;
+
+    @Test
+    @WithMockUser(username = "admin", password = "admin", roles = {"USER", "ADMIN"})
+    void findAllByPages() throws Exception {
+        // given
+        String URL = "/api/v1/countries?page=0&size=2";
+        List<Country> countryList = new ArrayList<>();
+        countryList.add(new Country(1L, "RUSSIA"));
+        countryList.add(new Country(2L, "USA"));
+        Page<Country> page = new PageImpl<>(countryList);
+
+        // when
+        Mockito.when(countryService.getAllByPages(Mockito.any(PageRequest.class))).thenReturn(page);
+
+        // then
+        MvcResult mvcResult = mockMvc
+                .perform(get(URL))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        String actualJsonResponse = mvcResult.getResponse().getContentAsString();
+        String expectedJsonResponse = objectMapper.writeValueAsString(page);
+
+        assertEquals(expectedJsonResponse, actualJsonResponse);
+    }
+
+    @Test
+    @WithMockUser(username = "admin", password = "admin", roles = {"USER", "ADMIN"})
+    void findById() throws Exception {
+        // given
+        Long id = 1L;
+        final String URL = "/api/v1/countries/" + id;
+        Country country1 = new Country(id, "RUSSIA");
+
+        // when
+        Mockito.when(countryService.findById(id)).thenReturn(country1);
+
+        // then
+        MvcResult mvcResult = mockMvc
+                .perform(get(URL))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        String actualJsonResponse = mvcResult.getResponse().getContentAsString();
+        String expectedJsonResponse = objectMapper.writeValueAsString(country1);
+
+        assertEquals(expectedJsonResponse, actualJsonResponse);
+    }
+
+    @Test
+    @WithMockUser(username = "admin", password = "admin", roles = {"USER", "ADMIN"})
+    void create() throws Exception {
+        // given
+        final String URL = "/api/v1/countries";
+        Country newCountry = Country.builder().name("Test").build();
+        Country saveCountry = new Country(1L, "Test");
+
+        // when
+        Mockito.when(countryService.save(newCountry)).thenReturn(saveCountry);
+
+        // then
+        MvcResult mvcResult = mockMvc
+                .perform(post(URL)
+                        .contentType("application/json")
+                        .content(objectMapper.writeValueAsString(newCountry)))
+                .andExpect(status().isCreated())
+                .andReturn();
+
+        String actualJsonResponse = mvcResult.getResponse().getContentAsString();
+        String expectedJsonResponse = objectMapper.writeValueAsString(saveCountry);
+
+        assertEquals(expectedJsonResponse, actualJsonResponse);
+    }
+
+    @Test
+    @WithMockUser(username = "admin", password = "admin", roles = {"USER", "ADMIN"})
+    void update() throws Exception {
+        // given
+        final Long id = 1L;
+        final String URL = "/api/v1/countries/" + id;
+        RequestCountryDTO countryDTO = new RequestCountryDTO();
+        countryDTO.setName("Test");
+        Country updatedCountry = new Country(id, "Test");
+
+        // when
+        Mockito.when(countryService.update(countryDTO.toCountry(), id)).thenReturn(updatedCountry);
+
+        // then
+        MvcResult mvcResult = mockMvc
+                .perform(put(URL)
+                        .contentType("application/json")
+                        .content(objectMapper.writeValueAsString(countryDTO)))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        String actualJsonResponse = mvcResult.getResponse().getContentAsString();
+        String expectedJsonResponse = objectMapper.writeValueAsString(updatedCountry);
+
+        assertEquals(expectedJsonResponse, actualJsonResponse);
+    }
+
+    @Test
+    @WithMockUser(username = "admin", password = "admin", roles = {"USER", "ADMIN"})
+    void deleteTestWithSuccess() throws Exception {
+        // given
+        final Long id = 1L;
+        final String URL = "/api/v1/countries/" + id;
+        Country deletedCountry = new Country(id, "Test");
+
+        // when
+        Mockito.when(countryService.deleteById(1L)).thenReturn(deletedCountry);
+
+        // then
+        MvcResult mvcResult = mockMvc
+                .perform(delete(URL)
+                        .contentType("application/json"))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        String actualJsonResponse = mvcResult.getResponse().getContentAsString();
+        String expectedJsonResponse = objectMapper.writeValueAsString(deletedCountry);
+
+        assertEquals(expectedJsonResponse, actualJsonResponse);
+    }
 }

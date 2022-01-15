@@ -4,7 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,13 +18,12 @@ import javax.validation.constraints.NotEmpty;
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor
 @AllArgsConstructor
+@ToString
 @Builder
 @EqualsAndHashCode(callSuper = false)
 public class Genre extends BaseEntity {
-
-    public Genre() {
-    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,11 +33,4 @@ public class Genre extends BaseEntity {
     @NotEmpty
     private String name;
 
-    @Override
-    public String toString() {
-        return "Genre{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                '}';
-    }
 }

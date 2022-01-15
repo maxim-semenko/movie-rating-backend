@@ -4,7 +4,7 @@ import com.max.movierating.entity.Genre;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class RequestGenreDTOTest {
 
@@ -17,7 +17,7 @@ class RequestGenreDTOTest {
 
     @Test
     void toGenre() {
-        Genre genre =  Genre.builder().name("FUNNY").build();
+        Genre genre = Genre.builder().name("FUNNY").build();
         assertEquals(genre, requestGenreDTO.toGenre());
     }
 

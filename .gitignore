@@ -50,4 +50,4 @@ yarn-debug.log*
 yarn-error.log*
 
 
-/src/test/java/
+/src/test/java/com/max/movierating/controller

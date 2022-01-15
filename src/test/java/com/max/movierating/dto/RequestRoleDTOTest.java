@@ -1,11 +1,10 @@
 package com.max.movierating.dto;
 
-import com.max.movierating.entity.Country;
 import com.max.movierating.entity.Role;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class RequestRoleDTOTest {
 

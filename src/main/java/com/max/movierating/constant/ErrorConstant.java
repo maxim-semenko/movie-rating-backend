@@ -17,7 +17,10 @@ public class ErrorConstant {
 
     // User's errors
     public static final String ERROR_INVALID_OLD_PASSWORD = "Invalid old password!";
-    public static final String USER_NOT_FOUND = "User was not found!";
+    public static final String ERROR_INVALID_PASSWORD = "Invalid password!";
+    public static final String USER_NOT_FOUND = "User was not found: ";
+    public static final String USERNAME_ALREADY_EXISTS = "Username already exist: ";
+    public static final String EMAIL_ALREADY_EXISTS = "Email already exist: ";
 
     // Film's errors
 

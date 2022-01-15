@@ -70,15 +70,4 @@ public class AuthController {
         return new ResponseEntity<>(authService.logout(), HttpStatus.OK);
     }
 
-    /**
-     * Method that generates new token for user.
-     *
-     * @param id user's id
-     * @return token {@link String}
-     */
-    @GetMapping("/token/{id}")
-    public ResponseEntity<String> generateNewToken(@PathVariable Long id) {
-        return new ResponseEntity<>(authService.generateNewToken(id), HttpStatus.OK);
-    }
-
 }

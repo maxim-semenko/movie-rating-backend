@@ -2,6 +2,7 @@ package com.max.movierating.controller;
 
 import com.max.movierating.constant.APIConstant;
 import com.max.movierating.dto.RequestPaymentDTO;
+import com.max.movierating.entity.Basket;
 import com.max.movierating.service.impl.PaymentServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

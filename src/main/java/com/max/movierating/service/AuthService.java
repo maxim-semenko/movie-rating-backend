@@ -13,5 +13,4 @@ public interface AuthService {
 
     Boolean logout();
 
-    String generateNewToken(Long id);
 }

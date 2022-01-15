@@ -1,5 +1,6 @@
 package com.max.movierating.service.impl;
 
+import com.max.movierating.constant.ErrorConstant;
 import com.max.movierating.constant.RoleConstant;
 import com.max.movierating.dto.RequestLoginDTO;
 import com.max.movierating.dto.UserDTO;
@@ -59,12 +60,12 @@ public class AuthServiceImpl implements AuthService {
     @Transactional(rollbackFor = ConstraintViolationException.class)
     public User register(User user) {
         if (Boolean.TRUE.equals(userRepository.existsByUsername(user.getUsername()))) {
-            log.error("Username: " + user.getUsername() + " are existed already!");
-            throw new UserExistException("Username: " + user.getUsername() + " are existed already!");
+            log.error(ErrorConstant.USERNAME_ALREADY_EXISTS + user.getUsername());
+            throw new UserExistException(ErrorConstant.USERNAME_ALREADY_EXISTS + user.getUsername());
         }
         if (Boolean.TRUE.equals(userRepository.existsByEmail(user.getEmail()))) {
-            log.error("Email: " + user.getEmail() + " are existed already!");
-            throw new UserExistException("Email: " + user.getEmail() + " are existed already!");
+            log.error(ErrorConstant.EMAIL_ALREADY_EXISTS + user.getEmail());
+            throw new UserExistException(ErrorConstant.EMAIL_ALREADY_EXISTS + user.getEmail());
         }
 
         Basket basket = new Basket();
@@ -101,8 +102,8 @@ public class AuthServiceImpl implements AuthService {
 
                     return response;
                 } catch (AuthenticationException e) {
-                    log.error("Invalid password!");
-                    throw new BadCredentialsException("Invalid password!");
+                    log.error(ErrorConstant.ERROR_INVALID_PASSWORD);
+                    throw new BadCredentialsException(ErrorConstant.ERROR_INVALID_PASSWORD);
                 }
             } else {
                 log.error("User locked!");
@@ -122,18 +123,5 @@ public class AuthServiceImpl implements AuthService {
         return true;
     }
 
-    @Override
-    public String generateNewToken(Long id) {
-        Optional<User> userOptional = userRepository.findById(id);
-        String token;
-        if (userOptional.isPresent()) {
-            User user = userOptional.get();
-            token = jwtTokenProvider.createToken(user.getUsername(), user.getRoles());
-        } else {
-            log.error("User was not found!");
-            throw new ResourceNotFoundException("User was not found!");
-        }
-        return token;
-    }
 
 }

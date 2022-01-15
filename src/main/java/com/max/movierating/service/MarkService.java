@@ -1,11 +1,14 @@
 package com.max.movierating.service;
 
 import com.max.movierating.entity.Film;
+import com.max.movierating.entity.Mark;
 
 public interface MarkService {
 
-    Film createMark(Long userId, Long filmId, Integer value);
+    Mark createMark(Long userId, Long filmId, Integer value);
 
-    Film removeMarkByUserIdAndFilmId(Long userId, Long filmId);
+    Mark updateMark(Long userId, Long filmId, Integer value);
+
+    Mark removeMarkByUserIdAndFilmId(Long userId, Long filmId);
 
 }

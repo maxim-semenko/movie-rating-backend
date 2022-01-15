@@ -1,15 +1,13 @@
 package com.max.movierating.service.impl;
 
 import com.max.movierating.constant.ErrorConstant;
-import com.max.movierating.entity.Basket;
+import com.max.movierating.dto.UserDTO;
 import com.max.movierating.entity.User;
 import com.max.movierating.exception.BadRequestException;
 import com.max.movierating.exception.ResourceNotFoundException;
 import com.max.movierating.exception.UserExistException;
-import com.max.movierating.repository.BasketRepository;
-import com.max.movierating.repository.RoleRepository;
 import com.max.movierating.repository.UserRepository;
-import com.max.movierating.service.DefaultService;
+import com.max.movierating.security.JwtTokenProvider;
 import com.max.movierating.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,64 +16,40 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import javax.validation.ConstraintViolationException;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
 
 @Service
 @Slf4j
-public class UserServiceImpl implements DefaultService<User, Long>, UserService {
+public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-    private final RoleRepository roleRepository;
-    private final BasketRepository basketRepository;
     private final BCryptPasswordEncoder passwordEncoder;
+    private final JwtTokenProvider jwtTokenProvider;
 
     @Autowired
     public UserServiceImpl(UserRepository userRepository,
-                           RoleRepository roleRepository,
-                           BasketRepository basketRepository,
-                           BCryptPasswordEncoder passwordEncoder) {
+                           BCryptPasswordEncoder passwordEncoder,
+                           JwtTokenProvider jwtTokenProvider) {
         this.userRepository = userRepository;
-        this.roleRepository = roleRepository;
-        this.basketRepository = basketRepository;
         this.passwordEncoder = passwordEncoder;
+        this.jwtTokenProvider = jwtTokenProvider;
     }
 
-    @Override
     public List<User> findAll() {
         return userRepository.findAll();
     }
 
-    @Override
     public User findById(Long id) {
         return userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("User with id: " + id + " was not found"));
     }
 
-    @Override
-    @Transactional(rollbackFor = ConstraintViolationException.class)
-    public User save(User user) {
-        existByUsername(user.getUsername());
-        existByEmail(user.getEmail());
-
-        Basket basket = new Basket();
-        basketRepository.save(basket);
-
-        user.setRoles(Set.of(roleRepository.findByName("ROLE_USER")));
-        user.setIsAccountNonLocked(Boolean.TRUE);
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setBasket(basket);
-        user.setId(basket.getId());
-
-        return userRepository.save(user);
-    }
-
-    @Override
-    public User update(User user, Long id) {
+    public Map<String, Object> update(User user, Long id) {
         User existUser = findById(id);
+        Map<String, Object> response = new HashMap<>();
 
         user.setId(id);
         user.setPassword(existUser.getPassword());
@@ -86,19 +60,15 @@ public class UserServiceImpl implements DefaultService<User, Long>, UserService 
         if (!user.getUsername().equals(existUser.getUsername())) {
             existByUsername(user.getUsername());
         }
-
         if (!user.getEmail().equals(existUser.getEmail())) {
             existByEmail(user.getEmail());
         }
 
-        return userRepository.save(user);
-    }
+        userRepository.save(user);
+        response.put("user", UserDTO.fromUser(user));
+        response.put("token", jwtTokenProvider.createToken(user.getUsername(), user.getRoles()));
 
-    @Override
-    public User deleteById(Long id) {
-        User user = findById(id);
-        userRepository.delete(user);
-        return user;
+        return response;
     }
 
 

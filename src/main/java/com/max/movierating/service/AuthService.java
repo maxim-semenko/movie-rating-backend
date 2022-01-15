@@ -7,9 +7,11 @@ import java.util.Map;
 
 public interface AuthService {
 
+    User register(User user);
+
     Map<String, Object> login(RequestLoginDTO loginDTO);
 
     Boolean logout();
 
-    String generateNewToken(String username);
+    String generateNewToken(Long id);
 }

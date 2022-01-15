@@ -3,7 +3,7 @@ package com.max.movierating.dto;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotBlank;
 
 /**
  * DTO class for authentication (login) request.
@@ -15,9 +15,9 @@ import javax.validation.constraints.NotEmpty;
 @Setter
 public class RequestLoginDTO {
 
-    @NotEmpty(message = "Please provide a username")
+    @NotBlank(message = "Username may not be empty")
     private String username;
 
-    @NotEmpty(message = "Please provide a password")
+    @NotBlank(message = "Password may not be empty")
     private String password;
 }

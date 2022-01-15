@@ -7,13 +7,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class GenreTest {
 
-    private final Genre genre = new Genre();
+    private final Genre genre = new Genre(1L, "testName");
 
-
-    @BeforeEach
-    void setUp() {
-        genre.setName("testName");
-    }
 
     @Test
     void getName() {
@@ -28,19 +23,19 @@ class GenreTest {
 
     @Test
     void testEquals() {
-        final Genre genre1 = new Genre("testName");
+        final Genre genre1 = new Genre(1L, "testName");
         assertEquals(genre, genre1);
     }
 
     @Test
     void testToString() {
-        final Genre genre1 = new Genre("testName");
+        final Genre genre1 = new Genre(1L, "testName");
         assertEquals(genre.toString(), genre1.toString());
     }
 
     @Test
     void testBuilder() {
-        Genre genre1 = Genre.builder().name("testName").build();
+        Genre genre1 = Genre.builder().id(1L).name("testName").build();
         assertEquals(genre, genre1);
     }
 }

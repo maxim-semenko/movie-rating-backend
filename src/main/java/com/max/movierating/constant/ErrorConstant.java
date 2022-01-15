@@ -15,5 +15,12 @@ public class ErrorConstant {
     private ErrorConstant() {
     }
 
+    // User's errors
     public static final String ERROR_INVALID_OLD_PASSWORD = "Invalid old password!";
+    public static final String USER_NOT_FOUND = "User was not found!";
+
+    // Genre's errors
+    public static final String GENRE_NOT_FOUND = "Genre was not found!";
+    public static final String ERROR_CANT_DELETE_GENRE = "Can't delete genre, because it used in another entity!";
+
 }

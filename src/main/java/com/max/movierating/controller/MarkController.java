@@ -3,6 +3,7 @@ package com.max.movierating.controller;
 import com.max.movierating.constant.APIConstant;
 import com.max.movierating.entity.Basket;
 import com.max.movierating.entity.Film;
+import com.max.movierating.entity.Mark;
 import com.max.movierating.service.impl.MarkServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,11 +40,11 @@ public class MarkController {
      *
      * @param userId user's id
      * @param filmId film's id {@link com.max.movierating.entity.Film}
-     * @return film with updated rating {@link Film}
+     * @return created mark {@link Film}
      */
     @PostMapping("/user/{userId}/film/{filmId}")
     @PreAuthorize("hasRole('USER') and #userId == authentication.principal.id")
-    public ResponseEntity<Film> addMark(@PathVariable Long userId,
+    public ResponseEntity<Mark> addMark(@PathVariable Long userId,
                                         @PathVariable Long filmId,
                                         @RequestParam("value") Integer value) {
         return new ResponseEntity<>(markService.createMark(userId, filmId, value), HttpStatus.OK);
@@ -54,11 +55,11 @@ public class MarkController {
      *
      * @param userId user's id
      * @param filmId film's id {@link com.max.movierating.entity.Film}
-     * @return film with updated rating {@link Film}
+     * @return deleted mark {@link Mark}
      */
     @DeleteMapping("/user/{userId}/film/{filmId}")
     @PreAuthorize("hasRole('USER') and #userId == authentication.principal.id")
-    public ResponseEntity<Film> removeMark(@PathVariable Long userId, @PathVariable Long filmId) {
+    public ResponseEntity<Mark> removeMark(@PathVariable Long userId, @PathVariable Long filmId) {
         return new ResponseEntity<>(markService.removeMarkByUserIdAndFilmId(userId, filmId), HttpStatus.OK);
     }
 }

@@ -32,9 +32,8 @@ public class MarkServiceImpl implements MarkService {
         this.userRepository = userRepository;
     }
 
-
     @Override
-    public Film createMark(Long userId, Long filmId, Integer value) {
+    public Mark createMark(Long userId, Long filmId, Integer value) {
         Optional<User> userOptional = userRepository.findById(userId);
         if (userOptional.isEmpty()) {
             throw new ResourceNotFoundException("user not found!");
@@ -45,23 +44,67 @@ public class MarkServiceImpl implements MarkService {
             throw new ResourceNotFoundException("film not found!");
         }
 
-        User user = userOptional.get();
-        Film film = filmOptional.get();
-
+        Mark mark;
         Optional<Mark> optionalMark = markRepository.findByUserIdAndFilmId(userId, filmId);
         if (optionalMark.isEmpty()) {
-            markRepository.save(new Mark(user, film, value));
-            film.setRating(markRepository.getAverageMarkByFilmId(filmId));
-            filmRepository.save(film);
+            if (value > 0 && value < 11) {
+                User user = userOptional.get();
+                Film film = filmOptional.get();
+
+                mark = Mark.builder().user(user).film(film).value(value).build();
+                markRepository.save(mark);
+
+                film.setRating(markRepository.getAverageMarkByFilmId(filmId));
+                filmRepository.save(film);
+            } else {
+                throw new BadRequestException("Invalid value for mark!");
+            }
         } else {
             throw new BadRequestException("Can't create mark, its already exist!");
         }
 
-        return film;
+        return mark;
     }
 
     @Override
-    public Film removeMarkByUserIdAndFilmId(Long userId, Long filmId) {
-        return null;
+    public Mark updateMark(Long userId, Long filmId, Integer value) {
+        Mark mark;
+        Optional<Mark> optionalMark = markRepository.findByUserIdAndFilmId(userId, filmId);
+
+        if (optionalMark.isPresent()) {
+            if (value > 0 && value < 11) {
+                mark = optionalMark.get();
+                mark.setValue(value);
+                markRepository.save(mark);
+
+                Film film = filmRepository.getById(filmId);
+                film.setRating(markRepository.getAverageMarkByFilmId(filmId));
+                filmRepository.save(film);
+            } else {
+                throw new BadRequestException("Invalid value for mark!");
+            }
+        } else {
+            throw new ResourceNotFoundException("Mark not found!");
+        }
+
+        return mark;
+    }
+
+    @Override
+    public Mark removeMarkByUserIdAndFilmId(Long userId, Long filmId) {
+        Mark mark;
+        Optional<Mark> optionalMark = markRepository.findByUserIdAndFilmId(userId, filmId);
+        if (optionalMark.isPresent()) {
+            mark = optionalMark.get();
+            markRepository.delete(mark);
+
+            Film film = filmRepository.getById(filmId);
+            film.setRating(markRepository.getAverageMarkByFilmId(filmId));
+            filmRepository.save(film);
+        } else {
+            throw new ResourceNotFoundException("Mark not found!");
+        }
+
+        return mark;
     }
 }

@@ -4,26 +4,33 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Setter
 @Getter
-@ToString
-@RequiredArgsConstructor
+@Setter
 @AllArgsConstructor
 @Builder
-@EnableJpaAuditing
 @EqualsAndHashCode(callSuper = false)
 public class Mark extends BaseEntity {
+
+    public Mark() {
+    }
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @OneToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
@@ -37,4 +44,14 @@ public class Mark extends BaseEntity {
 
     @NotNull
     private Integer value;
+
+    @Override
+    public String toString() {
+        return "Mark{" +
+                "id=" + id +
+                ", user=" + user +
+                ", film=" + film +
+                ", value=" + value +
+                '}';
+    }
 }

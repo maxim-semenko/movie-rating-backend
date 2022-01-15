@@ -1,16 +1,24 @@
 package com.max.movierating.service.impl;
 
+import com.max.movierating.constant.ErrorConstant;
 import com.max.movierating.entity.Genre;
+import com.max.movierating.exception.ResourceDeleteException;
 import com.max.movierating.exception.ResourceNotFoundException;
 import com.max.movierating.repository.GenreRepository;
 import com.max.movierating.service.DefaultService;
+import com.max.movierating.service.GenreService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class GenreServiceImpl implements DefaultService<Genre, Long> {
+@Slf4j
+public class GenreServiceImpl implements DefaultService<Genre, Long>, GenreService {
 
     private final GenreRepository genreRepository;
 
@@ -45,7 +53,17 @@ public class GenreServiceImpl implements DefaultService<Genre, Long> {
     @Override
     public Genre deleteById(Long id) {
         Genre genre = findById(id);
-        genreRepository.delete(genre);
+        try {
+            genreRepository.delete(genre);
+        } catch (DataIntegrityViolationException e) {
+            log.error(ErrorConstant.ERROR_CANT_DELETE_GENRE);
+            throw new ResourceDeleteException(ErrorConstant.ERROR_CANT_DELETE_GENRE);
+        }
         return genre;
+    }
+
+    @Override
+    public Page<Genre> getAllByPages(Pageable pageable) {
+        return genreRepository.findAll(pageable);
     }
 }

@@ -76,12 +76,14 @@ class RequestRegisterDTOTest {
 
     @Test
     void toUser() {
-        User user = new User();
-        user.setFirstname("firstnameTest");
-        user.setLastname("lastnameTest");
-        user.setUsername("usernameTest");
-        user.setEmail("emailTest");
-        user.setPassword("passwordTest");
+        User user = User.builder()
+                .username("usernameTest")
+                .password("passwordTest")
+                .firstname("firstnameTest")
+                .lastname("lastnameTest")
+                .email("emailTest")
+                .build();
+
         assertEquals(user, requestRegisterDTO.toUser());
     }
 }

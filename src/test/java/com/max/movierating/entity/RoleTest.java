@@ -7,16 +7,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class RoleTest {
 
-    private final Role role = new Role();
-
-    @BeforeEach
-    void setUp() {
-        role.setName("testName");
-    }
+    private final Role role = new Role(1L, "testName");
 
     @Test
     void testEquals() {
-        final Role role1 = new Role("testName");
+        final Role role1 = new Role(1L, "testName");
         assertEquals(role, role1);
     }
 
@@ -33,13 +28,13 @@ class RoleTest {
 
     @Test
     void testToString() {
-        final Role role1 = new Role("testName");
+        final Role role1 = new Role(1L, "testName");
         assertEquals(role.toString(), role1.toString());
     }
 
     @Test
     void testBuilder() {
-        Role role1 = Role.builder().name("testName").build();
+        final Role role1 = new Role(1L, "testName");
         assertEquals(role, role1);
     }
 }

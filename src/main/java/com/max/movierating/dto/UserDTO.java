@@ -1,7 +1,5 @@
 package com.max.movierating.dto;
 
-import com.max.movierating.entity.Basket;
-import com.max.movierating.entity.Role;
 import com.max.movierating.entity.User;
 import lombok.Builder;
 import lombok.Getter;
@@ -13,7 +11,6 @@ import org.springframework.data.domain.Pageable;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 /**
  * DTO class for sending {@link User}> object to client.
@@ -32,8 +29,7 @@ public class UserDTO {
     private String firstname;
     private String lastname;
     private String email;
-    private Basket basket;
-    private Set<Role> roles;
+    private Boolean isAdmin;
     private Boolean isAccountNonLocked;
 
     public User toUser() {
@@ -43,8 +39,6 @@ public class UserDTO {
         user.setFirstname(firstname);
         user.setLastname(lastname);
         user.setEmail(email);
-        user.setBasket(basket);
-        user.setRoles(roles);
         user.setIsAccountNonLocked(isAccountNonLocked);
 
         return user;
@@ -63,8 +57,7 @@ public class UserDTO {
                 .firstname(user.getFirstname())
                 .lastname(user.getLastname())
                 .email(user.getEmail())
-                .basket(user.getBasket())
-                .roles(user.getRoles())
+                .isAdmin(user.getRoles().stream().anyMatch(role -> "ROLE_ADMIN".equals(role.getName())))
                 .isAccountNonLocked(user.getIsAccountNonLocked())
                 .build();
     }

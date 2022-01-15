@@ -3,12 +3,12 @@ package com.max.movierating.controller;
 import com.max.movierating.constant.APIConstant;
 import com.max.movierating.dto.RequestLoginDTO;
 import com.max.movierating.dto.RequestRegisterDTO;
-import com.max.movierating.entity.User;
+import com.max.movierating.dto.UserDTO;
 import com.max.movierating.service.impl.AuthServiceImpl;
-import com.max.movierating.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -29,18 +29,24 @@ import java.util.Map;
 public class AuthController {
 
     /**
-     * User service for working with user {@link User}.
-     */
-    private final UserServiceImpl userService;
-    /**
      * Authentication service for working with user's login, register, etc.
      */
     private final AuthServiceImpl authService;
 
     @Autowired
-    public AuthController(UserServiceImpl userService, AuthServiceImpl authService) {
-        this.userService = userService;
+    public AuthController(AuthServiceImpl authService) {
         this.authService = authService;
+    }
+
+    /**
+     * Method that is responsible for register of user.
+     *
+     * @param requestDTO register request
+     * @return register user {@link UserDTO}
+     */
+    @PostMapping("/register")
+    public ResponseEntity<UserDTO> register(@Valid @RequestBody RequestRegisterDTO requestDTO) {
+        return new ResponseEntity<>(UserDTO.fromUser(authService.register(requestDTO.toUser())), HttpStatus.CREATED);
     }
 
     /**
@@ -65,25 +71,14 @@ public class AuthController {
     }
 
     /**
-     * Method that is responsible for register of user.
-     *
-     * @param requestDTO register request
-     * @return register user {@link User}
-     */
-    @PostMapping("/register")
-    public ResponseEntity<User> register(@Valid @RequestBody RequestRegisterDTO requestDTO) {
-        return new ResponseEntity<>(userService.save(requestDTO.toUser()), HttpStatus.CREATED);
-    }
-
-    /**
      * Method that generates new token for user.
      *
-     * @param username user's username
+     * @param id user's id
      * @return token {@link String}
      */
-    @PostMapping("/token/{username}")
-    public ResponseEntity<String> generateNewToken(@PathVariable String username) {
-        return new ResponseEntity<>(authService.generateNewToken(username), HttpStatus.OK);
+    @GetMapping("/token/{id}")
+    public ResponseEntity<String> generateNewToken(@PathVariable Long id) {
+        return new ResponseEntity<>(authService.generateNewToken(id), HttpStatus.OK);
     }
 
 }

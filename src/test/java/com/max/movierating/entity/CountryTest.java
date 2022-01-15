@@ -7,12 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class CountryTest {
 
-    private final Country country = new Country();
-
-    @BeforeEach
-    void setUp() {
-        country.setName("testName");
-    }
+    private final Country country = new Country(1L, "testName");
 
     @Test
     void getName() {
@@ -27,19 +22,19 @@ class CountryTest {
 
     @Test
     void testEquals() {
-        final Country country1 = new Country("testName");
+        final Country country1 = new Country(1L, "testName");
         assertEquals(country, country1);
     }
 
     @Test
     void testToString() {
-        final Country country1 = new Country("testName");
+        final Country country1 = new Country(1L, "testName");
         assertEquals(country.toString(), country1.toString());
     }
 
     @Test
     void testBuilder() {
-        Country country1 = Country.builder().name("testName").build();
+        Country country1 = Country.builder().id(1L).name("testName").build();
         assertEquals(country, country1);
     }
 

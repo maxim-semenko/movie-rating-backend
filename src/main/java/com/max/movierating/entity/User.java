@@ -4,18 +4,20 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.ArrayList;
@@ -26,31 +28,38 @@ import java.util.Set;
 @Entity
 @Getter
 @Setter
-@ToString
-@RequiredArgsConstructor
 @AllArgsConstructor
 @Builder
 @EnableJpaAuditing
 @EqualsAndHashCode(callSuper = false)
 public class User extends BaseEntity {
 
-    @Column(unique = true, nullable = false)
+    public User() {
+    }
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(unique = true)
+    @NotEmpty
     @Size(min = 2, max = 25)
     private String username;
 
-    @NotNull
+    @NotEmpty
     @Size(min = 2, max = 25)
     private String firstname;
 
-    @NotNull
+    @NotEmpty
     @Size(min = 2, max = 25)
     private String lastname;
 
-    @NotNull
+    @NotEmpty
     @Size(min = 8, max = 255)
     private String password;
 
-    @Column(unique = true, nullable = false)
+    @Column(unique = true)
+    @NotEmpty
     @Size(min = 2, max = 30)
     private String email;
 
@@ -77,5 +86,19 @@ public class User extends BaseEntity {
     @JoinColumn(name = "basket_id", referencedColumnName = "id")
     private Basket basket;
 
-
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", firstname='" + firstname + '\'' +
+                ", lastname='" + lastname + '\'' +
+                ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
+                ", isAccountNonLocked=" + isAccountNonLocked +
+                ", roles=" + roles +
+                ", purchases=" + purchases +
+                ", basket=" + basket +
+                '}';
+    }
 }

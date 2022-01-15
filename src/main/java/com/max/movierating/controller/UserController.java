@@ -2,7 +2,6 @@ package com.max.movierating.controller;
 
 import com.max.movierating.constant.APIConstant;
 import com.max.movierating.dto.RequestDeleteAccountDTO;
-import com.max.movierating.dto.RequestRegisterDTO;
 import com.max.movierating.dto.RequestUpdatePasswordDTO;
 import com.max.movierating.dto.UserDTO;
 import com.max.movierating.entity.User;
@@ -16,13 +15,13 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.util.Map;
 
 @RestController
 @RequestMapping(value = APIConstant.USERS_API)
@@ -46,14 +45,9 @@ public class UserController {
         return new ResponseEntity<>(UserDTO.fromUser(userService.findById(id)), HttpStatus.OK);
     }
 
-    @PostMapping("")
-    public ResponseEntity<User> create(@Valid @RequestBody RequestRegisterDTO requestDTO) {
-        return new ResponseEntity<>(userService.save(requestDTO.toUser()), HttpStatus.CREATED);
-    }
-
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('USER') and #id == authentication.principal.id")
-    public ResponseEntity<User> update(@PathVariable Long id, @Valid @RequestBody UserDTO userDTO) {
+    public ResponseEntity<Map<String, Object>> update(@PathVariable Long id, @Valid @RequestBody UserDTO userDTO) {
         return new ResponseEntity<>(userService.update(userDTO.toUser(), id), HttpStatus.OK);
     }
 

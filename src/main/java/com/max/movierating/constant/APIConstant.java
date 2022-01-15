@@ -7,6 +7,7 @@ package com.max.movierating.constant;
  * @version 1.0
  */
 public final class APIConstant {
+
     /**
      * Private constructor.
      */

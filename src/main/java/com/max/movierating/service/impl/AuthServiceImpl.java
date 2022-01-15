@@ -1,10 +1,15 @@
 package com.max.movierating.service.impl;
 
+import com.max.movierating.constant.RoleConstant;
 import com.max.movierating.dto.RequestLoginDTO;
 import com.max.movierating.dto.UserDTO;
+import com.max.movierating.entity.Basket;
 import com.max.movierating.entity.User;
 import com.max.movierating.exception.BadRequestException;
 import com.max.movierating.exception.ResourceNotFoundException;
+import com.max.movierating.exception.UserExistException;
+import com.max.movierating.repository.BasketRepository;
+import com.max.movierating.repository.RoleRepository;
 import com.max.movierating.repository.UserRepository;
 import com.max.movierating.security.JwtTokenProvider;
 import com.max.movierating.service.AuthService;
@@ -15,27 +20,64 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.validation.ConstraintViolationException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 
 @Service
 @Slf4j
 public class AuthServiceImpl implements AuthService {
 
     private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
+    private final BasketRepository basketRepository;
     private final AuthenticationManager authenticationManager;
     private final JwtTokenProvider jwtTokenProvider;
+    private final BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
     public AuthServiceImpl(UserRepository userRepository,
+                           RoleRepository roleRepository,
+                           BasketRepository basketRepository,
                            AuthenticationManager authenticationManager,
-                           JwtTokenProvider jwtTokenProvider) {
+                           JwtTokenProvider jwtTokenProvider, BCryptPasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
+        this.basketRepository = basketRepository;
         this.authenticationManager = authenticationManager;
         this.jwtTokenProvider = jwtTokenProvider;
+        this.passwordEncoder = passwordEncoder;
     }
+
+    @Override
+    @Transactional(rollbackFor = ConstraintViolationException.class)
+    public User register(User user) {
+        if (Boolean.TRUE.equals(userRepository.existsByUsername(user.getUsername()))) {
+            log.error("Username: " + user.getUsername() + " are existed already!");
+            throw new UserExistException("Username: " + user.getUsername() + " are existed already!");
+        }
+        if (Boolean.TRUE.equals(userRepository.existsByEmail(user.getEmail()))) {
+            log.error("Email: " + user.getEmail() + " are existed already!");
+            throw new UserExistException("Email: " + user.getEmail() + " are existed already!");
+        }
+
+        Basket basket = new Basket();
+        basketRepository.save(basket);
+
+        user.setRoles(Set.of(roleRepository.findByName(RoleConstant.USER)));
+        user.setIsAccountNonLocked(Boolean.TRUE);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setBasket(basket);
+
+        return userRepository.save(user);
+    }
+
 
     /**
      * Method that login user in system.
@@ -47,7 +89,6 @@ public class AuthServiceImpl implements AuthService {
     public Map<String, Object> login(RequestLoginDTO loginDTO) {
         String username = loginDTO.getUsername();
         User user = userRepository.findByUsername(username);
-
         if (user != null) {
             if (user.getIsAccountNonLocked()) {
                 try {
@@ -60,7 +101,7 @@ public class AuthServiceImpl implements AuthService {
 
                     return response;
                 } catch (AuthenticationException e) {
-                    log.error("User login is error!");
+                    log.error("Invalid password!");
                     throw new BadCredentialsException("Invalid password!");
                 }
             } else {
@@ -68,6 +109,7 @@ public class AuthServiceImpl implements AuthService {
                 throw new BadRequestException("User locked!");
             }
         } else {
+            log.error("User was not found!");
             throw new ResourceNotFoundException("User was not found!");
         }
     }
@@ -81,13 +123,15 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public String generateNewToken(String username) {
-        User user = userRepository.findByUsername(username);
+    public String generateNewToken(Long id) {
+        Optional<User> userOptional = userRepository.findById(id);
         String token;
-        if (user != null) {
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
             token = jwtTokenProvider.createToken(user.getUsername(), user.getRoles());
         } else {
-            throw new ResourceNotFoundException("User not found!");
+            log.error("User was not found!");
+            throw new ResourceNotFoundException("User was not found!");
         }
         return token;
     }

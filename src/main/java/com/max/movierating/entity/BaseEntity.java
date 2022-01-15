@@ -18,16 +18,12 @@ import java.io.Serializable;
  * @author Maxim Semenko
  * @version 1.0
  */
-@MappedSuperclass
-@Getter
-@Setter
-@ToString
-@NoArgsConstructor
-@EqualsAndHashCode
+//@MappedSuperclass
+//@Getter
+//@Setter
+//@ToString
+//@NoArgsConstructor
+//@EqualsAndHashCode
 public abstract class BaseEntity implements Serializable {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
 
 }

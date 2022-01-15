@@ -5,6 +5,8 @@ import com.max.movierating.dto.RequestGenreDTO;
 import com.max.movierating.entity.Genre;
 import com.max.movierating.service.impl.GenreServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -18,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
-import java.util.List;
 
 /**
  * REST controller for genres requests.
@@ -39,8 +40,8 @@ public class GenreController {
 
     @GetMapping("")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<List<Genre>> findAll() {
-        return new ResponseEntity<>(genreService.findAll(), HttpStatus.OK);
+    public ResponseEntity<Page<Genre>> findAll(Pageable pageable) {
+        return new ResponseEntity<>(genreService.getAllByPages(pageable), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")

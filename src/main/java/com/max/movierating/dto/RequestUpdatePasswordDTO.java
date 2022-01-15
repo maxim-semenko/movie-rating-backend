@@ -3,15 +3,15 @@ package com.max.movierating.dto;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotEmpty;
 
 @Getter
 @Setter
 public class RequestUpdatePasswordDTO {
 
-    @NotNull
+    @NotEmpty(message = "Old password may not be empty")
     private String oldPassword;
 
-    @NotNull
+    @NotEmpty(message = "New password may not be empty")
     private String newPassword;
 }

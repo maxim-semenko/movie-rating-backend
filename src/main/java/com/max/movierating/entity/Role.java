@@ -19,8 +19,8 @@ import javax.validation.constraints.Size;
 @Entity
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @ToString
 @Builder
 @EqualsAndHashCode(callSuper = false)

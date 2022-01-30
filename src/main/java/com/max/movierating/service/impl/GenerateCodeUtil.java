@@ -1,9 +1,15 @@
 package com.max.movierating.service.impl;
 
+import java.security.SecureRandom;
+
 public class GenerateCodeUtil {
 
     public static Integer generateCode() {
-        return (int) (Math.random() * 8999 + 1000);
+        SecureRandom random = new SecureRandom();
+        int max = 9999;
+        int min = 1000;
+
+        return random.nextInt(max - min + 1) + min;
     }
 
 }

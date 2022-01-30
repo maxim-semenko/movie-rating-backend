@@ -5,7 +5,6 @@ import com.max.movierating.entity.Film;
 import com.max.movierating.entity.User;
 import com.max.movierating.repository.BasketRepository;
 import com.max.movierating.repository.FilmRepository;
-import com.max.movierating.repository.UserRepository;
 import com.max.movierating.service.BasketService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,22 +23,21 @@ public class BasketServiceImpl implements BasketService {
 
     private final BasketRepository basketRepository;
     private final FilmRepository filmRepository;
-    private final UserRepository userRepository;
+    private final UserServiceImpl userService;
 
     @Autowired
     public BasketServiceImpl(BasketRepository basketRepository,
                              FilmRepository filmRepository,
-                             UserRepository userRepository) {
+                             UserServiceImpl userService) {
         this.basketRepository = basketRepository;
         this.filmRepository = filmRepository;
-        this.userRepository = userRepository;
+        this.userService = userService;
     }
 
     @Override
     public Basket findById(Long id) {
-//        Basket basket = userRepository.getById(id).getBasket();
-        User user = userRepository.findById(id).get();
-        Basket basket = basketRepository.findByUser(user).get();
+        User user = userService.findById(id);
+        Basket basket = user.getBasket();
         Double summa = 0.0;
 
         for (Film film : basket.getFilmList()) {
@@ -54,9 +52,8 @@ public class BasketServiceImpl implements BasketService {
 
     @Override
     public Basket addToBasket(Long userId, Long filmId) {
-//        Basket basket = userRepository.getById(userId).getBasket();
-        User user = userRepository.findById(userId).get();
-        Basket basket = basketRepository.findByUser(user).get();
+        User user = userService.findById(userId);
+        Basket basket = user.getBasket();
         Film film = filmRepository.getById(filmId);
 
         if (!basket.getFilmList().contains(film)) {
@@ -69,10 +66,8 @@ public class BasketServiceImpl implements BasketService {
 
     @Override
     public Basket deleteFromBasket(Long userId, Long filmId) {
-//        Basket basket = userRepository.getById(userId).getBasket();
-        User user = userRepository.findById(userId).get();
-        Basket basket = basketRepository.findByUser(user).get();
-
+        User user = userService.findById(userId);
+        Basket basket = user.getBasket();
         Film film = filmRepository.getById(filmId);
 
         if (basket.getFilmList().contains(film)) {

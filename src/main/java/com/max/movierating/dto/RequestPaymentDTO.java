@@ -1,22 +1,29 @@
 package com.max.movierating.dto;
 
-import com.max.movierating.entity.Film;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.Date;
-import java.util.List;
+import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter
 public class RequestPaymentDTO {
+    @NotNull
     private Long userId;
-    private String numberCard;
-    private String cardHolderName;
-    private String expirationMMYY;
-    private String securityCardCode;
-    private String emailCode;
-    private List<Film> filmsList;
-    private Double totalPrice;
-    private Date date;
+
+//    @NotEmpty
+//    private String cardNumber;
+//
+//    @NotEmpty
+//    private String cardHolderName;
+//
+//    @NotEmpty
+//    private String expirationMMYY;
+//
+//    @NotNull
+//    private Integer CVV;
+
+    @NotNull
+    private Integer emailCode;
+
 }

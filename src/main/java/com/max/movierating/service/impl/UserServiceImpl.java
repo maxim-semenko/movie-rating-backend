@@ -6,6 +6,10 @@ import com.max.movierating.entity.User;
 import com.max.movierating.exception.BadRequestException;
 import com.max.movierating.exception.ResourceNotFoundException;
 import com.max.movierating.exception.UserExistException;
+import com.max.movierating.repository.BasketRepository;
+import com.max.movierating.repository.MailCodeRepository;
+import com.max.movierating.repository.MarkRepository;
+import com.max.movierating.repository.PurchaseStorageRepository;
 import com.max.movierating.repository.UserRepository;
 import com.max.movierating.security.JwtTokenProvider;
 import com.max.movierating.service.UserService;
@@ -16,6 +20,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 import java.util.List;
@@ -26,14 +31,26 @@ import java.util.Map;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final MarkRepository markRepository;
+    private final BasketRepository basketRepository;
+    private final PurchaseStorageRepository purchaseStorageRepository;
+    private final MailCodeRepository mailCodeRepository;
     private final BCryptPasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
 
     @Autowired
     public UserServiceImpl(UserRepository userRepository,
+                           MarkRepository markRepository,
+                           BasketRepository basketRepository,
+                           PurchaseStorageRepository purchaseStorageRepository,
+                           MailCodeRepository mailCodeRepository,
                            BCryptPasswordEncoder passwordEncoder,
                            JwtTokenProvider jwtTokenProvider) {
         this.userRepository = userRepository;
+        this.markRepository = markRepository;
+        this.basketRepository = basketRepository;
+        this.purchaseStorageRepository = purchaseStorageRepository;
+        this.mailCodeRepository = mailCodeRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtTokenProvider = jwtTokenProvider;
     }
@@ -55,7 +72,7 @@ public class UserServiceImpl implements UserService {
         user.setPassword(existUser.getPassword());
         user.setIsAccountNonLocked(existUser.getIsAccountNonLocked());
         user.setRoles(existUser.getRoles());
-        user.setBasket(existUser.getBasket());
+//        user.setBasket(existUser.getBasket());
 
         if (!user.getUsername().equals(existUser.getUsername())) {
             existByUsername(user.getUsername());
@@ -116,11 +133,14 @@ public class UserServiceImpl implements UserService {
         return userRepository.findAll(pageable);
     }
 
+    @Transactional
     @Override
     public Boolean deleteAccount(Long id, String password) {
         User existUser = findById(id);
         if (existUser != null) {
             if (passwordEncoder.matches(password, existUser.getPassword())) {
+                mailCodeRepository.deleteAllByUser(existUser);
+                markRepository.deleteAllByUser(existUser);
                 userRepository.delete(existUser);
                 SecurityContextHolder.getContext().setAuthentication(null);
                 SecurityContextHolder.clearContext();

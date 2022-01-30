@@ -23,6 +23,12 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 import java.util.Map;
 
+/**
+ * REST controller for users requests.
+ *
+ * @author Maxim Semenko
+ * @version 1.0
+ */
 @RestController
 @RequestMapping(value = APIConstant.USERS_API)
 public class UserController {

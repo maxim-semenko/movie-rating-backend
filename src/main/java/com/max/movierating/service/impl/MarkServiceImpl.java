@@ -1,5 +1,7 @@
 package com.max.movierating.service.impl;
 
+import com.max.movierating.constant.ErrorConstant;
+import com.max.movierating.dto.RequestMarkDTO;
 import com.max.movierating.entity.Film;
 import com.max.movierating.entity.Mark;
 import com.max.movierating.entity.User;
@@ -33,7 +35,10 @@ public class MarkServiceImpl implements MarkService {
     }
 
     @Override
-    public Mark createMark(Long userId, Long filmId, Integer value) {
+    public Mark createMark(RequestMarkDTO markDTO) {
+        Long userId = markDTO.getUserId();
+        Long filmId = markDTO.getFilmId();
+
         Optional<User> userOptional = userRepository.findById(userId);
         if (userOptional.isEmpty()) {
             throw new ResourceNotFoundException("user not found!");
@@ -47,18 +52,14 @@ public class MarkServiceImpl implements MarkService {
         Mark mark;
         Optional<Mark> optionalMark = markRepository.findByUserIdAndFilmId(userId, filmId);
         if (optionalMark.isEmpty()) {
-            if (value > 0 && value < 11) {
-                User user = userOptional.get();
-                Film film = filmOptional.get();
+            User user = userOptional.get();
+            Film film = filmOptional.get();
 
-                mark = Mark.builder().user(user).film(film).value(value).build();
-                markRepository.save(mark);
+            mark = Mark.builder().user(user).film(film).value(markDTO.getValue()).build();
+            markRepository.save(mark);
 
-                film.setRating(markRepository.getAverageMarkByFilmId(filmId));
-                filmRepository.save(film);
-            } else {
-                throw new BadRequestException("Invalid value for mark!");
-            }
+            film.setRating(markRepository.getAverageMarkByFilmId(filmId));
+            filmRepository.save(film);
         } else {
             throw new BadRequestException("Can't create mark, its already exist!");
         }
@@ -67,44 +68,37 @@ public class MarkServiceImpl implements MarkService {
     }
 
     @Override
-    public Mark updateMark(Long userId, Long filmId, Integer value) {
+    public Mark removeMarkById(Long id) {
         Mark mark;
-        Optional<Mark> optionalMark = markRepository.findByUserIdAndFilmId(userId, filmId);
+        Optional<Mark> markOptional = markRepository.findById(id);
 
-        if (optionalMark.isPresent()) {
-            if (value > 0 && value < 11) {
-                mark = optionalMark.get();
-                mark.setValue(value);
-                markRepository.save(mark);
+        if (markOptional.isPresent()) {
+            mark = markOptional.get();
+            markRepository.delete(mark);
 
-                Film film = filmRepository.getById(filmId);
-                film.setRating(markRepository.getAverageMarkByFilmId(filmId));
-                filmRepository.save(film);
-            } else {
-                throw new BadRequestException("Invalid value for mark!");
+            Long filmId = mark.getFilm().getId();
+            Film film = filmRepository.getById(filmId);
+            Double rating = markRepository.getAverageMarkByFilmId(filmId);
+            if (rating == null) {
+                rating = 0.0;
             }
+            film.setRating(rating);
+            filmRepository.save(film);
         } else {
-            throw new ResourceNotFoundException("Mark not found!");
+            log.error("Mark not found");
+            throw new ResourceNotFoundException(ErrorConstant.MARK_NOT_FOUND + id);
         }
 
         return mark;
     }
 
     @Override
-    public Mark removeMarkByUserIdAndFilmId(Long userId, Long filmId) {
-        Mark mark;
+    public Mark findMarkByUserIdAndFilmId(Long userId, Long filmId) {
         Optional<Mark> optionalMark = markRepository.findByUserIdAndFilmId(userId, filmId);
-        if (optionalMark.isPresent()) {
-            mark = optionalMark.get();
-            markRepository.delete(mark);
-
-            Film film = filmRepository.getById(filmId);
-            film.setRating(markRepository.getAverageMarkByFilmId(filmId));
-            filmRepository.save(film);
-        } else {
-            throw new ResourceNotFoundException("Mark not found!");
+        if (optionalMark.isEmpty()) {
+            log.error("Mark not found");
+            throw new ResourceNotFoundException(ErrorConstant.MARK_NOT_FOUND + "user: " + userId + ", film: " + filmId);
         }
-
-        return mark;
+        return optionalMark.get();
     }
 }

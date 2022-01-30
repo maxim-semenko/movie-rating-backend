@@ -1,29 +1,83 @@
 package com.max.movierating.service.impl;
 
 import com.max.movierating.dto.RequestPaymentDTO;
+import com.max.movierating.entity.Basket;
+import com.max.movierating.entity.Film;
+import com.max.movierating.entity.MailCode;
+import com.max.movierating.entity.MailTypeMessage;
+import com.max.movierating.entity.PurchaseStorage;
+import com.max.movierating.entity.Transaction;
 import com.max.movierating.entity.User;
-import com.max.movierating.repository.UserRepository;
+import com.max.movierating.entity.enums.TypeMessageEnum;
+import com.max.movierating.exception.ResourceNotFoundException;
+import com.max.movierating.repository.BasketRepository;
+import com.max.movierating.repository.MailCodeRepository;
+import com.max.movierating.repository.PurchaseStorageRepository;
+import com.max.movierating.repository.TransactionRepository;
 import com.max.movierating.service.PaymentService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
+import java.util.Set;
 
 @Service
 @Slf4j
 public class PaymentServiceImpl implements PaymentService {
 
-    private final UserRepository userRepository;
+    private final UserServiceImpl userService;
+    private final MailTypeMessageServiceImpl mailTypeMessageService;
+    private final BasketRepository basketRepository;
+    private final MailCodeRepository mailCodeRepository;
+    private final PurchaseStorageRepository purchaseStorageRepository;
+    private final TransactionRepository transactionRepository;
 
     @Autowired
-    public PaymentServiceImpl(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public PaymentServiceImpl(UserServiceImpl userService,
+                              MailTypeMessageServiceImpl mailTypeMessageService,
+                              BasketRepository basketRepository,
+                              MailCodeRepository mailCodeRepository,
+                              PurchaseStorageRepository purchaseStorageRepository,
+                              TransactionRepository transactionRepository) {
+        this.userService = userService;
+        this.mailTypeMessageService = mailTypeMessageService;
+        this.basketRepository = basketRepository;
+        this.mailCodeRepository = mailCodeRepository;
+        this.purchaseStorageRepository = purchaseStorageRepository;
+        this.transactionRepository = transactionRepository;
     }
 
+    @Transactional
     @Override
     public Boolean pay(RequestPaymentDTO requestPaymentDTO) {
-        Optional<User> userOptional = userRepository.findById(requestPaymentDTO.getUserId());
+        User user = userService.findById(requestPaymentDTO.getUserId());
+        MailTypeMessage mailTypeMessage = mailTypeMessageService.findByName(TypeMessageEnum.PAYMENT_ORDER.toString());
+        MailCode mailCode = mailCodeRepository.getLastByUserAndType(user, mailTypeMessage);
+
+        if (mailCode != null) {
+            if (requestPaymentDTO.getEmailCode().equals(mailCode.getCode()) && mailCode.getIsValid()) {
+                Basket basket = user.getBasket();
+                Set<Film> films = basket.getFilmList();
+                PurchaseStorage purchaseStorage = user.getPurchaseStorage();
+
+                Transaction transaction = Transaction.builder()
+                        .user(user)
+                        .summa(basket.getSumma())
+                        .build();
+
+                transaction.getFilmList().addAll(films);
+                purchaseStorage.getFilmList().addAll(films);
+                purchaseStorageRepository.save(purchaseStorage);
+                transactionRepository.save(transaction);
+
+                basket.getFilmList().removeAll(films);
+                basket.setSumma(0.0);
+                basketRepository.save(basket);
+            }
+        } else {
+            throw new ResourceNotFoundException("Mail code not found");
+        }
 
         return true;
     }

@@ -1,5 +1,6 @@
 package com.max.movierating.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -7,6 +8,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -20,9 +22,7 @@ import javax.persistence.OneToOne;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -74,17 +74,16 @@ public class User extends BaseEntity {
     @Builder.Default
     private Set<Role> roles = new HashSet<>();
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "users_purchases",
-            joinColumns = {@JoinColumn(name = "user_id")},
-            inverseJoinColumns = {@JoinColumn(name = "film_id")})
-    @Builder.Default
-    private List<Film> purchases = new ArrayList<>();
-
-    @OneToOne
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     @JoinColumn(name = "basket_id", referencedColumnName = "id")
+    @JsonIgnore
     private Basket basket;
+
+
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @JoinColumn(name = "purchase_storage_id", referencedColumnName = "id")
+    @JsonIgnore
+    private PurchaseStorage purchaseStorage;
 
     @Override
     public String toString() {
@@ -97,8 +96,6 @@ public class User extends BaseEntity {
                 ", email='" + email + '\'' +
                 ", isAccountNonLocked=" + isAccountNonLocked +
                 ", roles=" + roles +
-                ", purchases=" + purchases +
-                ", basket=" + basket +
                 '}';
     }
 }

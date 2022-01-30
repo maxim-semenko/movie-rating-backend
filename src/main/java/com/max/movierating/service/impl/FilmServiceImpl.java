@@ -2,12 +2,14 @@ package com.max.movierating.service.impl;
 
 import com.max.movierating.entity.Film;
 import com.max.movierating.entity.Genre;
+import com.max.movierating.exception.ResourceDeleteException;
 import com.max.movierating.exception.ResourceNotFoundException;
 import com.max.movierating.repository.FilmRepository;
 import com.max.movierating.service.DefaultService;
 import com.max.movierating.service.FilmService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -63,9 +65,14 @@ public class FilmServiceImpl implements DefaultService<Film, Long>, FilmService 
     @Override
     public Film deleteById(Long id) {
         Film film = findById(id);
-        filmRepository.delete(film);
+        try {
+            filmRepository.delete(film);
+            log.info("Film with id: " + id + " was successfully deleted");
+        } catch (DataIntegrityViolationException e) {
+            log.error("Can't delete film");
+            throw new ResourceDeleteException("Can't delete film");
+        }
 
-        log.info("Film with id: " + id + " was successfully deleted");
         return film;
     }
 

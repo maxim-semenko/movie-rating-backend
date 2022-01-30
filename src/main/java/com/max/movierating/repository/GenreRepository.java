@@ -6,6 +6,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+/**
+ * GenreRepository for working with entity {@link Genre}.
+ *
+ * @author Maxim Semenko
+ * @version 1.0
+ */
 @Repository
 public interface GenreRepository extends JpaRepository<Genre, Long> {
 

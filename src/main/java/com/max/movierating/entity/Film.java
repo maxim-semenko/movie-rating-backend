@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.Entity;
@@ -19,13 +20,11 @@ import javax.validation.constraints.Size;
 @Entity
 @Getter
 @Setter
-@Builder
+@NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(callSuper = true)
+@Builder
+@EqualsAndHashCode(callSuper = false)
 public class Film extends BaseEntity {
-
-    public Film() {
-    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

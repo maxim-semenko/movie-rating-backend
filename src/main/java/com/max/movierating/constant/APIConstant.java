@@ -58,4 +58,8 @@ public final class APIConstant {
      * Request mapping for Mail API.
      */
     public static final String MAIL_API = "/api/v1/mail";
+    /**
+     * Request mapping for Purchase storage API.
+     */
+    public static final String PURCHASE_API = "/api/v1/purchases";
 }

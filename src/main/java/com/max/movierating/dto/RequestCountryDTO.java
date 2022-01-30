@@ -14,6 +14,9 @@ public class RequestCountryDTO {
     private String name;
 
     public Country toCountry() {
-        return Country.builder().name(name).build();
+        return Country
+                .builder()
+                .name(name)
+                .build();
     }
 }

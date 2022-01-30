@@ -2,6 +2,7 @@ package com.max.movierating.service.impl;
 
 import com.max.movierating.entity.Basket;
 import com.max.movierating.entity.Film;
+import com.max.movierating.entity.User;
 import com.max.movierating.repository.BasketRepository;
 import com.max.movierating.repository.FilmRepository;
 import com.max.movierating.repository.UserRepository;
@@ -36,7 +37,9 @@ public class BasketServiceImpl implements BasketService {
 
     @Override
     public Basket findById(Long id) {
-        Basket basket = userRepository.getById(id).getBasket();
+//        Basket basket = userRepository.getById(id).getBasket();
+        User user = userRepository.findById(id).get();
+        Basket basket = basketRepository.findByUser(user).get();
         Double summa = 0.0;
 
         for (Film film : basket.getFilmList()) {
@@ -51,7 +54,9 @@ public class BasketServiceImpl implements BasketService {
 
     @Override
     public Basket addToBasket(Long userId, Long filmId) {
-        Basket basket = userRepository.getById(userId).getBasket();
+//        Basket basket = userRepository.getById(userId).getBasket();
+        User user = userRepository.findById(userId).get();
+        Basket basket = basketRepository.findByUser(user).get();
         Film film = filmRepository.getById(filmId);
 
         if (!basket.getFilmList().contains(film)) {
@@ -64,7 +69,10 @@ public class BasketServiceImpl implements BasketService {
 
     @Override
     public Basket deleteFromBasket(Long userId, Long filmId) {
-        Basket basket = userRepository.getById(userId).getBasket();
+//        Basket basket = userRepository.getById(userId).getBasket();
+        User user = userRepository.findById(userId).get();
+        Basket basket = basketRepository.findByUser(user).get();
+
         Film film = filmRepository.getById(filmId);
 
         if (basket.getFilmList().contains(film)) {

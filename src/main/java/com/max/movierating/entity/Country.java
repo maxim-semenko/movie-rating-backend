@@ -14,6 +14,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 
 @Entity
 @Getter
@@ -31,6 +32,7 @@ public class Country extends BaseEntity {
 
     @Column(unique = true, length = 25)
     @NotEmpty
+    @Size(min = 2, max = 25)
     private String name;
 
 }

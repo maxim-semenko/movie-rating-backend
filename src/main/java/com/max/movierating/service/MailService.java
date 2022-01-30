@@ -1,6 +1,9 @@
 package com.max.movierating.service;
 
+
+import com.max.movierating.dto.RequestSendMessageDTO;
+
 public interface MailService {
 
-    void sendMessage(String emailTo, String subject, String message);
+    Boolean performMessage(RequestSendMessageDTO requestSendMessageDTO);
 }

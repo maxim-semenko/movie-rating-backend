@@ -33,13 +33,13 @@ public class AdminController {
     }
 
     @PutMapping("/locked/user/{userId}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN') and #userId != authentication.principal.id")
     public ResponseEntity<User> updateAccountIsNonLocked(@RequestParam("status") Boolean status, @PathVariable Long userId) {
         return new ResponseEntity<>(adminService.updateUserIsNonLockedById(status, userId), HttpStatus.OK);
     }
 
     @PutMapping("/role/user/{userId}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN') and #userId != authentication.principal.id")
     public ResponseEntity<User> updateUserRole(@PathVariable Long userId) {
         return new ResponseEntity<>(adminService.addOrRemoveAdminRoleById(userId), HttpStatus.OK);
     }

@@ -30,4 +30,7 @@ public class ErrorConstant {
 
     // Country's errors
 
+    // Mark's errors
+    public static final String MARK_NOT_FOUND = "Mark was not found: ";
+
 }

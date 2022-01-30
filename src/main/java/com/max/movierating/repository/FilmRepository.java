@@ -11,6 +11,13 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+
+/**
+ * FilmRepository for working with entity {@link Film}.
+ *
+ * @author Maxim Semenko
+ * @version 1.0
+ */
 @Repository
 public interface FilmRepository extends JpaRepository<Film, Long> {
 

@@ -33,7 +33,6 @@ class UserDTOTest {
                 .lastname("lastname")
                 .username("username")
                 .email("email")
-                .roles(null)
                 .isAccountNonLocked(true)
                 .build();
 

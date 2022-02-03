@@ -1,7 +1,7 @@
 package com.max.movierating.service;
 
-import com.max.movierating.entity.MailMessage;
-import com.max.movierating.entity.MailTypeMessage;
+import com.max.movierating.entity.mail.MailMessage;
+import com.max.movierating.entity.mail.MailTypeMessage;
 import com.max.movierating.exception.ResourceNotFoundException;
 import com.max.movierating.repository.MailMessageRepository;
 import lombok.extern.slf4j.Slf4j;

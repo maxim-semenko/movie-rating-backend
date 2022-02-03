@@ -1,7 +1,7 @@
 package com.max.movierating.repository;
 
-import com.max.movierating.entity.MailCode;
-import com.max.movierating.entity.MailTypeMessage;
+import com.max.movierating.entity.mail.MailCode;
+import com.max.movierating.entity.mail.MailTypeMessage;
 import com.max.movierating.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

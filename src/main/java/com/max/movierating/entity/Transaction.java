@@ -1,5 +1,6 @@
 package com.max.movierating.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -36,6 +37,7 @@ public class Transaction {
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     @NotNull
+    @JsonIgnore
     User user;
 
     @NotNull
@@ -50,4 +52,9 @@ public class Transaction {
     @ToString.Exclude
     @Builder.Default
     private Set<Film> filmList = new HashSet<>();
+
+    @NotNull
+    @ManyToOne
+    @JoinColumn(name = "transaction_status_id", referencedColumnName = "id")
+    private TransactionStatus transactionStatus;
 }

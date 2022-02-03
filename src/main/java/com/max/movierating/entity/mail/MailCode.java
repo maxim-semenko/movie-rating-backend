@@ -1,6 +1,9 @@
-package com.max.movierating.entity;
+package com.max.movierating.entity.mail;
 
 import javax.validation.constraints.NotNull;
+
+import com.max.movierating.entity.BaseEntity;
+import com.max.movierating.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

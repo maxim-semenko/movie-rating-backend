@@ -3,17 +3,20 @@ package com.max.movierating.service.impl;
 import com.max.movierating.dto.RequestPaymentDTO;
 import com.max.movierating.entity.Basket;
 import com.max.movierating.entity.Film;
-import com.max.movierating.entity.MailCode;
-import com.max.movierating.entity.MailTypeMessage;
 import com.max.movierating.entity.PurchaseStorage;
 import com.max.movierating.entity.Transaction;
+import com.max.movierating.entity.TransactionStatus;
 import com.max.movierating.entity.User;
+import com.max.movierating.entity.enums.TransactionStatusEnum;
 import com.max.movierating.entity.enums.TypeMessageEnum;
+import com.max.movierating.entity.mail.MailCode;
+import com.max.movierating.entity.mail.MailTypeMessage;
 import com.max.movierating.exception.ResourceNotFoundException;
 import com.max.movierating.repository.BasketRepository;
 import com.max.movierating.repository.MailCodeRepository;
 import com.max.movierating.repository.PurchaseStorageRepository;
 import com.max.movierating.repository.TransactionRepository;
+import com.max.movierating.repository.TransactionStatusRepository;
 import com.max.movierating.service.PaymentService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +35,7 @@ public class PaymentServiceImpl implements PaymentService {
     private final MailCodeRepository mailCodeRepository;
     private final PurchaseStorageRepository purchaseStorageRepository;
     private final TransactionRepository transactionRepository;
+    private final TransactionStatusRepository transactionStatusRepository;
 
     @Autowired
     public PaymentServiceImpl(UserServiceImpl userService,
@@ -39,13 +43,15 @@ public class PaymentServiceImpl implements PaymentService {
                               BasketRepository basketRepository,
                               MailCodeRepository mailCodeRepository,
                               PurchaseStorageRepository purchaseStorageRepository,
-                              TransactionRepository transactionRepository) {
+                              TransactionRepository transactionRepository,
+                              TransactionStatusRepository transactionStatusRepository) {
         this.userService = userService;
         this.mailTypeMessageService = mailTypeMessageService;
         this.basketRepository = basketRepository;
         this.mailCodeRepository = mailCodeRepository;
         this.purchaseStorageRepository = purchaseStorageRepository;
         this.transactionRepository = transactionRepository;
+        this.transactionStatusRepository = transactionStatusRepository;
     }
 
     @Transactional
@@ -61,9 +67,13 @@ public class PaymentServiceImpl implements PaymentService {
                 Set<Film> films = basket.getFilmList();
                 PurchaseStorage purchaseStorage = user.getPurchaseStorage();
 
+                TransactionStatus transactionStatus =
+                        transactionStatusRepository.findTransactionStatusByName(TransactionStatusEnum.COMPLETE.toString());
+
                 Transaction transaction = Transaction.builder()
                         .user(user)
                         .summa(basket.getSumma())
+                        .transactionStatus(transactionStatus)
                         .build();
 
                 transaction.getFilmList().addAll(films);

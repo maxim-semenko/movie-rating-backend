@@ -1,9 +1,12 @@
 package com.max.movierating.entity;
 
-import javax.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,25 +14,30 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
-public class MailMessage extends BaseEntity {
+@AllArgsConstructor
+@ToString
+@Builder
+@EqualsAndHashCode(callSuper = false)
+public class Feedback {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
-    private String subject;
-
-    @NotNull
+    @NotEmpty
+    @Size(min = 20, max = 1024)
     private String text;
 
     @NotNull
     @ManyToOne
-    @JoinColumn(name = "mail_type_message_id", referencedColumnName = "id")
-    private MailTypeMessage mailTypeMessage;
+    @JoinColumn(name = "feedback_type_id", referencedColumnName = "id")
+    private FeedbackType feedbackType;
 }

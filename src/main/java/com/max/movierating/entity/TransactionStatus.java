@@ -24,7 +24,7 @@ import javax.validation.constraints.Size;
 @ToString
 @Builder
 @EqualsAndHashCode(callSuper = false)
-public class Role extends BaseEntity {
+public class TransactionStatus {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,5 +34,4 @@ public class Role extends BaseEntity {
     @NotEmpty
     @Size(min = 2, max = 25)
     private String name;
-
 }

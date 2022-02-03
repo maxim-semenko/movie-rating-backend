@@ -1,6 +1,6 @@
 package com.max.movierating.service.impl;
 
-import com.max.movierating.entity.MailTypeMessage;
+import com.max.movierating.entity.mail.MailTypeMessage;
 import com.max.movierating.exception.ResourceNotFoundException;
 import com.max.movierating.repository.MailTypeMessageRepository;
 import com.max.movierating.service.MailTypeMessageService;

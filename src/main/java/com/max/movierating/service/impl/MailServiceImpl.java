@@ -1,9 +1,9 @@
 package com.max.movierating.service.impl;
 
 import com.max.movierating.dto.RequestSendMessageDTO;
-import com.max.movierating.entity.MailCode;
-import com.max.movierating.entity.MailMessage;
-import com.max.movierating.entity.MailTypeMessage;
+import com.max.movierating.entity.mail.MailCode;
+import com.max.movierating.entity.mail.MailMessage;
+import com.max.movierating.entity.mail.MailTypeMessage;
 import com.max.movierating.entity.User;
 import com.max.movierating.repository.MailCodeRepository;
 import com.max.movierating.service.MailMessageServiceImpl;

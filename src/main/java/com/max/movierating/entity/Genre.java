@@ -28,7 +28,7 @@ public class Genre extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true, length = 25)
+    @Column(unique = true)
     @NotEmpty
     @Size(min = 2, max = 25)
     private String name;

@@ -1,4 +1,5 @@
-package com.max.movierating.entity;
+package com.max.movierating.entity.mail;
+
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,20 +20,19 @@ import javax.validation.constraints.Size;
 @Entity
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @ToString
 @Builder
 @EqualsAndHashCode(callSuper = false)
-public class Role extends BaseEntity {
+public class MailTypeMessage {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true)
+    @Column(unique = true, length = 25)
     @NotEmpty
     @Size(min = 2, max = 25)
     private String name;
-
 }

@@ -1,6 +1,6 @@
 # movie-rating-backend
-Spring Application (backend) 
-React Apllication link: [a link](https://github.com/maxim-semenko/movie-rating-frontend)
+Spring Application (backend)   
+React Apllication link: [frontend](https://github.com/maxim-semenko/movie-rating-frontend)
 
 ## Application technologies 
 - Spring Boot

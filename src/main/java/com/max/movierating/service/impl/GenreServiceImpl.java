@@ -1,7 +1,6 @@
 package com.max.movierating.service.impl;
 
 import com.max.movierating.constant.ErrorConstant;
-import com.max.movierating.entity.Film;
 import com.max.movierating.entity.Genre;
 import com.max.movierating.exception.ResourceDeleteException;
 import com.max.movierating.exception.ResourceNotFoundException;

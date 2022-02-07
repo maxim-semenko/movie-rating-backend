@@ -52,7 +52,7 @@ public class Film extends BaseEntity {
     private Integer year;
 
     @NotNull
-    private Double rating = 0;
+    private Double rating = 0.0;
 
     @NotNull
     private Double price;

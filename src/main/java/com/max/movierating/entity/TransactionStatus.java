@@ -24,7 +24,7 @@ import javax.validation.constraints.Size;
 @ToString
 @Builder
 @EqualsAndHashCode(callSuper = false)
-public class TransactionStatus extends BaseEntity{
+public class TransactionStatus extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

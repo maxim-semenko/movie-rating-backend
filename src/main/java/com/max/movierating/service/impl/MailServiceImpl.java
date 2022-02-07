@@ -8,6 +8,7 @@ import com.max.movierating.entity.mail.MailTypeMessage;
 import com.max.movierating.exception.BadRequestException;
 import com.max.movierating.repository.MailCodeRepository;
 import com.max.movierating.service.MailService;
+import com.max.movierating.service.MarkService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

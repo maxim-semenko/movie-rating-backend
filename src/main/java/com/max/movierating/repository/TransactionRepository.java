@@ -1,6 +1,5 @@
 package com.max.movierating.repository;
 
-import com.max.movierating.entity.Role;
 import com.max.movierating.entity.Transaction;
 import com.max.movierating.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;

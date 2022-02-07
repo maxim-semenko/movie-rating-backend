@@ -1,7 +1,6 @@
 package com.max.movierating.controller;
 
 import com.max.movierating.constant.APIConstant;
-import com.max.movierating.entity.PurchaseStorage;
 import com.max.movierating.entity.Transaction;
 import com.max.movierating.service.impl.TransactionServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -30,7 +30,7 @@ public interface MailCodeRepository extends JpaRepository<MailCode, Long> {
             "where mailcode.id = (select max(id) from MailCode ) " +
             "and mailcode.user =:user and mailcode.mailTypeMessage =:mailTypeMessage")
     Optional<MailCode> getLastByUserAndType(@Param("user") User user,
-                                           @Param("mailTypeMessage") MailTypeMessage mailTypeMessage);
+                                            @Param("mailTypeMessage") MailTypeMessage mailTypeMessage);
 
     /**
      * Method that deletes all mail codes by user.

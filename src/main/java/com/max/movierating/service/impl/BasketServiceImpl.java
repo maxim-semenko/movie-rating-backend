@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 
 
 /**
- * Basket Service implementation that realize {@link BasketService} interface.
+ * Basket Service implementation that realize BasketService interface {@link BasketService}.
  *
  * @author Maxim Semenko
  * @version 1.0

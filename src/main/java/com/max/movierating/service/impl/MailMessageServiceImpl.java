@@ -1,9 +1,10 @@
-package com.max.movierating.service;
+package com.max.movierating.service.impl;
 
 import com.max.movierating.entity.mail.MailMessage;
 import com.max.movierating.entity.mail.MailTypeMessage;
 import com.max.movierating.exception.ResourceNotFoundException;
 import com.max.movierating.repository.MailMessageRepository;
+import com.max.movierating.service.MailMessageService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

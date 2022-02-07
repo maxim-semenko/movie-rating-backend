@@ -2,6 +2,7 @@ package com.max.movierating.service.impl;
 
 import com.max.movierating.entity.Film;
 import com.max.movierating.entity.Genre;
+import com.max.movierating.entity.User;
 import com.max.movierating.exception.ResourceDeleteException;
 import com.max.movierating.exception.ResourceNotFoundException;
 import com.max.movierating.repository.FilmRepository;
@@ -15,6 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Film Service implementation that realize defaultService {@link DefaultService}
@@ -28,10 +30,12 @@ import java.util.List;
 public class FilmServiceImpl implements DefaultService<Film, Long>, FilmService {
 
     private final FilmRepository filmRepository;
+    private final GenreServiceImpl genreService;
 
     @Autowired
-    public FilmServiceImpl(FilmRepository filmRepository) {
+    public FilmServiceImpl(FilmRepository filmRepository, GenreServiceImpl genreService) {
         this.filmRepository = filmRepository;
+        this.genreService = genreService;
     }
 
     @Override
@@ -41,24 +45,25 @@ public class FilmServiceImpl implements DefaultService<Film, Long>, FilmService 
 
     @Override
     public Film findById(Long id) {
-        return filmRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Film with id: " + id + " was not found"));
+        Optional<Film> filmOptional = filmRepository.findById(id);
+        if (filmOptional.isEmpty()) {
+            throw new ResourceNotFoundException("Film with id: " + id + " was not found");
+        }
+
+        return filmOptional.get();
     }
 
     @Override
     public Film save(Film film) {
-        film.setRating(0.0);
         return filmRepository.save(film);
     }
 
     @Override
     public Film update(Film film, Long id) {
         Film existedFilm = findById(id);
-
         film.setId(id);
         film.setRating(existedFilm.getRating());
 
-        log.info("Film with id: " + id + " was successfully updated");
         return filmRepository.save(film);
     }
 
@@ -77,8 +82,9 @@ public class FilmServiceImpl implements DefaultService<Film, Long>, FilmService 
     }
 
     @Override
-    public List<Film> getAllByGenre(Genre genre) {
-        return filmRepository.getAllByGenre(genre);
+    public List<Film> findAllByGenre(String genreName) {
+        Genre genre = genreService.findByName(genreName);
+        return filmRepository.findTop3ByGenresOrderByRatingDesc(genre);
     }
 
     @Override

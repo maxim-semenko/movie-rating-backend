@@ -10,6 +10,12 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+/**
+ * Role Service implementation that realize PurchaseStorageService interface {@link PurchaseStorageService}.
+ *
+ * @author Maxim Semenko
+ * @version 1.0
+ */
 @Service
 public class PurchaseStorageServiceImpl implements PurchaseStorageService {
 

@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface FilmService {
 
-    List<Film> getAllByGenre(Genre genre);
+    List<Film> findAllByGenre(String genreName);
 
     Film findByName(String name);
 

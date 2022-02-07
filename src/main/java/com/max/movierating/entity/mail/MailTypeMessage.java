@@ -1,6 +1,7 @@
 package com.max.movierating.entity.mail;
 
 
+import com.max.movierating.entity.BaseEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -25,7 +26,7 @@ import javax.validation.constraints.Size;
 @ToString
 @Builder
 @EqualsAndHashCode(callSuper = false)
-public class MailTypeMessage {
+public class MailTypeMessage extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

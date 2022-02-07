@@ -11,6 +11,7 @@ import com.max.movierating.entity.enums.TransactionStatusEnum;
 import com.max.movierating.entity.enums.TypeMessageEnum;
 import com.max.movierating.entity.mail.MailCode;
 import com.max.movierating.entity.mail.MailTypeMessage;
+import com.max.movierating.exception.BadRequestException;
 import com.max.movierating.exception.ResourceNotFoundException;
 import com.max.movierating.repository.BasketRepository;
 import com.max.movierating.repository.MailCodeRepository;
@@ -23,8 +24,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
 import java.util.Set;
 
+/**
+ * Payment Service implementation that realize PaymentService interface {@link PaymentService}.
+ *
+ * @author Maxim Semenko
+ * @version 1.0
+ */
 @Service
 @Slf4j
 public class PaymentServiceImpl implements PaymentService {
@@ -59,9 +67,10 @@ public class PaymentServiceImpl implements PaymentService {
     public Boolean pay(RequestPaymentDTO requestPaymentDTO) {
         User user = userService.findById(requestPaymentDTO.getUserId());
         MailTypeMessage mailTypeMessage = mailTypeMessageService.findByName(TypeMessageEnum.PAYMENT_ORDER.toString());
-        MailCode mailCode = mailCodeRepository.getLastByUserAndType(user, mailTypeMessage);
+        Optional<MailCode> optionalMailCode = mailCodeRepository.getLastByUserAndType(user, mailTypeMessage);
 
-        if (mailCode != null) {
+        if (optionalMailCode.isPresent()) {
+            MailCode mailCode = optionalMailCode.get();
             if (requestPaymentDTO.getEmailCode().equals(mailCode.getCode()) && mailCode.getIsValid()) {
                 Basket basket = user.getBasket();
                 Set<Film> films = basket.getFilmList();
@@ -84,6 +93,8 @@ public class PaymentServiceImpl implements PaymentService {
                 basket.getFilmList().removeAll(films);
                 basket.setSumma(0.0);
                 basketRepository.save(basket);
+            } else {
+                throw new BadRequestException("Mail code not valid");
             }
         } else {
             throw new ResourceNotFoundException("Mail code not found");

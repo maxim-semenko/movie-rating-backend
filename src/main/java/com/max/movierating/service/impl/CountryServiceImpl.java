@@ -13,6 +13,13 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * Country Service implementation that realize defaultService {@link DefaultService}
+ * and countryService {@link CountryService} interfaces.
+ *
+ * @author Maxim Semenko
+ * @version 1.0
+ */
 @Service
 @Slf4j
 public class CountryServiceImpl implements DefaultService<Country, Long>, CountryService {

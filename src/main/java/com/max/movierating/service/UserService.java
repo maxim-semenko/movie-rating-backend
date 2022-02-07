@@ -10,6 +10,8 @@ public interface UserService {
 
     User updatePasswordById(Long id, String oldPassword, String newPassword);
 
+    User restorePassword(Long id, String oldPassword, String newPassword, Integer emailCode);
+
     void existByUsername(String username);
 
     void existByEmail(String email);

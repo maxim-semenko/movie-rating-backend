@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import javax.validation.constraints.NotNull;
 import java.util.Optional;
 
 /**
@@ -28,13 +29,13 @@ public interface MarkRepository extends JpaRepository<Mark, Long> {
     Double getAverageMarkByFilmId(Long id);
 
     /**
-     * Method that get optional mark by userId and filmId.
+     * Method that get optional mark by user and film.
      *
-     * @param userId {@link Long}
-     * @param filmId {@link Long}
+     * @param user {@link User}
+     * @param film {@link Film}
      * @return mark {@link Optional<Mark>}
      */
-    Optional<Mark> findByUserIdAndFilmId(Long userId, Long filmId);
+    Optional<Mark> findByUserAndFilm(User user, Film film);
 
     void deleteAllByUser(User user);
 

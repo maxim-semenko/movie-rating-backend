@@ -15,6 +15,12 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 import java.util.Set;
 
+/**
+ * Admin Service implementation that realize AdminService interface {@link AdminService}.
+ *
+ * @author Maxim Semenko
+ * @version 1.0
+ */
 @Service
 @Slf4j
 public class AdminServiceImpl implements AdminService {

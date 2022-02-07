@@ -9,6 +9,8 @@ import lombok.Setter;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -35,10 +37,10 @@ public class RequestFilmDTO {
     private Double price;
 
     @NotNull
-    private Genre genre;
+    private Set<Genre> genres;
 
     @NotNull
-    private Country country;
+    private Set<Country> countries;
 
     public Film toFilm() {
         return Film.builder().name(name)
@@ -47,8 +49,8 @@ public class RequestFilmDTO {
                 .timeInMinutes(timeInMinutes)
                 .year(year)
                 .price(price)
-                .genre(genre)
-                .country(country)
+                .genres(genres)
+                .countries(countries)
                 .build();
     }
 }

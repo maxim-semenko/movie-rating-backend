@@ -9,6 +9,12 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * Transaction Service implementation that realize TransactionService interface {@link TransactionService}.
+ *
+ * @author Maxim Semenko
+ * @version 1.0
+ */
 @Service
 public class TransactionServiceImpl implements TransactionService {
 

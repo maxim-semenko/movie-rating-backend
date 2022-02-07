@@ -8,6 +8,12 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
+/**
+ * SenderMail Service implementation that realize SenderMailService interface {@link SenderMailService}.
+ *
+ * @author Maxim Semenko
+ * @version 1.0
+ */
 @Service
 @Slf4j
 public class SenderMailServiceImpl implements SenderMailService {

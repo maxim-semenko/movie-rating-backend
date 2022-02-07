@@ -8,14 +8,18 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -48,20 +52,28 @@ public class Film extends BaseEntity {
     private Integer year;
 
     @NotNull
-    private Double rating;
+    private Double rating = 0;
 
     @NotNull
     private Double price;
 
-    @ManyToOne
-    @JoinColumn(name = "genre_id", referencedColumnName = "id")
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "films_genres",
+            joinColumns = {@JoinColumn(name = "film_id")},
+            inverseJoinColumns = {@JoinColumn(name = "genre_id")})
     @NotNull
-    private Genre genre;
+    @Builder.Default
+    private Set<Genre> genres = new HashSet<>();
 
-    @ManyToOne
-    @JoinColumn(name = "country_id", referencedColumnName = "id")
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "films_countries",
+            joinColumns = {@JoinColumn(name = "film_id")},
+            inverseJoinColumns = {@JoinColumn(name = "country_id")})
     @NotNull
-    private Country country;
+    @Builder.Default
+    private Set<Country> countries = new HashSet<>();
 
     @Override
     public String toString() {
@@ -74,8 +86,8 @@ public class Film extends BaseEntity {
                 ", year=" + year +
                 ", rating=" + rating +
                 ", price=" + price +
-                ", genre=" + genre +
-                ", country=" + country +
+                ", genres=" + genres +
+                ", countries=" + countries +
                 '}';
     }
 }

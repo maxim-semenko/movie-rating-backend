@@ -7,9 +7,7 @@ import com.max.movierating.entity.Mark;
 import com.max.movierating.entity.User;
 import com.max.movierating.exception.BadRequestException;
 import com.max.movierating.exception.ResourceNotFoundException;
-import com.max.movierating.repository.FilmRepository;
 import com.max.movierating.repository.MarkRepository;
-import com.max.movierating.repository.UserRepository;
 import com.max.movierating.service.MarkService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,49 +15,39 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+/**
+ * Role Service implementation that realize MarkService interface {@link MarkService}.
+ *
+ * @author Maxim Semenko
+ * @version 1.0
+ */
 @Service
 @Slf4j
 public class MarkServiceImpl implements MarkService {
 
     private final MarkRepository markRepository;
-    private final FilmRepository filmRepository;
-    private final UserRepository userRepository;
+    private final UserServiceImpl userService;
+    private final FilmServiceImpl filmService;
 
     @Autowired
     public MarkServiceImpl(MarkRepository markRepository,
-                           FilmRepository filmRepository,
-                           UserRepository userRepository) {
+                           UserServiceImpl userService,
+                           FilmServiceImpl filmService) {
         this.markRepository = markRepository;
-        this.filmRepository = filmRepository;
-        this.userRepository = userRepository;
+        this.filmService = filmService;
+        this.userService = userService;
     }
 
     @Override
     public Mark createMark(RequestMarkDTO markDTO) {
-        Long userId = markDTO.getUserId();
-        Long filmId = markDTO.getFilmId();
-
-        Optional<User> userOptional = userRepository.findById(userId);
-        if (userOptional.isEmpty()) {
-            throw new ResourceNotFoundException("user not found!");
-        }
-
-        Optional<Film> filmOptional = filmRepository.findById(filmId);
-        if (filmOptional.isEmpty()) {
-            throw new ResourceNotFoundException("film not found!");
-        }
+        User user = userService.findById(markDTO.getUserId());
+        Film film = filmService.findById(markDTO.getFilmId());
 
         Mark mark;
-        Optional<Mark> optionalMark = markRepository.findByUserIdAndFilmId(userId, filmId);
+        Optional<Mark> optionalMark = markRepository.findByUserAndFilm(user, film);
         if (optionalMark.isEmpty()) {
-            User user = userOptional.get();
-            Film film = filmOptional.get();
-
             mark = Mark.builder().user(user).film(film).value(markDTO.getValue()).build();
             markRepository.save(mark);
-
-            film.setRating(markRepository.getAverageMarkByFilmId(filmId));
-            filmRepository.save(film);
         } else {
             throw new BadRequestException("Can't create mark, its already exist!");
         }
@@ -75,17 +63,8 @@ public class MarkServiceImpl implements MarkService {
         if (markOptional.isPresent()) {
             mark = markOptional.get();
             markRepository.delete(mark);
-
-            Long filmId = mark.getFilm().getId();
-            Film film = filmRepository.getById(filmId);
-            Double rating = markRepository.getAverageMarkByFilmId(filmId);
-            if (rating == null) {
-                rating = 0.0;
-            }
-            film.setRating(rating);
-            filmRepository.save(film);
         } else {
-            log.error("Mark not found");
+            log.error(ErrorConstant.MARK_NOT_FOUND + id);
             throw new ResourceNotFoundException(ErrorConstant.MARK_NOT_FOUND + id);
         }
 
@@ -94,10 +73,13 @@ public class MarkServiceImpl implements MarkService {
 
     @Override
     public Mark findMarkByUserIdAndFilmId(Long userId, Long filmId) {
-        Optional<Mark> optionalMark = markRepository.findByUserIdAndFilmId(userId, filmId);
+        User user = userService.findById(userId);
+        Film film = filmService.findById(filmId);
+
+        Optional<Mark> optionalMark = markRepository.findByUserAndFilm(user, film);
         if (optionalMark.isEmpty()) {
-            log.error("Mark not found");
-            throw new ResourceNotFoundException(ErrorConstant.MARK_NOT_FOUND + "user: " + userId + ", film: " + filmId);
+            log.error(ErrorConstant.MARK_NOT_FOUND + "user = " + userId + ", film = " + filmId);
+            throw new ResourceNotFoundException(ErrorConstant.MARK_NOT_FOUND + "user = " + userId + ", film = " + filmId);
         }
         return optionalMark.get();
     }

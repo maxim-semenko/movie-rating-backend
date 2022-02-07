@@ -10,6 +10,12 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * Role Service implementation that realize DefaultService interface {@link DefaultService}.
+ *
+ * @author Maxim Semenko
+ * @version 1.0
+ */
 @Service
 @Slf4j
 public class RoleServiceImpl implements DefaultService<Role, Long> {

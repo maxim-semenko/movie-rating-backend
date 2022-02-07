@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.util.List;
 
 /**
  * REST controller for films requests.
@@ -119,6 +120,11 @@ public class FilmController {
     @GetMapping("/name/{name}")
     public ResponseEntity<Page<Film>> findAllByName(Pageable pageable, @PathVariable String name) {
         return new ResponseEntity<>(filmService.findAllByName(pageable, name), HttpStatus.OK);
+    }
+
+    @GetMapping("/genre/{genre}")
+    public ResponseEntity<List<Film>> findAllByGenre(@PathVariable String genre) {
+        return new ResponseEntity<>(filmService.findAllByGenre(genre), HttpStatus.OK);
     }
 
 

@@ -1,6 +1,7 @@
 package com.max.movierating.service.impl;
 
 import com.max.movierating.constant.ErrorConstant;
+import com.max.movierating.entity.Film;
 import com.max.movierating.entity.Genre;
 import com.max.movierating.exception.ResourceDeleteException;
 import com.max.movierating.exception.ResourceNotFoundException;
@@ -15,7 +16,15 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
+/**
+ * Genre Service implementation that realize DefaultService {@link DefaultService}
+ * and GenreService {@link GenreService} interfaces.
+ *
+ * @author Maxim Semenko
+ * @version 1.0
+ */
 @Service
 @Slf4j
 public class GenreServiceImpl implements DefaultService<Genre, Long>, GenreService {
@@ -34,9 +43,12 @@ public class GenreServiceImpl implements DefaultService<Genre, Long>, GenreServi
 
     @Override
     public Genre findById(Long id) {
-        return genreRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Genre with id: " + id + " was not found"));
+        Optional<Genre> genreOptional = genreRepository.findById(id);
+        if (genreOptional.isEmpty()) {
+            throw new ResourceNotFoundException("Genre with id: " + id + " was not found");
+        }
 
+        return genreOptional.get();
     }
 
     @Override
@@ -65,5 +77,15 @@ public class GenreServiceImpl implements DefaultService<Genre, Long>, GenreServi
     @Override
     public Page<Genre> getAllByPages(Pageable pageable) {
         return genreRepository.findAll(pageable);
+    }
+
+    @Override
+    public Genre findByName(String name) {
+        Optional<Genre> optionalGenre = genreRepository.findByName(name);
+        if (optionalGenre.isEmpty()) {
+            throw new ResourceNotFoundException("genre not found");
+        }
+
+        return optionalGenre.get();
     }
 }

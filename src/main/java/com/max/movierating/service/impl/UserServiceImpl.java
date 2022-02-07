@@ -6,10 +6,8 @@ import com.max.movierating.entity.User;
 import com.max.movierating.exception.BadRequestException;
 import com.max.movierating.exception.ResourceNotFoundException;
 import com.max.movierating.exception.UserExistException;
-import com.max.movierating.repository.BasketRepository;
 import com.max.movierating.repository.MailCodeRepository;
 import com.max.movierating.repository.MarkRepository;
-import com.max.movierating.repository.PurchaseStorageRepository;
 import com.max.movierating.repository.UserRepository;
 import com.max.movierating.security.JwtTokenProvider;
 import com.max.movierating.service.UserService;
@@ -25,15 +23,20 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
+/**
+ * User Service implementation that realize UserService interface {@link UserService}.
+ *
+ * @author Maxim Semenko
+ * @version 1.0
+ */
 @Service
 @Slf4j
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final MarkRepository markRepository;
-    private final BasketRepository basketRepository;
-    private final PurchaseStorageRepository purchaseStorageRepository;
     private final MailCodeRepository mailCodeRepository;
     private final BCryptPasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
@@ -41,15 +44,11 @@ public class UserServiceImpl implements UserService {
     @Autowired
     public UserServiceImpl(UserRepository userRepository,
                            MarkRepository markRepository,
-                           BasketRepository basketRepository,
-                           PurchaseStorageRepository purchaseStorageRepository,
                            MailCodeRepository mailCodeRepository,
                            BCryptPasswordEncoder passwordEncoder,
                            JwtTokenProvider jwtTokenProvider) {
         this.userRepository = userRepository;
         this.markRepository = markRepository;
-        this.basketRepository = basketRepository;
-        this.purchaseStorageRepository = purchaseStorageRepository;
         this.mailCodeRepository = mailCodeRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtTokenProvider = jwtTokenProvider;
@@ -60,8 +59,12 @@ public class UserServiceImpl implements UserService {
     }
 
     public User findById(Long id) {
-        return userRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("User with id: " + id + " was not found"));
+        Optional<User> userOptional = userRepository.findById(id);
+        if (userOptional.isEmpty()) {
+            throw new ResourceNotFoundException("User with id: " + id + " was not found");
+        }
+
+        return userOptional.get();
     }
 
     public Map<String, Object> update(User user, Long id) {
@@ -72,7 +75,7 @@ public class UserServiceImpl implements UserService {
         user.setPassword(existUser.getPassword());
         user.setIsAccountNonLocked(existUser.getIsAccountNonLocked());
         user.setRoles(existUser.getRoles());
-//        user.setBasket(existUser.getBasket());
+        user.setBasket(existUser.getBasket());
 
         if (!user.getUsername().equals(existUser.getUsername())) {
             existByUsername(user.getUsername());
@@ -102,16 +105,20 @@ public class UserServiceImpl implements UserService {
     @Override
     public User updatePasswordById(Long id, String oldPassword, String newPassword) {
         User existUser = findById(id);
-        if (existUser != null) {
-            if (passwordEncoder.matches(oldPassword, existUser.getPassword())) {
-                existUser.setPassword(passwordEncoder.encode(newPassword));
-                userRepository.save(existUser);
-            } else {
-                log.error(ErrorConstant.ERROR_INVALID_OLD_PASSWORD);
-                throw new BadRequestException(ErrorConstant.ERROR_INVALID_OLD_PASSWORD);
-            }
+        if (passwordEncoder.matches(oldPassword, existUser.getPassword())) {
+            existUser.setPassword(passwordEncoder.encode(newPassword));
+            userRepository.save(existUser);
+        } else {
+            log.error(ErrorConstant.ERROR_INVALID_OLD_PASSWORD);
+            throw new BadRequestException(ErrorConstant.ERROR_INVALID_OLD_PASSWORD);
         }
+
         return existUser;
+    }
+
+    @Override
+    public User restorePassword(Long id, String oldPassword, String newPassword, Integer emailCode) {
+        return null;
     }
 
     @Override

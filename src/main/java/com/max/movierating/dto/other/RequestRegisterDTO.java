@@ -1,28 +1,28 @@
-package com.max.movierating.dto;
+package com.max.movierating.dto.other;
 
 import com.max.movierating.entity.User;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotBlank;
 
 @Getter
 @Setter
 public class RequestRegisterDTO {
 
-    @NotEmpty(message = "Please provide a username")
+    @NotBlank(message = "Please provide a username")
     private String username;
 
-    @NotEmpty(message = "Please provide a password")
+    @NotBlank(message = "Please provide a password")
     private String password;
 
-    @NotEmpty(message = "Please provide a firstname")
+    @NotBlank(message = "Please provide a firstname")
     private String firstname;
 
-    @NotEmpty(message = "Please provide a lastname")
+    @NotBlank(message = "Please provide a lastname")
     private String lastname;
 
-    @NotEmpty(message = "Please provide a email")
+    @NotBlank(message = "Please provide a email")
     private String email;
 
     public User toUser() {

@@ -1,5 +1,6 @@
 package com.max.movierating.entity;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -34,4 +35,5 @@ public class TransactionStatus extends BaseEntity {
     @NotEmpty
     @Size(min = 2, max = 25)
     private String name;
+
 }

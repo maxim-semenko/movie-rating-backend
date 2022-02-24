@@ -1,4 +1,4 @@
-package com.max.movierating.dto;
+package com.max.movierating.dto.other;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -11,4 +11,5 @@ public class RequestDeleteAccountDTO {
 
     @NotBlank(message = "Password may not be empty")
     private String password;
+
 }

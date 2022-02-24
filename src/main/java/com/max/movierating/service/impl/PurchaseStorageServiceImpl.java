@@ -33,7 +33,7 @@ public class PurchaseStorageServiceImpl implements PurchaseStorageService {
         if (optionalUser.isPresent()) {
             purchaseStorage = optionalUser.get().getPurchaseStorage();
         } else {
-            throw new ResourceNotFoundException("");
+            throw new ResourceNotFoundException("Purchase not found");
         }
 
         return purchaseStorage;

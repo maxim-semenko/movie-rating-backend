@@ -1,5 +1,6 @@
-package com.max.movierating.dto;
+package com.max.movierating.dto.other;
 
+import com.max.movierating.dto.other.UserDTO;
 import com.max.movierating.entity.Role;
 import com.max.movierating.entity.User;
 import com.max.movierating.entity.enums.RoleEnum;

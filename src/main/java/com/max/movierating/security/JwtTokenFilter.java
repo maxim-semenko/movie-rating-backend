@@ -20,7 +20,6 @@ import java.io.IOException;
  * @author Maxim Semenko
  * @version 1.0
  */
-
 @Slf4j
 public class JwtTokenFilter extends GenericFilterBean {
 

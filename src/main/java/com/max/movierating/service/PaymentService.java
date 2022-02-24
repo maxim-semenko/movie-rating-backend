@@ -1,6 +1,6 @@
 package com.max.movierating.service;
 
-import com.max.movierating.dto.RequestPaymentDTO;
+import com.max.movierating.dto.entity.RequestPaymentDTO;
 
 public interface PaymentService {
 

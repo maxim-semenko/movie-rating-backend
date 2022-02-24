@@ -30,5 +30,6 @@ public final class JwtUserFactory {
                 .map(role -> new SimpleGrantedAuthority(role.getName()))
                 .collect(Collectors.toSet());
     }
+
 }
 

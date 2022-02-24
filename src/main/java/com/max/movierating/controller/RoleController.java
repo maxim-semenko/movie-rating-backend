@@ -1,7 +1,7 @@
 package com.max.movierating.controller;
 
 import com.max.movierating.constant.APIConstant;
-import com.max.movierating.dto.RequestRoleDTO;
+import com.max.movierating.dto.entity.RequestRoleDTO;
 import com.max.movierating.entity.Role;
 import com.max.movierating.service.impl.RoleServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;

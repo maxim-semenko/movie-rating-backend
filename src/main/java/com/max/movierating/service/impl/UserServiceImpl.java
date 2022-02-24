@@ -1,7 +1,8 @@
 package com.max.movierating.service.impl;
 
 import com.max.movierating.constant.ErrorConstant;
-import com.max.movierating.dto.UserDTO;
+import com.max.movierating.dto.other.UpdatePasswordDTO;
+import com.max.movierating.dto.other.UserDTO;
 import com.max.movierating.entity.User;
 import com.max.movierating.exception.BadRequestException;
 import com.max.movierating.exception.ResourceNotFoundException;
@@ -71,18 +72,17 @@ public class UserServiceImpl implements UserService {
         User existUser = findById(id);
         Map<String, Object> response = new HashMap<>();
 
-        user.setId(id);
-        user.setPassword(existUser.getPassword());
-        user.setIsAccountNonLocked(existUser.getIsAccountNonLocked());
-        user.setRoles(existUser.getRoles());
-        user.setBasket(existUser.getBasket());
-
         if (!user.getUsername().equals(existUser.getUsername())) {
             existByUsername(user.getUsername());
         }
         if (!user.getEmail().equals(existUser.getEmail())) {
             existByEmail(user.getEmail());
         }
+
+        existUser.setFirstname(user.getFirstname());
+        existUser.setLastname(user.getLastname());
+        existUser.setEmail(user.getEmail());
+        existUser.setUsername(user.getUsername());
 
         userRepository.save(user);
         response.put("user", UserDTO.fromUser(user));
@@ -103,23 +103,22 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User updatePasswordById(Long id, String oldPassword, String newPassword) {
+    public User updatePasswordById(Long id, UpdatePasswordDTO updatePasswordDTO) {
+        String oldPassword = updatePasswordDTO.getOldPassword();
+        String newPassword = updatePasswordDTO.getNewPassword();
+
         User existUser = findById(id);
+
         if (passwordEncoder.matches(oldPassword, existUser.getPassword())) {
             existUser.setPassword(passwordEncoder.encode(newPassword));
-            userRepository.save(existUser);
         } else {
             log.error(ErrorConstant.ERROR_INVALID_OLD_PASSWORD);
             throw new BadRequestException(ErrorConstant.ERROR_INVALID_OLD_PASSWORD);
         }
 
-        return existUser;
+        return userRepository.save(existUser);
     }
 
-    @Override
-    public User restorePassword(Long id, String oldPassword, String newPassword, Integer emailCode) {
-        return null;
-    }
 
     @Override
     public void existByUsername(String username) {
@@ -144,20 +143,35 @@ public class UserServiceImpl implements UserService {
     @Override
     public Boolean deleteAccount(Long id, String password) {
         User existUser = findById(id);
-        if (existUser != null) {
-            if (passwordEncoder.matches(password, existUser.getPassword())) {
-                mailCodeRepository.deleteAllByUser(existUser);
-                markRepository.deleteAllByUser(existUser);
-                userRepository.delete(existUser);
-                SecurityContextHolder.getContext().setAuthentication(null);
-                SecurityContextHolder.clearContext();
-                log.info("User have deleted successfully!");
-            } else {
-                log.error(ErrorConstant.ERROR_INVALID_OLD_PASSWORD);
-                throw new BadRequestException(ErrorConstant.ERROR_INVALID_OLD_PASSWORD);
-            }
+
+        if (passwordEncoder.matches(password, existUser.getPassword())) {
+            mailCodeRepository.deleteAllByUser(existUser);
+            markRepository.deleteAllByUser(existUser);
+            userRepository.delete(existUser);
+
+            SecurityContextHolder.getContext().setAuthentication(null);
+            SecurityContextHolder.clearContext();
+            log.info("User have deleted successfully!");
+        } else {
+            log.error(ErrorConstant.ERROR_INVALID_OLD_PASSWORD);
+            throw new BadRequestException(ErrorConstant.ERROR_INVALID_OLD_PASSWORD);
         }
+
         return true;
+    }
+
+    @Override
+    public User findByEmail(String email) {
+        User user;
+        Optional<User> userOptional = userRepository.findByEmail(email);
+        if (userOptional.isPresent()) {
+            user = userOptional.get();
+        } else {
+            log.error("User was not found with email: " + email);
+            throw new ResourceNotFoundException("User not found with email = " + email);
+        }
+
+        return user;
     }
 
 }

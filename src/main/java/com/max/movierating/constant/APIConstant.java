@@ -66,4 +66,8 @@ public final class APIConstant {
      * Request mapping for Transactions API.
      */
     public static final String TRANSACTION_API = "/api/v1/transactions";
+    /**
+     * Request mapping for Feedbacks API.
+     */
+    public static final String FEEDBACK_API = "/api/v1/feedbacks";
 }

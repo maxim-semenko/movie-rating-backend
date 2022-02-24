@@ -23,8 +23,8 @@ public class MailTypeMessageServiceImpl implements MailTypeMessageService {
 
     @Override
     public MailTypeMessage findByName(String name) {
-        Optional<MailTypeMessage> optionalMailTypeMessage = mailTypeMessageRepository.findByName(name);
         MailTypeMessage mailTypeMessage;
+        Optional<MailTypeMessage> optionalMailTypeMessage = mailTypeMessageRepository.findByName(name);
 
         if (optionalMailTypeMessage.isPresent()) {
             mailTypeMessage = optionalMailTypeMessage.get();
@@ -32,6 +32,7 @@ public class MailTypeMessageServiceImpl implements MailTypeMessageService {
             log.info("Mail type message not found");
             throw new ResourceNotFoundException("Mail type message not found");
         }
+
         return mailTypeMessage;
     }
 }

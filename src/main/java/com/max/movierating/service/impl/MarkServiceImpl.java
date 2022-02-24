@@ -1,7 +1,7 @@
 package com.max.movierating.service.impl;
 
 import com.max.movierating.constant.ErrorConstant;
-import com.max.movierating.dto.RequestMarkDTO;
+import com.max.movierating.dto.entity.RequestMarkDTO;
 import com.max.movierating.entity.Film;
 import com.max.movierating.entity.Mark;
 import com.max.movierating.entity.User;
@@ -45,6 +45,7 @@ public class MarkServiceImpl implements MarkService {
 
         Mark mark;
         Optional<Mark> optionalMark = markRepository.findByUserAndFilm(user, film);
+
         if (optionalMark.isEmpty()) {
             mark = Mark.builder().user(user).film(film).value(markDTO.getValue()).build();
             markRepository.save(mark);

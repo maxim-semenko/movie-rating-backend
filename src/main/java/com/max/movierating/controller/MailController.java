@@ -1,7 +1,7 @@
 package com.max.movierating.controller;
 
 import com.max.movierating.constant.APIConstant;
-import com.max.movierating.dto.RequestSendMessageDTO;
+import com.max.movierating.dto.other.RequestSendMessageDTO;
 import com.max.movierating.service.impl.MailServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -31,9 +31,8 @@ public class MailController {
         this.mailService = mailService;
     }
 
-
     @PostMapping("")
-    @PreAuthorize("hasRole('USER') and #request.userId == authentication.principal.id")
+    @PreAuthorize("permitAll()")
     public ResponseEntity<Boolean> sendMessage(@Valid @RequestBody RequestSendMessageDTO request) {
         return new ResponseEntity<>(mailService.performMessage(request), HttpStatus.OK);
     }

@@ -1,12 +1,10 @@
 package com.max.movierating.configuration;
 
-import com.max.movierating.constant.APIConstant;
 import com.max.movierating.security.JwtConfigurer;
 import com.max.movierating.security.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -46,11 +44,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .httpBasic().disable()
                 .csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                .authorizeRequests()
-                .antMatchers(APIConstant.AUTHENTICATION_API + "/**").permitAll()
-                .antMatchers(HttpMethod.GET, APIConstant.FILMS_API + "/**").permitAll()
-                .anyRequest().authenticated()
                 .and()
                 .apply(new JwtConfigurer(jwtTokenProvider));
     }

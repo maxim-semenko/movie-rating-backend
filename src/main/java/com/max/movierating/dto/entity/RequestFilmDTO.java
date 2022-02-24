@@ -1,4 +1,4 @@
-package com.max.movierating.dto;
+package com.max.movierating.dto.entity;
 
 import com.max.movierating.entity.Country;
 import com.max.movierating.entity.Film;
@@ -52,4 +52,5 @@ public class RequestFilmDTO {
                 .countries(countries)
                 .build();
     }
+
 }

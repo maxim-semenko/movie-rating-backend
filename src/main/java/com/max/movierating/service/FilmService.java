@@ -10,11 +10,8 @@ public interface FilmService {
 
     List<Film> findAllByGenre(String genreName);
 
-    Film findByName(String name);
-
     Page<Film> getAllByPages(Pageable pageable);
 
     Page<Film> findAllByName(Pageable pageable, String name);
-
 
 }

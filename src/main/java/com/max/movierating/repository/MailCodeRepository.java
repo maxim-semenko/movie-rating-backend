@@ -18,7 +18,6 @@ import java.util.Optional;
  */
 @Repository
 public interface MailCodeRepository extends JpaRepository<MailCode, Long> {
-
     /**
      * Method that return last mail code by userId and type of mail code.
      *

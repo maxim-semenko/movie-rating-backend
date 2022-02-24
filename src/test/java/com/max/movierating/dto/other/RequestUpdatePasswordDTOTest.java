@@ -1,5 +1,6 @@
-package com.max.movierating.dto;
+package com.max.movierating.dto.other;
 
+import com.max.movierating.dto.other.UpdatePasswordDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -7,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class RequestUpdatePasswordDTOTest {
 
-    private final RequestUpdatePasswordDTO requestUpdatePasswordDTO = new RequestUpdatePasswordDTO();
+    private final UpdatePasswordDTO requestUpdatePasswordDTO = new UpdatePasswordDTO();
 
     @BeforeEach
     void setUp() {

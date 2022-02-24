@@ -14,7 +14,12 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface CountryRepository extends JpaRepository<Country, Long> {
-
+    /**
+     * Method that finds all countries by pageable.
+     *
+     * @param pageable contain any params (size, page, etc)
+     * @return page of countries
+     */
     Page<Country> findAll(Pageable pageable);
 
 }

@@ -1,5 +1,6 @@
 package com.max.movierating.entity;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -33,6 +34,10 @@ public class Feedback {
     private Long id;
 
     @NotEmpty
+    @Size(min = 5, max = 50)
+    private String title;
+
+    @NotEmpty
     @Size(min = 20, max = 1024)
     private String text;
 
@@ -40,4 +45,5 @@ public class Feedback {
     @ManyToOne
     @JoinColumn(name = "feedback_type_id", referencedColumnName = "id")
     private FeedbackType feedbackType;
+
 }

@@ -6,6 +6,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -52,7 +53,8 @@ public class Film extends BaseEntity {
     private Integer year;
 
     @NotNull
-    private Double rating = 0.0;
+    @ColumnDefault("0.0")
+    private Double rating;
 
     @NotNull
     private Double price;

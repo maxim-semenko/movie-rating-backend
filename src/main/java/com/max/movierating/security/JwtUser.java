@@ -6,6 +6,12 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 
+/**
+ * Jwt user class entity that implements UserDetails interface.
+ *
+ * @author Maxim Semenko
+ * @version 1.0
+ */
 public class JwtUser implements UserDetails {
 
     private final Long id;

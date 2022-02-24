@@ -70,6 +70,7 @@ public class GenreServiceImpl implements DefaultService<Genre, Long>, GenreServi
             log.error(ErrorConstant.ERROR_CANT_DELETE_GENRE);
             throw new ResourceDeleteException(ErrorConstant.ERROR_CANT_DELETE_GENRE);
         }
+
         return genre;
     }
 

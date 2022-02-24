@@ -1,7 +1,7 @@
 package com.max.movierating.controller;
 
 import com.max.movierating.constant.APIConstant;
-import com.max.movierating.dto.RequestCountryDTO;
+import com.max.movierating.dto.entity.RequestCountryDTO;
 import com.max.movierating.entity.Country;
 import com.max.movierating.service.impl.CountryServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;

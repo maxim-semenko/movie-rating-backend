@@ -1,10 +1,9 @@
 package com.max.movierating.controller;
 
 import com.max.movierating.constant.APIConstant;
-import com.max.movierating.dto.RequestFilmDTO;
+import com.max.movierating.dto.entity.RequestFilmDTO;
 import com.max.movierating.entity.Film;
 import com.max.movierating.service.impl.FilmServiceImpl;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -32,7 +31,6 @@ import java.util.List;
  */
 @RestController
 @RequestMapping(value = APIConstant.FILMS_API)
-@Slf4j
 public class FilmController {
 
     /**
@@ -52,6 +50,7 @@ public class FilmController {
      * @return all films
      */
     @GetMapping("")
+    @PreAuthorize("permitAll()")
     public ResponseEntity<Page<Film>> findAll(Pageable pageable) {
         return new ResponseEntity<>(filmService.getAllByPages(pageable), HttpStatus.OK);
     }

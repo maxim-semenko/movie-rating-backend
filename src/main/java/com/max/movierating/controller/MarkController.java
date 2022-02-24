@@ -1,7 +1,7 @@
 package com.max.movierating.controller;
 
 import com.max.movierating.constant.APIConstant;
-import com.max.movierating.dto.RequestMarkDTO;
+import com.max.movierating.dto.entity.RequestMarkDTO;
 import com.max.movierating.entity.Film;
 import com.max.movierating.entity.Mark;
 import com.max.movierating.service.impl.MarkServiceImpl;

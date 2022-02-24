@@ -1,11 +1,10 @@
 package com.max.movierating.service.impl;
 
-import com.max.movierating.dto.RequestSendMessageDTO;
+import com.max.movierating.dto.other.RequestSendMessageDTO;
 import com.max.movierating.entity.User;
 import com.max.movierating.entity.mail.MailCode;
 import com.max.movierating.entity.mail.MailMessage;
 import com.max.movierating.entity.mail.MailTypeMessage;
-import com.max.movierating.exception.BadRequestException;
 import com.max.movierating.repository.MailCodeRepository;
 import com.max.movierating.service.MailService;
 import com.max.movierating.service.MarkService;
@@ -46,11 +45,11 @@ public class MailServiceImpl implements MailService {
 
     @Override
     public Boolean performMessage(RequestSendMessageDTO requestSendMessageDTO) {
-        User user = userService.findById(requestSendMessageDTO.getUserId());
+        User user = userService.findByEmail(requestSendMessageDTO.getEmail());
         MailTypeMessage mailTypeMessage = mailTypeMessageService.findByName(requestSendMessageDTO.getTypeMessage());
         MailMessage mailMessage = mailMessageService.findByMailTypeMessage(mailTypeMessage);
 
-        Integer code = GeneratorUtil.generateCode(1000, 9999);
+        Integer code = GeneratorUtil.generateCode(100000, 999999);
         String emailTo = user.getEmail();
         String text = String.format(mailMessage.getText(), user.getUsername(), code);
         String subject = mailMessage.getSubject();
@@ -61,9 +60,6 @@ public class MailServiceImpl implements MailService {
             MailCode lastMailCode = optionalLastMailCode.get();
             lastMailCode.setIsValid(false);
             mailCodeRepository.save(lastMailCode);
-        } else {
-            log.error("Valid mail code not found");
-            throw new BadRequestException("Valid mail code not found");
         }
 
         mailCodeRepository.save(

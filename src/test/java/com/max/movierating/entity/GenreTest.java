@@ -8,7 +8,6 @@ class GenreTest {
 
     private final Genre genre = new Genre(1L, "testName");
 
-
     @Test
     void getName() {
         assertEquals("testName", genre.getName());

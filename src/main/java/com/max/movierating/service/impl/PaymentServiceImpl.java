@@ -1,14 +1,14 @@
 package com.max.movierating.service.impl;
 
-import com.max.movierating.dto.RequestPaymentDTO;
+import com.max.movierating.dto.entity.RequestPaymentDTO;
 import com.max.movierating.entity.Basket;
 import com.max.movierating.entity.Film;
 import com.max.movierating.entity.PurchaseStorage;
 import com.max.movierating.entity.Transaction;
 import com.max.movierating.entity.TransactionStatus;
 import com.max.movierating.entity.User;
+import com.max.movierating.entity.enums.MessageTypeEnum;
 import com.max.movierating.entity.enums.TransactionStatusEnum;
-import com.max.movierating.entity.enums.TypeMessageEnum;
 import com.max.movierating.entity.mail.MailCode;
 import com.max.movierating.entity.mail.MailTypeMessage;
 import com.max.movierating.exception.BadRequestException;
@@ -24,6 +24,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Optional;
 import java.util.Set;
 
@@ -66,7 +69,7 @@ public class PaymentServiceImpl implements PaymentService {
     @Override
     public Boolean pay(RequestPaymentDTO requestPaymentDTO) {
         User user = userService.findById(requestPaymentDTO.getUserId());
-        MailTypeMessage mailTypeMessage = mailTypeMessageService.findByName(TypeMessageEnum.PAYMENT_ORDER.toString());
+        MailTypeMessage mailTypeMessage = mailTypeMessageService.findByName(MessageTypeEnum.PAYMENT_ORDER.toString());
         Optional<MailCode> optionalMailCode = mailCodeRepository.getLastByUserAndType(user, mailTypeMessage);
 
         if (optionalMailCode.isPresent()) {
@@ -79,14 +82,27 @@ public class PaymentServiceImpl implements PaymentService {
                 TransactionStatus transactionStatus =
                         transactionStatusRepository.findTransactionStatusByName(TransactionStatusEnum.COMPLETE.toString());
 
+//                DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+//                LocalDateTime now = LocalDateTime.now();
+//                System.out.println(dtf.format(now));
+
+
+                Date date = new Date();
+                String strDateFormat = "dd/MM/yyyy HH:mm:ss";
+                DateFormat dateFormat = new SimpleDateFormat(strDateFormat);
+                String formattedDate = dateFormat.format(date);
+                System.out.println(dateFormat.format(date));
+
                 Transaction transaction = Transaction.builder()
                         .user(user)
                         .summa(basket.getSumma())
                         .transactionStatus(transactionStatus)
+                        .date(date)
                         .build();
 
                 transaction.getFilmList().addAll(films);
                 purchaseStorage.getFilmList().addAll(films);
+
                 purchaseStorageRepository.save(purchaseStorage);
                 transactionRepository.save(transaction);
 

@@ -3,7 +3,6 @@ package com.max.movierating.controller;
 import com.max.movierating.constant.APIConstant;
 import com.max.movierating.entity.User;
 import com.max.movierating.service.impl.AdminServiceImpl;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +21,6 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping(value = APIConstant.ADMIN_API)
-@Slf4j
 public class AdminController {
 
     private final AdminServiceImpl adminService;

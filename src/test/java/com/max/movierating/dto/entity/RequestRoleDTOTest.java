@@ -1,5 +1,6 @@
-package com.max.movierating.dto;
+package com.max.movierating.dto.entity;
 
+import com.max.movierating.dto.entity.RequestRoleDTO;
 import com.max.movierating.entity.Role;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

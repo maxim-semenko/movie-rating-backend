@@ -1,4 +1,4 @@
-package com.max.movierating.dto;
+package com.max.movierating.dto.entity;
 
 import lombok.Getter;
 import lombok.Setter;

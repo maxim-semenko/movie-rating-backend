@@ -33,4 +33,5 @@ public class MailMessage extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "mail_type_message_id", referencedColumnName = "id")
     private MailTypeMessage mailTypeMessage;
+
 }

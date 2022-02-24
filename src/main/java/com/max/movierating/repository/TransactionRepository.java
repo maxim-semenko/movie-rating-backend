@@ -15,6 +15,11 @@ import java.util.List;
  */
 @Repository
 public interface TransactionRepository extends JpaRepository<Transaction, Long> {
-
+    /**
+     * Method that finds all transactions by user.
+     *
+     * @param user params for search
+     * @return list of transactions
+     */
     List<Transaction> findAllByUser(User user);
 }

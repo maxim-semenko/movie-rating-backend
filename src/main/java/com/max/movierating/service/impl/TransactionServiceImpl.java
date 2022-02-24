@@ -18,7 +18,13 @@ import java.util.List;
 @Service
 public class TransactionServiceImpl implements TransactionService {
 
+    /**
+     * TransactionRepository for working with transactions {@link Transaction}.
+     */
     private final TransactionRepository transactionRepository;
+    /**
+     * UserService for working with user {@link User}.
+     */
     private final UserServiceImpl userService;
 
     @Autowired
@@ -28,6 +34,12 @@ public class TransactionServiceImpl implements TransactionService {
         this.userService = userService;
     }
 
+    /**
+     * Method that returns all transactions by userId.
+     *
+     * @param userId params for search
+     * @return list of transactions
+     */
     @Override
     public List<Transaction> findAllByUserId(Long userId) {
         User user = userService.findById(userId);

@@ -15,4 +15,5 @@ import java.util.Optional;
 public interface MailMessageRepository extends JpaRepository<MailMessage, Long> {
 
     Optional<MailMessage> findByMailTypeMessage(MailTypeMessage mailTypeMessage);
+
 }

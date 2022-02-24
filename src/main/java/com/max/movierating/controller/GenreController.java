@@ -1,7 +1,7 @@
 package com.max.movierating.controller;
 
 import com.max.movierating.constant.APIConstant;
-import com.max.movierating.dto.RequestGenreDTO;
+import com.max.movierating.dto.entity.RequestGenreDTO;
 import com.max.movierating.entity.Genre;
 import com.max.movierating.service.impl.GenreServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;

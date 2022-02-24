@@ -1,13 +1,14 @@
 package com.max.movierating.controller;
 
 import com.max.movierating.constant.APIConstant;
-import com.max.movierating.dto.RequestLoginDTO;
-import com.max.movierating.dto.RequestRegisterDTO;
-import com.max.movierating.dto.UserDTO;
+import com.max.movierating.dto.other.RequestLoginDTO;
+import com.max.movierating.dto.other.RequestRegisterDTO;
+import com.max.movierating.dto.other.UserDTO;
 import com.max.movierating.service.impl.AuthServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -43,6 +44,7 @@ public class AuthController {
      * @return register user {@link UserDTO}
      */
     @PostMapping("/register")
+    @PreAuthorize("permitAll()")
     public ResponseEntity<UserDTO> register(@Valid @RequestBody RequestRegisterDTO requestDTO) {
         return new ResponseEntity<>(UserDTO.fromUser(authService.register(requestDTO.toUser())), HttpStatus.CREATED);
     }
@@ -54,6 +56,7 @@ public class AuthController {
      * @return user and token
      */
     @PostMapping("/login")
+    @PreAuthorize("permitAll()")
     public ResponseEntity<Map<String, Object>> login(@Valid @RequestBody RequestLoginDTO requestDto) {
         return new ResponseEntity<>(authService.login(requestDto), HttpStatus.OK);
     }

@@ -33,7 +33,6 @@ public class Basket extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    //    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @OneToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
@@ -60,4 +59,5 @@ public class Basket extends BaseEntity {
                 ", filmList=" + filmList +
                 '}';
     }
+
 }

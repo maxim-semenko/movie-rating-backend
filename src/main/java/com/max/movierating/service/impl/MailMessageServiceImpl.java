@@ -24,8 +24,8 @@ public class MailMessageServiceImpl implements MailMessageService {
 
     @Override
     public MailMessage findByMailTypeMessage(MailTypeMessage mailTypeMessage) {
-        Optional<MailMessage> optionalMailMessage = mailMessageRepository.findByMailTypeMessage(mailTypeMessage);
         MailMessage mailMessage;
+        Optional<MailMessage> optionalMailMessage = mailMessageRepository.findByMailTypeMessage(mailTypeMessage);
 
         if (optionalMailMessage.isPresent()) {
             mailMessage = optionalMailMessage.get();

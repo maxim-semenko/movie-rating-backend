@@ -54,6 +54,7 @@ public class FilmServiceImpl implements DefaultService<Film, Long>, FilmService 
 
     @Override
     public Film save(Film film) {
+        film.setRating(0.0);
         return filmRepository.save(film);
     }
 
@@ -83,12 +84,7 @@ public class FilmServiceImpl implements DefaultService<Film, Long>, FilmService 
     @Override
     public List<Film> findAllByGenre(String genreName) {
         Genre genre = genreService.findByName(genreName);
-        return filmRepository.findTop3ByGenresOrderByRatingDesc(genre);
-    }
-
-    @Override
-    public Film findByName(String name) {
-        return filmRepository.getByName(name);
+        return filmRepository.findTop9ByGenresOrderByRatingDesc(genre);
     }
 
     @Override

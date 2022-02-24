@@ -1,5 +1,6 @@
-package com.max.movierating.dto;
+package com.max.movierating.dto.entity;
 
+import com.max.movierating.dto.entity.RequestCountryDTO;
 import com.max.movierating.entity.Country;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

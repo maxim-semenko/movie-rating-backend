@@ -1,5 +1,6 @@
-package com.max.movierating.dto;
+package com.max.movierating.dto.other;
 
+import com.max.movierating.dto.other.RequestDeleteAccountDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

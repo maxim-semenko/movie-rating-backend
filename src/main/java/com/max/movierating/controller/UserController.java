@@ -1,9 +1,9 @@
 package com.max.movierating.controller;
 
 import com.max.movierating.constant.APIConstant;
-import com.max.movierating.dto.RequestDeleteAccountDTO;
-import com.max.movierating.dto.RequestUpdatePasswordDTO;
-import com.max.movierating.dto.UserDTO;
+import com.max.movierating.dto.other.RequestDeleteAccountDTO;
+import com.max.movierating.dto.other.UpdatePasswordDTO;
+import com.max.movierating.dto.other.UserDTO;
 import com.max.movierating.entity.User;
 import com.max.movierating.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,10 +59,8 @@ public class UserController {
 
     @PutMapping("/password/{id}")
     @PreAuthorize("hasRole('USER') and #id == authentication.principal.id")
-    public ResponseEntity<User> updatePassword(@PathVariable Long id,
-                                               @Valid @RequestBody RequestUpdatePasswordDTO request) {
-        return new ResponseEntity<>(userService.updatePasswordById(
-                id, request.getOldPassword(), request.getNewPassword()), HttpStatus.OK);
+    public ResponseEntity<User> updatePassword(@PathVariable Long id, @Valid @RequestBody UpdatePasswordDTO request) {
+        return new ResponseEntity<>(userService.updatePasswordById(id, request), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")

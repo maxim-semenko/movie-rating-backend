@@ -2,6 +2,7 @@ package com.max.movierating.controller;
 
 import com.max.movierating.constant.APIConstant;
 import com.max.movierating.entity.Basket;
+import com.max.movierating.entity.Film;
 import com.max.movierating.service.impl.BasketServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -44,7 +45,7 @@ public class BasketController {
      * Method that adds film to basket {@link Basket}.
      *
      * @param userId user's id
-     * @param filmId film's id {@link com.max.movierating.entity.Film}
+     * @param filmId film's id {@link Film}
      * @return basket {@link Basket}
      */
     @PostMapping("/user/{userId}/film/{filmId}")
@@ -57,7 +58,7 @@ public class BasketController {
      * Method that deletes film from basket {@link Basket}.
      *
      * @param userId user's id
-     * @param filmId film's id {@link com.max.movierating.entity.Film}
+     * @param filmId film's id {@link Film}
      * @return basket {@link Basket}
      */
     @DeleteMapping("/user/{userId}/film/{filmId}")

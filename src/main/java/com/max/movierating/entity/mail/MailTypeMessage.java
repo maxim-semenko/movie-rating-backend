@@ -36,4 +36,5 @@ public class MailTypeMessage extends BaseEntity {
     @NotEmpty
     @Size(min = 2, max = 25)
     private String name;
+
 }

@@ -67,20 +67,6 @@ public class FilmController {
     }
 
     /**
-     * Method that returns the film by given name.
-     *
-     * @param name the film's name
-     * @return the film
-     */
-    @GetMapping("/filter")
-    public ResponseEntity<Page<Film>> filterSearch(Pageable pageable,
-                                                   @RequestParam(value = "name", required = false) String name,
-                                                   @RequestParam(value = "year", required = false) Integer year,
-                                                   @RequestParam(value = "price", required = false) Double price) {
-        return new ResponseEntity<>(filmService.search(pageable, name, year, price), HttpStatus.OK);
-    }
-
-    /**
      * Method that save new film by given {@link RequestBody}.
      *
      * @param filmDTO {@link RequestFilmDTO} request body that contain params

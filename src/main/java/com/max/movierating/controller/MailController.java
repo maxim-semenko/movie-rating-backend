@@ -2,7 +2,7 @@ package com.max.movierating.controller;
 
 import com.max.movierating.constant.APIConstant;
 import com.max.movierating.dto.other.RequestSendMessageDTO;
-import com.max.movierating.service.impl.MailServiceImpl;
+import com.max.movierating.service.impl.mail.MailServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

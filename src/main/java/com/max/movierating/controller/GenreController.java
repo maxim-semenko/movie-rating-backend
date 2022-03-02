@@ -39,7 +39,7 @@ public class GenreController {
     }
 
     @GetMapping("")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("permitAll()")
     public ResponseEntity<Page<Genre>> findAll(Pageable pageable) {
         return new ResponseEntity<>(genreService.getAllByPages(pageable), HttpStatus.OK);
     }

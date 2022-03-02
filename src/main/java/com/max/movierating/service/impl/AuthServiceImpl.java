@@ -2,6 +2,7 @@ package com.max.movierating.service.impl;
 
 import com.max.movierating.constant.ErrorConstant;
 import com.max.movierating.dto.other.RequestLoginDTO;
+import com.max.movierating.dto.other.RequestRestorePasswordDTO;
 import com.max.movierating.dto.other.UserDTO;
 import com.max.movierating.entity.Basket;
 import com.max.movierating.entity.PurchaseStorage;
@@ -17,6 +18,7 @@ import com.max.movierating.repository.RoleRepository;
 import com.max.movierating.repository.UserRepository;
 import com.max.movierating.security.JwtTokenProvider;
 import com.max.movierating.service.AuthService;
+import com.max.movierating.service.impl.mail.MailTypeMessageServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -158,15 +160,28 @@ public class AuthServiceImpl implements AuthService {
      * @return true
      */
     @Override
-    public Boolean restorePassword(Long id, String newPassword, Integer emailCode) {
-        User user = userService.findById(id);
+    public Boolean restorePassword(RequestRestorePasswordDTO restorePasswordDTO) {
+        User user = userService.findByEmail(restorePasswordDTO.getEmail());
 
         MailTypeMessage mailTypeMessage = mailTypeMessageService.findByName(MessageTypeEnum.RESTORE_PASSWORD.toString());
         Optional<MailCode> optionalMailCode = mailCodeRepository.getLastByUserAndType(user, mailTypeMessage);
         if (optionalMailCode.isPresent()) {
             MailCode mailCode = optionalMailCode.get();
-            if (Objects.equals(mailCode.getCode(), emailCode)) {
-                user.setPassword(passwordEncoder.encode(newPassword));
+            if (mailCode.getIsValid()) {
+                if (Objects.equals(mailCode.getCode(), restorePasswordDTO.getEmailCode())) {
+                    user.setPassword(passwordEncoder.encode(restorePasswordDTO.getNewPassword()));
+                    userRepository.save(user);
+                } else {
+                    mailCode.setCountAttempts(mailCode.getCountAttempts() + 1);
+                    if (mailCode.getCountAttempts().equals(5)) {
+                        mailCode.setIsValid(false);
+                    }
+                    mailCodeRepository.save(mailCode);
+
+                    throw new BadRequestException("mail code not equals. Try Again!");
+                }
+            } else {
+                throw new BadRequestException("Mail code is invalid. Send message Again!");
             }
         }
 

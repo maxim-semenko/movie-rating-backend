@@ -3,6 +3,7 @@ package com.max.movierating.controller;
 import com.max.movierating.constant.APIConstant;
 import com.max.movierating.dto.other.RequestLoginDTO;
 import com.max.movierating.dto.other.RequestRegisterDTO;
+import com.max.movierating.dto.other.RequestRestorePasswordDTO;
 import com.max.movierating.dto.other.UserDTO;
 import com.max.movierating.service.impl.AuthServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -69,6 +71,16 @@ public class AuthController {
     @PostMapping("/logout")
     public ResponseEntity<Boolean> logout() {
         return new ResponseEntity<>(authService.logout(), HttpStatus.OK);
+    }
+
+    /**
+     * Method that restore user's password.
+     *
+     * @return boolean
+     */
+    @PutMapping("/restore-password")
+    public ResponseEntity<Boolean> restorePassword(@Valid @RequestBody RequestRestorePasswordDTO request) {
+        return new ResponseEntity<>(authService.restorePassword(request), HttpStatus.OK);
     }
 
 }

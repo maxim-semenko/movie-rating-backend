@@ -168,7 +168,7 @@ public class UserServiceImpl implements UserService {
             user = userOptional.get();
         } else {
             log.error("User was not found with email: " + email);
-            throw new ResourceNotFoundException("User not found with email = " + email);
+            throw new ResourceNotFoundException("User not found with email: " + email);
         }
 
         return user;

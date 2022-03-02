@@ -19,6 +19,7 @@ import com.max.movierating.repository.PurchaseStorageRepository;
 import com.max.movierating.repository.TransactionRepository;
 import com.max.movierating.repository.TransactionStatusRepository;
 import com.max.movierating.service.PaymentService;
+import com.max.movierating.service.impl.mail.MailTypeMessageServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

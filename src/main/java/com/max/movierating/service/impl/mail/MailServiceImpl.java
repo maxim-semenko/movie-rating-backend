@@ -1,4 +1,4 @@
-package com.max.movierating.service.impl;
+package com.max.movierating.service.impl.mail;
 
 import com.max.movierating.dto.other.RequestSendMessageDTO;
 import com.max.movierating.entity.User;
@@ -8,6 +8,8 @@ import com.max.movierating.entity.mail.MailTypeMessage;
 import com.max.movierating.repository.MailCodeRepository;
 import com.max.movierating.service.MailService;
 import com.max.movierating.service.MarkService;
+import com.max.movierating.service.impl.GeneratorUtil;
+import com.max.movierating.service.impl.UserServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

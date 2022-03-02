@@ -1,4 +1,4 @@
-package com.max.movierating.service.impl;
+package com.max.movierating.service.impl.mail;
 
 import com.max.movierating.service.SenderMailService;
 import lombok.extern.slf4j.Slf4j;

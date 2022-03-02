@@ -46,7 +46,7 @@ public class FilmServiceImpl implements DefaultService<Film, Long>, FilmService 
     public Film findById(Long id) {
         Optional<Film> filmOptional = filmRepository.findById(id);
         if (filmOptional.isEmpty()) {
-            throw new ResourceNotFoundException("Film with id: " + id + " was not found");
+            throw new ResourceNotFoundException("Film with id = " + id + " was not found");
         }
 
         return filmOptional.get();
@@ -72,7 +72,7 @@ public class FilmServiceImpl implements DefaultService<Film, Long>, FilmService 
         Film film = findById(id);
         try {
             filmRepository.delete(film);
-            log.info("Film with id: " + id + " was successfully deleted");
+            log.info("Film with id =  " + id + " was successfully deleted");
         } catch (DataIntegrityViolationException e) {
             log.error("Can't delete film");
             throw new ResourceDeleteException("Can't delete film");
@@ -95,10 +95,6 @@ public class FilmServiceImpl implements DefaultService<Film, Long>, FilmService 
     @Override
     public Page<Film> findAllByName(Pageable pageable, String name) {
         return filmRepository.findAllByNameContaining(pageable, name);
-    }
-
-    public Page<Film> search(Pageable pageable, String name, Integer year, Double price) {
-        return filmRepository.advancedSearch(pageable, name, year, price);
     }
 
 }

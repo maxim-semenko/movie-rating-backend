@@ -78,7 +78,6 @@ public class User extends BaseEntity {
     @JsonIgnore
     private Basket basket;
 
-
     @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     @JoinColumn(name = "purchase_storage_id", referencedColumnName = "id")
     @JsonIgnore

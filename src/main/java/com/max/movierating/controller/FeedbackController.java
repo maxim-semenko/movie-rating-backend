@@ -28,7 +28,6 @@ import javax.validation.Valid;
  */
 @RestController
 @RequestMapping(value = APIConstant.FEEDBACK_API)
-@Slf4j
 public class FeedbackController {
 
     private final FeedbackServiceImpl feedbackService;
@@ -44,7 +43,7 @@ public class FeedbackController {
      * @return feedbacks {@link Feedback}
      */
     @GetMapping("")
-    @PreAuthorize("permitAll()")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Page<Feedback>> findAll(Pageable pageable) {
         return new ResponseEntity<>(feedbackService.findAll(pageable), HttpStatus.OK);
     }
@@ -68,9 +67,6 @@ public class FeedbackController {
     @PostMapping("")
     @PreAuthorize("permitAll()")
     public ResponseEntity<Feedback> create(@Valid @RequestBody RequestFeedbackDTO request) {
-        log.info(request.getTitle());
-        log.info(request.getText());
-        log.info(request.getFeedbackType().toString());
         return new ResponseEntity<>(feedbackService.create(request), HttpStatus.CREATED);
     }
 

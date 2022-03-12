@@ -103,20 +103,41 @@ public class UserController {
         return new ResponseEntity<>(userService.deleteAccount(id, request.getPassword()), HttpStatus.OK);
     }
 
-    @PutMapping("/password/{id}")
+    /**
+     * Method that updates user's password.
+     *
+     * @param id      user's id
+     * @param request DTO class
+     * @return updated user
+     */
+    @PatchMapping("/{id}/password")
     @PreAuthorize("hasRole('USER') and #id == authentication.principal.id")
     public ResponseEntity<User> updatePassword(@PathVariable Long id, @Valid @RequestBody UpdatePasswordDTO request) {
         return new ResponseEntity<>(userService.updatePasswordById(id, request), HttpStatus.OK);
     }
 
+    /**
+     * Method that updates user's locked value.
+     *
+     * @param id      user's id
+     * @param request DTO class
+     * @return updated user
+     */
     @PatchMapping("/{id}/locked")
-    @PreAuthorize("hasRole('ADMIN') and #userId != authentication.principal.id")
+    @PreAuthorize("hasRole('ADMIN') and #id != authentication.principal.id")
     public ResponseEntity<User> updateLocked(@PathVariable Long id, @RequestBody UpdateUserIsNonLockedDTO request) {
         return new ResponseEntity<>(userService.updateUserIsNonLockedById(request.getIsNonLocked(), id), HttpStatus.OK);
     }
 
+    /**
+     * Method that updates user's roles value.
+     *
+     * @param id      user's id
+     * @param request DTO class
+     * @return updated user
+     */
     @PatchMapping("/{id}/roles")
-    @PreAuthorize("hasRole('ADMIN') and #userId != authentication.principal.id")
+    @PreAuthorize("hasRole('ADMIN') and #id != authentication.principal.id")
     public ResponseEntity<User> updateRoles(@PathVariable Long id, @RequestBody UpdateUserRolesDTO request) {
         return new ResponseEntity<>(userService.updateUserRolesById(request.getRoles(), id), HttpStatus.OK);
     }

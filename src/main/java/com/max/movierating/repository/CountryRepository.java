@@ -22,4 +22,12 @@ public interface CountryRepository extends JpaRepository<Country, Long> {
      */
     Page<Country> findAll(Pageable pageable);
 
+    /**
+     * Method that check, if country are existed already.
+     *
+     * @param name needed name
+     * @return true of false
+     */
+    Boolean existsByName(String name);
+
 }

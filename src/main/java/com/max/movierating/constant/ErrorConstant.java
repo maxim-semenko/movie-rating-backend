@@ -29,6 +29,8 @@ public class ErrorConstant {
     public static final String ERROR_CANT_DELETE_GENRE = "Can't delete genre, because it used in another entity!";
 
     // Country's errors
+    public static final String ERROR_CANT_DELETE_COUNTRY = "Can't delete country, because it used in another entity!";
+
 
     // Mark's errors
     public static final String MARK_NOT_FOUND = "Mark was not found: ";

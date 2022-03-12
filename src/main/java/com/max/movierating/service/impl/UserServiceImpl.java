@@ -3,12 +3,14 @@ package com.max.movierating.service.impl;
 import com.max.movierating.constant.ErrorConstant;
 import com.max.movierating.dto.other.UpdatePasswordDTO;
 import com.max.movierating.dto.other.UserDTO;
+import com.max.movierating.entity.Role;
 import com.max.movierating.entity.User;
 import com.max.movierating.exception.BadRequestException;
 import com.max.movierating.exception.ResourceNotFoundException;
 import com.max.movierating.exception.UserExistException;
 import com.max.movierating.repository.MailCodeRepository;
 import com.max.movierating.repository.MarkRepository;
+import com.max.movierating.repository.RoleRepository;
 import com.max.movierating.repository.UserRepository;
 import com.max.movierating.security.JwtTokenProvider;
 import com.max.movierating.service.UserService;
@@ -25,6 +27,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * User Service implementation that realize UserService interface {@link UserService}.
@@ -41,18 +44,20 @@ public class UserServiceImpl implements UserService {
     private final MailCodeRepository mailCodeRepository;
     private final BCryptPasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
+    private final RoleRepository roleRepository;
 
     @Autowired
     public UserServiceImpl(UserRepository userRepository,
                            MarkRepository markRepository,
                            MailCodeRepository mailCodeRepository,
                            BCryptPasswordEncoder passwordEncoder,
-                           JwtTokenProvider jwtTokenProvider) {
+                           JwtTokenProvider jwtTokenProvider, RoleRepository roleRepository) {
         this.userRepository = userRepository;
         this.markRepository = markRepository;
         this.mailCodeRepository = mailCodeRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtTokenProvider = jwtTokenProvider;
+        this.roleRepository = roleRepository;
     }
 
     public List<User> findAll() {
@@ -172,6 +177,20 @@ public class UserServiceImpl implements UserService {
         }
 
         return user;
+    }
+
+    @Override
+    public User updateUserIsNonLockedById(Boolean isNonLocked, Long userId) {
+        User user = findById(userId);
+        user.setIsAccountNonLocked(isNonLocked);
+        return userRepository.save(user);
+    }
+
+    @Override
+    public User updateUserRolesById(Set<Role> roles, Long id) {
+        User user = findById(id);
+        user.setRoles(roles);
+        return userRepository.save(user);
     }
 
 }

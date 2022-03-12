@@ -21,4 +21,12 @@ public interface GenreRepository extends JpaRepository<Genre, Long> {
 
     Optional<Genre> findByName(String name);
 
+    /**
+     * Method that check, if genre are existed already.
+     *
+     * @param name needed name
+     * @return true of false
+     */
+    Boolean existsByName(String name);
+
 }

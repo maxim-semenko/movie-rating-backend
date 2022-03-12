@@ -2,6 +2,7 @@ package com.max.movierating.service.impl;
 
 import com.max.movierating.constant.ErrorConstant;
 import com.max.movierating.entity.Genre;
+import com.max.movierating.exception.BadRequestException;
 import com.max.movierating.exception.ResourceDeleteException;
 import com.max.movierating.exception.ResourceNotFoundException;
 import com.max.movierating.repository.GenreRepository;
@@ -44,6 +45,7 @@ public class GenreServiceImpl implements DefaultService<Genre, Long>, GenreServi
     public Genre findById(Long id) {
         Optional<Genre> genreOptional = genreRepository.findById(id);
         if (genreOptional.isEmpty()) {
+            log.error("Genre with id: " + id + " was not found");
             throw new ResourceNotFoundException("Genre with id: " + id + " was not found");
         }
 
@@ -52,11 +54,19 @@ public class GenreServiceImpl implements DefaultService<Genre, Long>, GenreServi
 
     @Override
     public Genre save(Genre genre) {
+        if (genreRepository.existsByName(genre.getName())) {
+            log.error("Genre are existed already by the name: " + genre.getName());
+            throw new BadRequestException("Genre are existed already by the name: " + genre.getName());
+        }
         return genreRepository.save(genre);
     }
 
     @Override
     public Genre update(Genre genre, Long id) {
+        if (genreRepository.existsByName(genre.getName())) {
+            log.error("Genre are existed already by the name: " + genre.getName());
+            throw new BadRequestException("Genre are existed already by the name: " + genre.getName());
+        }
         genre.setId(id);
         return genreRepository.save(genre);
     }

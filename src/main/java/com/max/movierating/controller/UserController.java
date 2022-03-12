@@ -110,15 +110,13 @@ public class UserController {
     }
 
     @PatchMapping("/{id}/locked")
-//    @PreAuthorize("hasRole('ADMIN') and #userId != authentication.principal.id")
-    @PreAuthorize("permitAll()")
+    @PreAuthorize("hasRole('ADMIN') and #userId != authentication.principal.id")
     public ResponseEntity<User> updateLocked(@PathVariable Long id, @RequestBody UpdateUserIsNonLockedDTO request) {
         return new ResponseEntity<>(userService.updateUserIsNonLockedById(request.getIsNonLocked(), id), HttpStatus.OK);
     }
 
     @PatchMapping("/{id}/roles")
-    @PreAuthorize("permitAll()")
-//    @PreAuthorize("hasRole('ADMIN') and #userId != authentication.principal.id")
+    @PreAuthorize("hasRole('ADMIN') and #userId != authentication.principal.id")
     public ResponseEntity<User> updateRoles(@PathVariable Long id, @RequestBody UpdateUserRolesDTO request) {
         return new ResponseEntity<>(userService.updateUserRolesById(request.getRoles(), id), HttpStatus.OK);
     }

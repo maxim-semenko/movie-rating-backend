@@ -75,30 +75,18 @@ public class PaymentServiceImpl implements PaymentService {
 
         if (optionalMailCode.isPresent()) {
             MailCode mailCode = optionalMailCode.get();
-            if (requestPaymentDTO.getEmailCode().equals(mailCode.getCode()) && mailCode.getIsValid()) {
+            if (requestPaymentDTO.getEmailCode().equals(mailCode.getCode()) && Boolean.TRUE.equals(mailCode.getIsValid())) {
                 Basket basket = user.getBasket();
                 Set<Film> films = basket.getFilmList();
                 PurchaseStorage purchaseStorage = user.getPurchaseStorage();
-
                 TransactionStatus transactionStatus =
                         transactionStatusRepository.findTransactionStatusByName(TransactionStatusEnum.COMPLETE.toString());
-
-//                DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
-//                LocalDateTime now = LocalDateTime.now();
-//                System.out.println(dtf.format(now));
-
-
-                Date date = new Date();
-                String strDateFormat = "dd/MM/yyyy HH:mm:ss";
-                DateFormat dateFormat = new SimpleDateFormat(strDateFormat);
-                String formattedDate = dateFormat.format(date);
-                System.out.println(dateFormat.format(date));
 
                 Transaction transaction = Transaction.builder()
                         .user(user)
                         .summa(basket.getSumma())
                         .transactionStatus(transactionStatus)
-                        .date(date)
+                        .date(new Date())
                         .build();
 
                 transaction.getFilmList().addAll(films);

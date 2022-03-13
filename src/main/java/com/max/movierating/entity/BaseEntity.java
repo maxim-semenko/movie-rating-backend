@@ -1,5 +1,6 @@
 package com.max.movierating.entity;
 
+import javax.persistence.MappedSuperclass;
 import java.io.Serializable;
 
 /**
@@ -8,6 +9,7 @@ import java.io.Serializable;
  * @author Maxim Semenko
  * @version 1.0
  */
+@MappedSuperclass
 public abstract class BaseEntity implements Serializable {
 
 }

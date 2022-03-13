@@ -36,8 +36,16 @@ import java.util.Map;
 @RequestMapping(value = APIConstant.USERS_API)
 public class UserController {
 
+    /**
+     * User service for working with user entity.
+     */
     private final UserServiceImpl userService;
 
+    /**
+     * UserController's Constructor.
+     *
+     * @param userService service for working with user entity
+     */
     @Autowired
     public UserController(UserServiceImpl userService) {
         this.userService = userService;

@@ -34,6 +34,11 @@ public class AuthController {
      */
     private final AuthServiceImpl authService;
 
+    /**
+     * AuthController's constructor.
+     *
+     * @param authService service for working with auth methods
+     */
     @Autowired
     public AuthController(AuthServiceImpl authService) {
         this.authService = authService;
@@ -66,7 +71,7 @@ public class AuthController {
     /**
      * Method that logout user from system.
      *
-     * @return boolean
+     * @return true/false
      */
     @PostMapping("/logout")
     public ResponseEntity<Boolean> logout() {
@@ -76,7 +81,7 @@ public class AuthController {
     /**
      * Method that restore user's password.
      *
-     * @return boolean
+     * @return true/false
      */
     @PutMapping("/restore-password")
     public ResponseEntity<Boolean> restorePassword(@Valid @RequestBody RequestRestorePasswordDTO request) {

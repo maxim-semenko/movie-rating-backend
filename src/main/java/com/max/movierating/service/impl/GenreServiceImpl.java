@@ -54,7 +54,7 @@ public class GenreServiceImpl implements DefaultService<Genre, Long>, GenreServi
 
     @Override
     public Genre save(Genre genre) {
-        if (genreRepository.existsByName(genre.getName())) {
+        if (Boolean.TRUE.equals(genreRepository.existsByName(genre.getName()))) {
             log.error("Genre are existed already by the name: " + genre.getName());
             throw new BadRequestException("Genre are existed already by the name: " + genre.getName());
         }
@@ -63,7 +63,7 @@ public class GenreServiceImpl implements DefaultService<Genre, Long>, GenreServi
 
     @Override
     public Genre update(Genre genre, Long id) {
-        if (genreRepository.existsByName(genre.getName())) {
+        if (Boolean.TRUE.equals(genreRepository.existsByName(genre.getName()))) {
             log.error("Genre are existed already by the name: " + genre.getName());
             throw new BadRequestException("Genre are existed already by the name: " + genre.getName());
         }

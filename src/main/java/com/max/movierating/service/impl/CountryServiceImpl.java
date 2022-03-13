@@ -54,7 +54,7 @@ public class CountryServiceImpl implements DefaultService<Country, Long>, Countr
 
     @Override
     public Country save(Country country) {
-        if (countryRepository.existsByName(country.getName())) {
+        if (Boolean.TRUE.equals(countryRepository.existsByName(country.getName()))) {
             log.error("Country are existed already by the name: " + country.getName());
             throw new BadRequestException("Country are existed already by the name: " + country.getName());
         }
@@ -63,7 +63,7 @@ public class CountryServiceImpl implements DefaultService<Country, Long>, Countr
 
     @Override
     public Country update(Country country, Long id) {
-        if (countryRepository.existsByName(country.getName())) {
+        if (Boolean.TRUE.equals(countryRepository.existsByName(country.getName()))) {
             log.error("Country are existed already by the name: " + country.getName());
             throw new BadRequestException("Country are existed already by the name: " + country.getName());
         }

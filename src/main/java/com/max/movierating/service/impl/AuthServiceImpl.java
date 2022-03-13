@@ -167,7 +167,7 @@ public class AuthServiceImpl implements AuthService {
         Optional<MailCode> optionalMailCode = mailCodeRepository.getLastByUserAndType(user, mailTypeMessage);
         if (optionalMailCode.isPresent()) {
             MailCode mailCode = optionalMailCode.get();
-            if (mailCode.getIsValid()) {
+            if (Boolean.TRUE.equals(mailCode.getIsValid())) {
                 if (Objects.equals(mailCode.getCode(), restorePasswordDTO.getEmailCode())) {
                     user.setPassword(passwordEncoder.encode(restorePasswordDTO.getNewPassword()));
                     userRepository.save(user);

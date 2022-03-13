@@ -58,7 +58,7 @@ public class MailServiceImpl implements MailService {
         senderMailService.sendMessage(emailTo, subject, text);
 
         Optional<MailCode> optionalLastMailCode = mailCodeRepository.getLastByUserAndType(user, mailTypeMessage);
-        if (optionalLastMailCode.isPresent() && optionalLastMailCode.get().getIsValid()) {
+        if (optionalLastMailCode.isPresent() && Boolean.TRUE.equals(optionalLastMailCode.get().getIsValid())) {
             MailCode lastMailCode = optionalLastMailCode.get();
             lastMailCode.setIsValid(false);
             mailCodeRepository.save(lastMailCode);

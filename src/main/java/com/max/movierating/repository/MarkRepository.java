@@ -6,6 +6,7 @@ import com.max.movierating.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -24,6 +25,8 @@ public interface MarkRepository extends JpaRepository<Mark, Long> {
      * @return mark {@link Optional<Mark>}
      */
     Optional<Mark> findByUserAndFilm(User user, Film film);
+
+    List<Mark> findAllByUser(User user);
 
     void deleteAllByUser(User user);
 

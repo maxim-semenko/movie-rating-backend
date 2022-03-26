@@ -40,9 +40,8 @@ public class Transaction extends BaseEntity {
 
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
-    @NotNull
     @JsonIgnore
-    User user;
+    private User user;
 
     @NotNull
     private Double summa;

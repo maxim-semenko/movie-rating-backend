@@ -16,7 +16,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Country Service implementation that realize defaultService {@link DefaultService}
@@ -43,13 +42,8 @@ public class CountryServiceImpl implements DefaultService<Country, Long>, Countr
 
     @Override
     public Country findById(Long id) {
-        Optional<Country> countryOptional = countryRepository.findById(id);
-        if (countryOptional.isEmpty()) {
-            log.error("Country with id: " + id + " was not found");
-            throw new ResourceNotFoundException("Country with id: " + id + " was not found");
-        }
-
-        return countryOptional.get();
+        return countryRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Country with id: " + id + " was not found"));
     }
 
     @Override

@@ -31,7 +31,6 @@ public class Mark extends BaseEntity {
 
     @OneToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
-    @NotNull
     private User user;
 
     @OneToOne

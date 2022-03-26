@@ -43,13 +43,8 @@ public class GenreServiceImpl implements DefaultService<Genre, Long>, GenreServi
 
     @Override
     public Genre findById(Long id) {
-        Optional<Genre> genreOptional = genreRepository.findById(id);
-        if (genreOptional.isEmpty()) {
-            log.error("Genre with id: " + id + " was not found");
-            throw new ResourceNotFoundException("Genre with id: " + id + " was not found");
-        }
-
-        return genreOptional.get();
+        return genreRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Genre with id: " + id + " was not found"));
     }
 
     @Override

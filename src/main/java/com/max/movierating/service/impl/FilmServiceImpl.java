@@ -15,7 +15,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Film Service implementation that realize defaultService {@link DefaultService}
@@ -44,12 +43,8 @@ public class FilmServiceImpl implements DefaultService<Film, Long>, FilmService 
 
     @Override
     public Film findById(Long id) {
-        Optional<Film> filmOptional = filmRepository.findById(id);
-        if (filmOptional.isEmpty()) {
-            throw new ResourceNotFoundException("Film with id = " + id + " was not found");
-        }
-
-        return filmOptional.get();
+        return filmRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Film with id: " + id + " was not found"));
     }
 
     @Override

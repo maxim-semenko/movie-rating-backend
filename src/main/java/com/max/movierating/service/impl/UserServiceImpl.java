@@ -3,14 +3,16 @@ package com.max.movierating.service.impl;
 import com.max.movierating.constant.ErrorConstant;
 import com.max.movierating.dto.other.UpdatePasswordDTO;
 import com.max.movierating.dto.other.UserDTO;
+import com.max.movierating.entity.Mark;
 import com.max.movierating.entity.Role;
+import com.max.movierating.entity.Transaction;
 import com.max.movierating.entity.User;
 import com.max.movierating.exception.BadRequestException;
 import com.max.movierating.exception.ResourceNotFoundException;
 import com.max.movierating.exception.UserExistException;
 import com.max.movierating.repository.MailCodeRepository;
 import com.max.movierating.repository.MarkRepository;
-import com.max.movierating.repository.RoleRepository;
+import com.max.movierating.repository.TransactionRepository;
 import com.max.movierating.repository.UserRepository;
 import com.max.movierating.security.JwtTokenProvider;
 import com.max.movierating.service.UserService;
@@ -42,22 +44,23 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final MarkRepository markRepository;
     private final MailCodeRepository mailCodeRepository;
+    private final TransactionRepository transactionRepository;
     private final BCryptPasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
-    private final RoleRepository roleRepository;
 
     @Autowired
     public UserServiceImpl(UserRepository userRepository,
                            MarkRepository markRepository,
                            MailCodeRepository mailCodeRepository,
+                           TransactionRepository transactionRepository,
                            BCryptPasswordEncoder passwordEncoder,
-                           JwtTokenProvider jwtTokenProvider, RoleRepository roleRepository) {
+                           JwtTokenProvider jwtTokenProvider) {
         this.userRepository = userRepository;
         this.markRepository = markRepository;
         this.mailCodeRepository = mailCodeRepository;
+        this.transactionRepository = transactionRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtTokenProvider = jwtTokenProvider;
-        this.roleRepository = roleRepository;
     }
 
     public List<User> findAll() {
@@ -65,12 +68,8 @@ public class UserServiceImpl implements UserService {
     }
 
     public User findById(Long id) {
-        Optional<User> userOptional = userRepository.findById(id);
-        if (userOptional.isEmpty()) {
-            throw new ResourceNotFoundException("User with id: " + id + " was not found");
-        }
-
-        return userOptional.get();
+        return userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("User with id: " + id + " was not found"));
     }
 
     public Map<String, Object> update(User user, Long id) {
@@ -124,7 +123,6 @@ public class UserServiceImpl implements UserService {
         return userRepository.save(existUser);
     }
 
-
     @Override
     public void existByUsername(String username) {
         if (Boolean.TRUE.equals(userRepository.existsByUsername(username))) {
@@ -151,7 +149,15 @@ public class UserServiceImpl implements UserService {
 
         if (passwordEncoder.matches(password, existUser.getPassword())) {
             mailCodeRepository.deleteAllByUser(existUser);
-            markRepository.deleteAllByUser(existUser);
+            List<Mark> markList = markRepository.findAllByUser(existUser);
+            for (Mark mark : markList) {
+                mark.setUser(null);
+            }
+
+            List<Transaction> transactionalList = transactionRepository.findAllByUser(existUser);
+            for (Transaction transaction : transactionalList) {
+                transaction.setUser(null);
+            }
             userRepository.delete(existUser);
 
             SecurityContextHolder.getContext().setAuthentication(null);

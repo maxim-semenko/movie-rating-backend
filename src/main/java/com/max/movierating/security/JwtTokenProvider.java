@@ -63,7 +63,6 @@ public class JwtTokenProvider {
     }
 
     public String createToken(String username, Set<Role> roles) {
-
         Claims claims = Jwts.claims().setSubject(username);
         claims.put("roles", getRoleNames(roles));
 

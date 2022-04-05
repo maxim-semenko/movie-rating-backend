@@ -70,6 +70,7 @@ public class UserController {
      * @return needed user
      */
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<UserDTO> findById(@PathVariable Long id) {
         return new ResponseEntity<>(UserDTO.fromUser(userService.findById(id)), HttpStatus.OK);
     }

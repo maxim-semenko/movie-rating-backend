@@ -54,7 +54,7 @@ public class Film extends BaseEntity {
 
     @NotNull
     @ColumnDefault("0.0")
-    private Double rating;
+    private Double rating = 0.0;
 
     @NotNull
     private Double price;

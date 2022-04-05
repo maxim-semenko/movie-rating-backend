@@ -112,8 +112,9 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public Map<String, Object> login(RequestLoginDTO loginDTO) {
         String username = loginDTO.getUsername();
-        User user = userRepository.findByUsername(username);
-        if (user != null) {
+        Optional<User> optionalUser = userRepository.findByUsername(username);
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
             if (user.getIsAccountNonLocked()) {
                 try {
                     log.info("try user login!");
@@ -131,8 +132,8 @@ public class AuthServiceImpl implements AuthService {
                     throw new BadCredentialsException(ErrorConstant.ERROR_INVALID_PASSWORD);
                 }
             } else {
-                log.error("User locked!");
-                throw new BadRequestException("User locked!");
+                log.error("User is locked!");
+                throw new BadRequestException("User is locked!");
             }
         } else {
             log.error("User was not found!");
@@ -176,8 +177,8 @@ public class AuthServiceImpl implements AuthService {
                     if (mailCode.getCountAttempts().equals(5)) {
                         mailCode.setIsValid(false);
                     }
-                    mailCodeRepository.save(mailCode);
 
+                    mailCodeRepository.save(mailCode);
                     throw new BadRequestException("mail code not equals. Try Again!");
                 }
             } else {

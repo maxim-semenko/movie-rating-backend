@@ -49,7 +49,6 @@ public class FilmServiceImpl implements DefaultService<Film, Long>, FilmService 
 
     @Override
     public Film save(Film film) {
-        film.setRating(0.0);
         return filmRepository.save(film);
     }
 

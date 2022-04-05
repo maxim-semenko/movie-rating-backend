@@ -95,15 +95,10 @@ public class UserServiceImpl implements UserService {
         return response;
     }
 
-
     @Override
     public User getByUsername(String username) {
-        User user = userRepository.findByUsername(username);
-        if (user == null) {
-            log.error("User was not found with username: " + username);
-            throw new ResourceNotFoundException("User not found with username = " + username);
-        }
-        return user;
+        return userRepository.findByUsername(username)
+                .orElseThrow(() -> new ResourceNotFoundException("User with username: " + username + " was not found"));
     }
 
     @Override
@@ -173,16 +168,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findByEmail(String email) {
-        User user;
-        Optional<User> userOptional = userRepository.findByEmail(email);
-        if (userOptional.isPresent()) {
-            user = userOptional.get();
-        } else {
-            log.error("User was not found with email: " + email);
-            throw new ResourceNotFoundException("User not found with email: " + email);
-        }
-
-        return user;
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("User with email: " + email + " was not found"));
     }
 
     @Override

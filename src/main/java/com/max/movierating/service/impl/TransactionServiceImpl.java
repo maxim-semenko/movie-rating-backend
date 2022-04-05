@@ -27,6 +27,12 @@ public class TransactionServiceImpl implements TransactionService {
      */
     private final UserServiceImpl userService;
 
+    /**
+     * Constructor
+     *
+     * @param transactionRepository for working with transactions {@link Transaction}.
+     * @param userService           for working with user {@link User}
+     */
     @Autowired
     public TransactionServiceImpl(TransactionRepository transactionRepository,
                                   UserServiceImpl userService) {

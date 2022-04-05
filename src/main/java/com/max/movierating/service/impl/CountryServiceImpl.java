@@ -52,6 +52,7 @@ public class CountryServiceImpl implements DefaultService<Country, Long>, Countr
             log.error("Country are existed already by the name: " + country.getName());
             throw new BadRequestException("Country are existed already by the name: " + country.getName());
         }
+
         return countryRepository.save(country);
     }
 
@@ -61,6 +62,7 @@ public class CountryServiceImpl implements DefaultService<Country, Long>, Countr
             log.error("Country are existed already by the name: " + country.getName());
             throw new BadRequestException("Country are existed already by the name: " + country.getName());
         }
+
         country.setId(id);
         return countryRepository.save(country);
     }

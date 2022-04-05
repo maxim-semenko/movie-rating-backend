@@ -15,13 +15,25 @@ import org.springframework.stereotype.Service;
 @Service
 public class PurchaseStorageServiceImpl implements PurchaseStorageService {
 
+    /**
+     * UserService for working with user {@link User}.
+     */
     private final UserServiceImpl userService;
 
+    /**
+     * @param userService for working with user {@link User}.
+     */
     @Autowired
     public PurchaseStorageServiceImpl(UserServiceImpl userService) {
         this.userService = userService;
     }
 
+    /**
+     * Method that returns purchase storage by userId.
+     *
+     * @param userId needed user's id
+     * @return purchase storage
+     */
     @Override
     public PurchaseStorage findByUserId(Long userId) {
         User user = userService.findById(userId);

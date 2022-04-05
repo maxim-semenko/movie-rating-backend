@@ -53,6 +53,7 @@ public class GenreServiceImpl implements DefaultService<Genre, Long>, GenreServi
             log.error("Genre are existed already by the name: " + genre.getName());
             throw new BadRequestException("Genre are existed already by the name: " + genre.getName());
         }
+
         return genreRepository.save(genre);
     }
 
@@ -62,6 +63,7 @@ public class GenreServiceImpl implements DefaultService<Genre, Long>, GenreServi
             log.error("Genre are existed already by the name: " + genre.getName());
             throw new BadRequestException("Genre are existed already by the name: " + genre.getName());
         }
+
         genre.setId(id);
         return genreRepository.save(genre);
     }

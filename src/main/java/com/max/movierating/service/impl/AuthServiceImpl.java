@@ -177,7 +177,6 @@ public class AuthServiceImpl implements AuthService {
                     if (mailCode.getCountAttempts().equals(5)) {
                         mailCode.setIsValid(false);
                     }
-
                     mailCodeRepository.save(mailCode);
                     throw new BadRequestException("mail code not equals. Try Again!");
                 }

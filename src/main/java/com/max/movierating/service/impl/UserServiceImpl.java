@@ -74,6 +74,7 @@ public class UserServiceImpl implements UserService {
 
     public Map<String, Object> update(User user, Long id) {
         User existUser = findById(id);
+        log.info(existUser.toString());
         Map<String, Object> response = new HashMap<>();
 
         if (!user.getUsername().equals(existUser.getUsername())) {
@@ -88,9 +89,9 @@ public class UserServiceImpl implements UserService {
         existUser.setEmail(user.getEmail());
         existUser.setUsername(user.getUsername());
 
-        userRepository.save(user);
-        response.put("user", UserDTO.fromUser(user));
-        response.put("token", jwtTokenProvider.createToken(user.getUsername(), user.getRoles()));
+        userRepository.save(existUser);
+        response.put("user", UserDTO.fromUser(existUser));
+        response.put("token", jwtTokenProvider.createToken(existUser.getUsername(), existUser.getRoles()));
 
         return response;
     }
